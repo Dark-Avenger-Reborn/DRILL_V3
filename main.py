@@ -40,9 +40,9 @@ def client_data():
 def persistence():
     return render_template("client/persistence.py")
 
-@app.route('/win11')
+@app.route('/win')
 def win11():
-    return send_from_directory('/home/runner/ServerV2/templates/', 'pymini.exe')
+    return send_from_directory('templates/executables', 'windows.exe')
 
 
 
