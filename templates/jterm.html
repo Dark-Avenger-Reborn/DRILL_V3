@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Loading</title>
+  <script src="https://cdn.jsdelivr.net/npm/jquery"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js" integrity="sha512-aMGMvNYu8Ue4G+fHa359jcPb1u+ytAF+P2SCb+PxrjCdO3n3ZTxJ30zuH39rimUggmTwmh2u7wvQsDTHESnmfQ==" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery.terminal/js/jquery.terminal.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery.terminal/css/jquery.terminal.min.css" />
+</head>
+  <template id="greetings">
+    _________                                     __             .___
+    \_   ___ \  ____   ____   ____   ____   _____/  |_  ____   __| _/
+    /    \  \/ /  _ \ /    \ /    \_/ __ \_/ ___\   __\/ __ \ / __ | 
+    \     \___(  <_> )   |  \   |  \  ___/\  \___|  | \  ___// /_/ | 
+     \______  /\____/|___|  /___|  /\___  >\___  >__|  \___  >____ | 
+            \/            \/     \/     \/     \/          \/     \/ 
+
+    ----------------------------------------------------------------------
+
+  </template>
+<body>
+
+</body>
+  <script>
+    var socket = io();
+    socket.connect("https://1e26c3bd-d2fc-4199-8c95-28e5c4f20ff4-00-3mijlg2wczefz.riker.replit.dev");
+    const pageSID = window.location.pathname.split('/')[2];
+
+    $(function() {
+      $('body').terminal(function(command, term) {
+        socket.emit('command', {"cmd": command, "id": pageSID});
+      }, {
+        greetings: greetings.innerHTML,
+        prompt: '>',
+        completion: false
+      });
+
+      socket.on('result', function(response) {
+        if (response["id"] == pageSID) {
+            $('body').terminal().echo(response['result']);
+        }
+      });
+    });
+  </script>
+</html>

