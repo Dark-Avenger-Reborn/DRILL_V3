@@ -1,11 +1,14 @@
 import json
-import sqlalchemy as db
 
 class C2:
     def __init__(self, sio):
         self.sio = sio
         self.devices = {}
         self.total_devices = {}
+        with open("clients.json", 'r') as f:
+            self.total_devices = json.load(f)
+        for device in self.total_devices:
+            self.total_devices[device]['status'] = 'Offline'
         self.sio.on('mConnect', self.on_connect)
         self.sio.on('disconnect', self.on_disconect)
         self.sio.on('command', self.send_command)
@@ -19,13 +22,7 @@ class C2:
             self.devices.update({data['uuid']: data})
             self.total_devices.update({data['uuid']: data})
 
-        for device in self.total_devices:
-            if device not in self.devices:
-                self.total_devices[device]['status'] = 'Offline'
-            else:
-                self.total_devices[device]['status'] = 'Online'
-
-        #self.update_json()
+        self.update_json()
 
 
     def on_disconect(self, sid):
@@ -34,21 +31,17 @@ class C2:
             if sid == self.devices[device]["sid"]:
                 self.devices.pop(device)
                 break
-
-        for device in self.total_devices:
-            if device not in self.devices:
-                self.total_devices[device]['status'] = 'Offline'
-            else:
-                self.total_devices[device]['status'] = 'Online'
-                
-        #self.update_json()
+        self.update_json()
 
     def list_devices(self):
         return self.devices
 
     def delete_device(self, device_id):
         self.total_devices.pop(device_id)
-        self.devices.pop(device_id)
+        if device_id in self.devices:
+            self.devices.pop(device_id)
+
+        self.update_json()
 
     def list_all_devices(self):
         return self.total_devices
@@ -67,12 +60,13 @@ class C2:
         self.sio.emit('restart', data)
 
     def update_json(self):
-        with open('clients.json', 'r') as f:
-            data = json.load(f)
-
-        data.update(self.total_devices)
-
-        with open('clients.json', 'w') as f:
-            f.write(data)
+        for device in self.total_devices:
+            if device not in self.devices:
+                self.total_devices[device]['status'] = 'Offline'
+            else:
+                self.total_devices[device]['status'] = 'Online'
+                
+        with open("clients.json", "w") as f:
+            json.dump(self.total_devices, f)
 
 
