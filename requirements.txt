@@ -1,3 +1,7 @@
 eventlet==0.36.1
 python-socketio==5.11.3
 # Dude these requrements are crazy
+Flask
+geocoder
+requests
+socketio
