@@ -74,9 +74,7 @@ def run(data):
         print(sio.sid)
         print(data["uuid"])
 
-    sio.connect(
-        "https://1e26c3bd-d2fc-4199-8c95-28e5c4f20ff4-00-3mijlg2wczefz.riker.replit.dev"
-    )
+    sio.connect(data['url'])
 
     shell = InteractiveShell()
     shell.start()

