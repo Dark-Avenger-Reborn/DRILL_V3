@@ -154,9 +154,3 @@ class C2:
             result = subprocess.run(f'docker run -v "$(pwd):/src/" cdrx/pyinstaller-linux "pyinstaller -F {payload_file_name}.py"', shell=True, capture_output=True)
             print(result)
             os.move(f"{payload_file_name}"), f"payloads/{payload_file_name}"
-
-        
-        os.remove("__pycache__")
-        os.remove("build")
-        
-        
