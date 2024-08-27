@@ -1,7 +1,3 @@
-eventlet==0.36.1
-python-socketio==5.11.3
-# Dude these requrements are crazy
-Flask
-geocoder
-requests
-socketio
+requests==2.31.0
+geocoder==1.38.1
+python-socketio==5.11.0
