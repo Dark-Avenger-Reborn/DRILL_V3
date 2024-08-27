@@ -159,19 +159,11 @@
             <select id="os-dropdown">
                 <option value="Windows">Windows</option>
                 <option value="Linux">Linux</option>
-                <option value="macOS">macOS</option>
-                <option value="FreeBSD">FreeBSD</option>
-                <option value="Solaris">Solaris</option>
-                <option value="Android">Android</option>
-                <option value="iOS">iOS</option>
             </select>
             <select id="arch-dropdown">
-                <option value="x86">x86</option>
-                <option value="x64">x64</option>
-                <option value="ARM">ARM</option>
-                <option value="ARM64">ARM64</option>
+                <!-- Options will be dynamically populated -->
             </select>
-            <button onclick="createDownload()">Create Download</button>
+            <button onclick="downloadFile()">Create Download</button>
         </div>
     </div>
 </div>
@@ -193,26 +185,84 @@
 </div>
 
 <script>
-    function createDownload() {
-        const os = document.getElementById('os-dropdown').value;
-        const arch = document.getElementById('arch-dropdown').value;
-        const date = new Date().toLocaleString();
-        const tableBody = document.getElementById('download-table');
+    const osDropdown = document.getElementById("os-dropdown");
+    const archDropdown = document.getElementById("arch-dropdown");
 
-        // Simulate download creation
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${os}</td>
-            <td>${arch}</td>
-            <td>${date}</td>
-            <td><button onclick="downloadFile('${os}', '${arch}')">Download</button></td>
-        `;
-        tableBody.appendChild(row);
+    // Define architecture options for each OS
+    const archOptions = {
+        Windows: ["x86", "x64"],
+        Linux: ["i386", "x64"]
+    };
+
+    // Function to update architecture dropdown
+    function updateArchDropdown() {
+        const selectedOS = osDropdown.value;
+        const architectures = archOptions[selectedOS];
+
+        // Clear existing options
+        archDropdown.innerHTML = "";
+
+        // Add new options
+        architectures.forEach(arch => {
+            const option = document.createElement("option");
+            option.value = arch;
+            option.textContent = arch;
+            archDropdown.appendChild(option);
+        });
     }
 
-    function downloadFile(os, arch) {
-        alert(`Starting download for ${os} (${arch})`);
-        // Implement actual download logic here
+    // Initial update of architecture dropdown
+    updateArchDropdown();
+
+    // Add event listener to OS dropdown
+    osDropdown.addEventListener("change", updateArchDropdown);
+
+
+    function createDownload() {
+        fetch('/list_payloads', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        })
+        .then(response => {
+            console.log('Response from server:', response);
+            
+            const tableBody = document.getElementById('download-table');
+
+            // Simulate download creation
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${os}</td>
+                <td>${arch}</td>
+                <td>${date}</td>
+                <td><button onclick="downloadFile('${os}', '${arch}')">Download</button></td>
+            `;
+            tableBody.appendChild(row);
+        })
+        .catch(error => {
+            console.error('Error sending delete request:', error);
+        });
+    }
+
+    function downloadFile() {
+        const os = document.getElementById("os-dropdown").value;
+        const arch = document.getElementById("arch-dropdown").value;
+
+        fetch('/download', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ 'os': os, 'arch': arch })
+        })
+        .then(response => {
+            console.log('Response from server:', response);
+            createDownload();
+        })
+        .catch(error => {
+            console.error('Error sending delete request:', error);
+        });
     }
 </script>
 

