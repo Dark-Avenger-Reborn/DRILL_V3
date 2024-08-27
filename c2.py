@@ -149,7 +149,7 @@ class C2:
         elif generate == "Windows":
             result = subprocess.run(f'docker run -v "$(pwd):/src/" cdrx/pyinstaller-windows "pyinstaller -F {payload_file_name}.py"', shell=True, capture_output=True)
             print(result)
-            os.replace(f"{payload_file_name}.exe"), f"payloads/{payload_file_name}.exe"
+            os.replace(f"dist/{payload_file_name}.exe"), f"payloads/{payload_file_name}.exe"
 
         elif generate == "Darwin" or "Linux":
             result = subprocess.run(f'docker run -v "$(pwd):/src/" cdrx/pyinstaller-linux "pyinstaller -F {payload_file_name}.py"', shell=True, capture_output=True)
