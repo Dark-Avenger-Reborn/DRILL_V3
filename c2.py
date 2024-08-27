@@ -128,6 +128,9 @@ class C2:
 
 
     def generate(self, generate):
+        if not os.path.isdir('payloads'):
+            os.makedirs('payloads')
+
         with open('payload.py', 'r') as f:
             payload = f.readlines()
             
