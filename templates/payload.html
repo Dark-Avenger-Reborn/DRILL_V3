@@ -174,7 +174,6 @@
             <tr>
                 <th>OS</th>
                 <th>Architecture</th>
-                <th>Date</th>
                 <th>Download</th>
             </tr>
         </thead>
@@ -221,33 +220,47 @@
     function createDownload() {
         fetch('/list_payloads', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
         })
         .then(response => {
-            console.log('Response from server:', response);
-            
-            const tableBody = document.getElementById('download-table');
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.text(); // This returns a promise
+        })
+        .then(text => {
+            text = text.replace(/'/g, '"');
+            directory = JSON.parse(text)
 
-            // Simulate download creation
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${os}</td>
-                <td>${arch}</td>
-                <td>${date}</td>
-                <td><button onclick="downloadFile('${os}', '${arch}')">Download</button></td>
-            `;
-            tableBody.appendChild(row);
+            const tableBody = document.getElementById('download-table');
+            tableBody.innerHTML = "";
+
+            for (file in directory) {
+                file_split = directory[file].split("-")
+                console.log(file_split)
+
+
+                // Simulate download creation
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${file_split[1]}</td>
+                    <td>${file_split[2]}</td>
+                    <td><button onclick="download('${directory[file]}')">Download</button></td>
+                `;
+                tableBody.appendChild(row);
+            }
         })
         .catch(error => {
-            console.error('Error sending delete request:', error);
+            console.error('There was a problem with the fetch operation:', error);
         });
     }
+
+    createDownload()
 
     function downloadFile() {
         const os = document.getElementById("os-dropdown").value;
         const arch = document.getElementById("arch-dropdown").value;
+
+        alert("Download started this may take a minute")
 
         fetch('/download', {
             method: 'POST',
@@ -263,6 +276,10 @@
         .catch(error => {
             console.error('Error sending delete request:', error);
         });
+    }
+
+    function download(file) {
+        window.location.href = '/get_payloads/'+file
     }
 </script>
 

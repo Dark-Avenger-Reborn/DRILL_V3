@@ -49,7 +49,7 @@ def client_data():
 def persistence():
     return render_template("client/persistence.py")
 
-@app.route('/get_payloads<path:filename>')
+@app.route('/get_payloads/<path:filename>')
 def get_payloads(filename):
     return send_from_directory('payloads', filename, as_attachment=True)
 
@@ -85,8 +85,8 @@ def download1():
     return ""
 
 @app.route('/list_payloads', methods=['POST'])
-def list_payloads(filename):
-    return os.listdr('payloads')
+def list_payloads():
+    return str(os.listdir('payloads'))
 
 if __name__ == "__main__":
     flaskApp = socketio.Middleware(sio, app)
