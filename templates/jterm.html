@@ -26,7 +26,7 @@
 </body>
   <script>
     var socket = io();
-    socket.connect(window.location.href);
+    socket.connect(window.location.origin);
     const pageSID = window.location.pathname.split('/')[2];
 
     $(function() {
