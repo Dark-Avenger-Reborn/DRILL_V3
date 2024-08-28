@@ -217,7 +217,7 @@
     // Add event listener to OS dropdown
     osDropdown.addEventListener("change", updateArchDropdown);
 
-
+    old_data = []
     function createDownload() {
         fetch('/list_payloads', {
             method: 'POST',
@@ -231,6 +231,10 @@
         .then(text => {
             text = text.replace(/'/g, '"');
             directory = JSON.parse(text)
+
+            if (old_data == directory) {
+                return;
+            }
 
             const tableBody = document.getElementById('download-table');
             tableBody.innerHTML = "";
@@ -257,6 +261,8 @@
     }
 
     createDownload()
+
+    setInterval(createDownload, 1000);
 
     function downloadFile() {
         const os = document.getElementById("os-dropdown").value;
