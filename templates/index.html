@@ -236,12 +236,16 @@
     old_data = {};
     // Function to update the table and map with new data
     async function updateDevices() {
-        const tableBody = document.getElementById('device-table');
-        tableBody.innerHTML = ''; // Clear existing table rows
-
         try {
             const response = await fetch('/devices', { method: 'POST' });
             const data = await response.json();
+
+            if (data == old_data) {
+                return;
+            }
+
+            const tableBody = document.getElementById('device-table');
+            tableBody.innerHTML = ''; // Clear existing table rows
 
             Object.keys(data).forEach(clientId => {
                 const clientData = data[clientId];
@@ -285,7 +289,7 @@
     updateDevices();
 
     
-    //setInterval(updateDevices, 1000);
+    setInterval(updateDevices, 1000);
 
     function sendPayload() {
         dropdown = document.getElementById('payload-dropdown').value
