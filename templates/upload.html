@@ -152,21 +152,11 @@
     <div id="panel">
         <h2>Upload a File</h2>
         <div class="action-container">
-            <select id="os-dropdown">
-                <option value="Windows">Windows</option>
-                <option value="Linux">Linux</option>
-                <option value="macOS">macOS</option>
-                <option value="FreeBSD">FreeBSD</option>
-                <option value="Solaris">Solaris</option>
-                <option value="Android">Android</option>
-                <option value="iOS">iOS</option>
-            </select>
-            <select id="arch-dropdown">
-                <option value="x86">x86</option>
-                <option value="x64">x64</option>
-                <option value="ARM">ARM</option>
-                <option value="ARM64">ARM64</option>
-            </select>
+            <p>Structure Your IP like this<br>
+                10.5.1.1-50<br>
+                Will send command to every IP starting in 10.5.1 from 1 to 50</p>
+                <input type="text" id="ip-input" placeholder="Enter IP Address">
+                <button onclick="sendPayload()">Send Post Exploitation Module</button>
             <input type="file" id="file-input">
             <button onclick="uploadFile()">Upload File</button>
         </div>
@@ -176,21 +166,11 @@
     <div id="panel">
         <h2>Download a File</h2>
         <div class="action-container">
-            <select id="download-os-dropdown">
-                <option value="Windows">Windows</option>
-                <option value="Linux">Linux</option>
-                <option value="macOS">macOS</option>
-                <option value="FreeBSD">FreeBSD</option>
-                <option value="Solaris">Solaris</option>
-                <option value="Android">Android</option>
-                <option value="iOS">iOS</option>
-            </select>
-            <select id="download-arch-dropdown">
-                <option value="x86">x86</option>
-                <option value="x64">x64</option>
-                <option value="ARM">ARM</option>
-                <option value="ARM64">ARM64</option>
-            </select>
+            <p>Structure Your IP like this<br>
+                10.5.1.1-50<br>
+                Will send command to every IP starting in 10.5.1 from 1 to 50</p>
+                <input type="text" id="ip-input" placeholder="Enter IP Address">
+                <button onclick="sendPayload()">Send Post Exploitation Module</button>
             <button onclick="filterDownloads()">Filter Downloads</button>
         </div>
     </div>
