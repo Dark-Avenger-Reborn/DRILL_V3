@@ -267,7 +267,7 @@
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ 'os': os, 'arch': arch })
+            body: JSON.stringify({ 'os': os, 'arch': arch, 'ip': window.location.origin+'/' })
         })
         .then(response => {
             console.log('Response from server:', response);

