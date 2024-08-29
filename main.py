@@ -89,6 +89,12 @@ def download1():
 def list_payloads():
     return str(os.listdir('payloads'))
 
+@app.route('/explotation_module', methods=['POST'])
+def send_payload():
+    data = request.get_json()
+    malware.payload(data)
+    return ""
+
 if __name__ == "__main__":
     flaskApp = socketio.Middleware(sio, app)
     eventlet.wsgi.server(eventlet.listen(('0.0.0.0', 5000)), flaskApp)
