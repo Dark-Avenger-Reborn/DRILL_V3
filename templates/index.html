@@ -252,7 +252,7 @@
             const response = await fetch('/devices', { method: 'POST' });
             const data = await response.json();
             
-            if (data !== old_data) {
+            if (!deepEqual(data, old_data)) {
                 old_data = data
 
                 console.log(data, old_data)

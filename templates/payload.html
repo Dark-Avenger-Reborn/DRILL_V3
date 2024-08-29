@@ -232,7 +232,7 @@
             text = text.replace(/'/g, '"');
             directory = JSON.parse(text)
 
-            if (old_data !== directory) {
+            if (!deepEqual(directory, old_data)) {
                 old_data = directory
 
                 const tableBody = document.getElementById('download-table');
