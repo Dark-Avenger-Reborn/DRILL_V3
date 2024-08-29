@@ -156,7 +156,6 @@
                 10.5.1.1-50<br>
                 Will send command to every IP starting in 10.5.1 from 1 to 50</p>
                 <input type="text" id="ip-input" placeholder="Enter IP Address">
-                <button onclick="sendPayload()">Send Post Exploitation Module</button>
             <input type="file" id="file-input">
             <button onclick="uploadFile()">Upload File</button>
         </div>
@@ -220,6 +219,14 @@
         const fileName = fileInput.files[0].name;
         const date = new Date().toLocaleString();
         const uploadTableBody = document.getElementById('upload-table');
+
+
+
+
+        console.log(fileName)
+        coonsole.log(fileInput.files[0].arrayBuffer())
+
+
 
         // Simulate file upload
         const row = document.createElement('tr');

