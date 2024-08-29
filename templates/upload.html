@@ -218,11 +218,23 @@
         const date = new Date().toLocaleString();
         const uploadTableBody = document.getElementById('upload-table');
 
-
-
-
-        console.log(fileName)
-        console.log(fileInput.files[0].arrayBuffer())
+        const file = fileInput.files[0];
+  
+        if (file) {
+            const formData = new FormData();
+            formData.append('file', file);
+            
+            fetch('/upload_file', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                console.log('Response from server:', response);
+            })
+            .catch(error => {
+                console.error('Error sending delete request:', error);
+            })
+        }
 
 
 
