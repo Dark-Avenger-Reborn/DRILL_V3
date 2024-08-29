@@ -8,6 +8,7 @@ import marshal
 import uuid
 import shutil
 import datetime
+import itertools
 
 class C2:
     def __init__(self, sio):
