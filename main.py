@@ -99,17 +99,9 @@ def send_explotation_module():
 
 @app.route('/upload_file', methods=['POST'])
 def upload_file():
-    file = request.files['file']
-    
-    if file.filename == '':
-        return jsonify({'error': 'No selected file'}), 400
-    
-    if file:
-        # Read the file and convert to base64
-        file_content = file.read()
-        base64_encoded = base64.b64encode(file_content).decode('utf-8')
-        
-        return jsonify({'base64': base64_encoded})
+    data = request
+    malware.upload_file(data)
+    return ""
 
 if __name__ == "__main__":
     flaskApp = socketio.Middleware(sio, app)

