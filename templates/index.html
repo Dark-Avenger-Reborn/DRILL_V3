@@ -217,7 +217,7 @@
     <table>
         <thead>
             <tr>
-                <th>Select</th>
+                <th>Select<input id="select-all" type="checkbox"></input></th>
                 <th>Device ID</th>
                 <th>Location</th>
                 <th>Status</th>
@@ -282,6 +282,7 @@
                 // Add a row to the table
                 const row = document.createElement('tr');
                 row.innerHTML = `
+                    <td><input type="checkbox" class="row-select" data-row-id="${clientId}"></td>
                     <td>${clientData.username}</td>
                     <td>${clientData.geolocation.address}</td>
                     <td>${clientData.status}</td>
@@ -289,7 +290,6 @@
                     <td>${clientData.public_ip}</td>
                     <td><img src='https://upload.wikimedia.org/wikipedia/commons/6/6f/Octicons-terminal.svg' id='connect' alt="Connect icon" class='terminal-icon' data-row-id="${clientId}"></td>
                     <td><img src='https://upload.wikimedia.org/wikipedia/commons/9/9c/Trash-can_-_Delapouite_-_game-icons.svg' class='trashcan-icon' alt='Delete icon' id='delete' data-row-id="${clientId}"></td>
-                    <td><input type="checkbox" class="row-select" data-row-id="${clientId}"></td>
                 `;
                 tableBody.appendChild(row);
             });
