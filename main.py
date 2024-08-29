@@ -3,7 +3,6 @@ import eventlet
 import socketio
 from c2 import C2
 import os
-import base64
 
 
 app = Flask(__name__)
