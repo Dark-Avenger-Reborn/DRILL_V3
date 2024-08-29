@@ -107,17 +107,6 @@
             background-color: #444;
             color: #fff;
         }
-        #select-all {
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-
-        th input[type="checkbox"] {
-            margin-top: 5px;
-        }
         tr:nth-child(even) {
             background-color: #3a3a3a;
         }
@@ -174,47 +163,6 @@
         .payload-container button:hover {
             background-color: #666;
         }
-        /* Styling checkboxes */
-        input[type="checkbox"] {
-            appearance: none;
-            width: 20px;
-            height: 20px;
-            background-color: #444;
-            border: 2px solid #666;
-            border-radius: 4px;
-            cursor: pointer;
-            position: relative;
-            outline: none;
-            transition: background-color 0.3s, border-color 0.3s;
-        }
-
-        input[type="checkbox"]:checked {
-            background-color: #28a745;
-            border-color: #28a745;
-        }
-
-        input[type="checkbox"]:checked::after {
-            content: '';
-            position: absolute;
-            top: 2px;
-            left: 6px;
-            width: 5px;
-            height: 10px;
-            border: solid white;
-            border-width: 0 2px 2px 0;
-            transform: rotate(45deg);
-        }
-
-        input[type="checkbox"]:hover {
-            border-color: #888;
-            background-color: #555;
-        }
-
-        input[type="checkbox"]:checked:hover {
-            background-color: #218838;
-            border-color: #218838;
-        }
-
         /* Additional table styling to improve overall appearance */
         table {
             border-collapse: collapse;
@@ -266,7 +214,6 @@
     <table>
         <thead>
             <tr>
-                <th>Select<input id="select-all" type="checkbox"></input></th>
                 <th>Device ID</th>
                 <th>Location</th>
                 <th>Status</th>
@@ -335,7 +282,6 @@
                     // Add a row to the table
                     const row = document.createElement('tr');
                     row.innerHTML = `
-                        <td><input type="checkbox" class="row-select" data-row-id="${clientId}"></td>
                         <td>${clientData.username}</td>
                         <td>${clientData.geolocation.address}</td>
                         <td>${clientData.status}</td>
@@ -402,13 +348,6 @@
                 console.error('Error sending delete request:', error);
             });
         }
-    });
-
-    document.getElementById('select-all').addEventListener('change', function() {
-        const isChecked = this.checked;
-        document.querySelectorAll('.row-select').forEach(checkbox => {
-            checkbox.checked = isChecked;
-        });
     });
 
 </script>
