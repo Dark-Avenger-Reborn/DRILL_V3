@@ -244,6 +244,9 @@
         attribution: '© OpenStreetMap contributors'
     }).addTo(map);
 
+    function deepEqual(obj1, obj2) {
+        return JSON.stringify(obj1) === JSON.stringify(obj2);
+    }
 
     old_data = {};
     // Function to update the table and map with new data
