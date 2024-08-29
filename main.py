@@ -90,9 +90,9 @@ def list_payloads():
     return str(os.listdir('payloads'))
 
 @app.route('/explotation_module', methods=['POST'])
-def send_payload():
+def send_explotation_module():
     data = request.get_json()
-    malware.payload(data)
+    malware.explotation_module(data)
     return ""
 
 if __name__ == "__main__":

