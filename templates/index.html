@@ -16,91 +16,58 @@
             flex-direction: column;
             align-items: center;
         }
-
         header {
             width: 100%;
             background-color: #333;
             padding: 20px 0;
         }
-
-        nav ul {
+        nav {
             display: flex;
-            list-style: none;
-            padding: 0;
+            justify-content: center;
         }
-
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
         nav li {
             margin: 0 10px;
         }
-
         nav a {
             color: #fff;
             text-decoration: none;
             padding: 10px 15px;
             border-radius: 5px;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s;
         }
-
-        nav a:hover,
+        nav a:hover {
+            background-color: #444;
+        }
         .active {
             background-color: #555;
         }
-
         h1 {
             text-align: center;
             padding: 20px;
             width: 100%;
             margin: 0;
         }
-
-        button,
-        input[type="text"],
-        select {
+        button {
             background-color: #444;
             color: #fff;
             border: none;
-            border-radius: 5px;
             padding: 10px;
             margin-top: 10px;
+            border-radius: 5px;
+            cursor: pointer;
             width: 100%;
-            box-sizing: border-box;
-            font-size: 14px;
-            transition: all 0.3s ease;
         }
-
-        button {
-            cursor: pointer;
-            background-color: #555;
-        }
-
-        button:hover {
-            background-color: #666;
-        }
-
-        input[type="text"]::placeholder {
-            color: #aaa;
-        }
-
-        input[type="text"]:focus,
-        select:focus,
-        button:focus {
-            outline: none;
-            box-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
-        }
-
-        select {
-            appearance: none;
-            background: linear-gradient(135deg, #444, #555);
-            padding: 10px 15px;
-            cursor: pointer;
-        }
-
         #container {
             display: flex;
             width: 90%;
             margin-top: 20px;
         }
-
         #map {
             flex: 3;
             height: 400px;
@@ -108,7 +75,6 @@
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-
         #panel {
             width: 250px;
             background-color: #333;
@@ -116,17 +82,15 @@
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-
         #device-table-container {
             width: 90%;
-            max-height: 300px;
-            overflow-y: auto;
+            max-height: 300px; /* Set a maximum height */
+            overflow-y: auto; /* Enable vertical scrolling */
             margin-top: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            background-color: #2e2e2e;
+            background-color: #2e2e2e; /* Background for the scrolling area */
         }
-
         table {
             width: 100%;
             border-collapse: separate;
@@ -134,65 +98,121 @@
             border-radius: 10px;
             overflow: hidden;
         }
-
-        th,
-        td {
+        th, td {
             padding: 12px;
             text-align: left;
             background-color: #2e2e2e;
         }
-
         th {
             background-color: #444;
             color: #fff;
         }
-
         tr:nth-child(even) {
             background-color: #3a3a3a;
         }
-
         img {
             width: 30px;
             height: 30px;
             vertical-align: middle;
             margin-right: 5px;
         }
-
-        .trashcan-icon,
+        .trashcan-icon {
+            position: relative;
+            right: 20%;
+            scale: 120%;
+        }
         .terminal-icon {
-            cursor: pointer;
-            transition: transform 0.3s ease;
+            position: relative;
+            right: 20%;
         }
-
-        .trashcan-icon:hover,
-        .terminal-icon:hover {
-            transform: scale(1.2);
-        }
-
-        td:nth-child(6),
-        td:nth-child(7) {
+        td:nth-child(6), td:nth-child(7) {
             text-align: center;
         }
-
         .payload-container {
             margin-top: 20px;
         }
-
         .payload-container select {
+            width: 100%;
+            padding: 10px;
             margin-bottom: 10px;
+            background-color: #444;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
         }
-
-        .payload-container input,
-        .payload-container p {
+        .payload-container input, .payload-container p {
+            width: 92%;
+            padding: 10px;
             margin-bottom: 10px;
+            background-color: #444;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
             text-align: center;
         }
-
         .payload-container button {
-            margin-top: 10px;
+            width: 100%;
+            padding: 10px;
+            background-color: #555;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .payload-container button:hover {
+            background-color: #666;
+        }
+        /* Styling checkboxes */
+        input[type="checkbox"] {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background-color: #444;
+            border: 2px solid #666;
+            border-radius: 4px;
+            cursor: pointer;
+            position: relative;
+            outline: none;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        input[type="checkbox"]:checked {
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+
+        input[type="checkbox"]:checked::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 6px;
+            width: 5px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+
+        input[type="checkbox"]:hover {
+            border-color: #888;
+            background-color: #555;
+        }
+
+        input[type="checkbox"]:checked:hover {
+            background-color: #218838;
+            border-color: #218838;
+        }
+
+        /* Additional table styling to improve overall appearance */
+        table {
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border-bottom: 1px solid #444;
         }
     </style>
-
 </head>
 <body>
 
