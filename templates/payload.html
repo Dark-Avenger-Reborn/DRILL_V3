@@ -233,28 +233,26 @@
             directory = JSON.parse(text)
 
             if (old_data == directory) {
-                return;
-            }
+                directory == old_data
 
-            directory == old_data
+                const tableBody = document.getElementById('download-table');
+                tableBody.innerHTML = "";
 
-            const tableBody = document.getElementById('download-table');
-            tableBody.innerHTML = "";
-
-            for (file in directory) {
-                file_split = directory[file].split("_")
-                console.log(file_split)
+                for (file in directory) {
+                    file_split = directory[file].split("_")
+                    console.log(file_split)
 
 
-                // Simulate download creation
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${file_split[1]}</td>
-                    <td>${file_split[2]}</td>
-                    <td>${file_split[3]}</td>
-                    <td><button onclick="download('${directory[file]}')">Download</button></td>
-                `;
-                tableBody.appendChild(row);
+                    // Simulate download creation
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${file_split[1]}</td>
+                        <td>${file_split[2]}</td>
+                        <td>${file_split[3]}</td>
+                        <td><button onclick="download('${directory[file]}')">Download</button></td>
+                    `;
+                    tableBody.appendChild(row);
+                }
             }
         })
         .catch(error => {
