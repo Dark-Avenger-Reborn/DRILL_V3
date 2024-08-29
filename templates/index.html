@@ -171,6 +171,45 @@
         th, td {
             border-bottom: 1px solid #444;
         }
+        input[type="checkbox"] {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background-color: #444;
+            border: 2px solid #666;
+            border-radius: 4px;
+            cursor: pointer;
+            position: relative;
+            outline: none;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        input[type="checkbox"]:checked {
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+
+        input[type="checkbox"]:checked::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 6px;
+            width: 5px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+
+        input[type="checkbox"]:hover {
+            border-color: #888;
+            background-color: #555;
+        }
+
+        input[type="checkbox"]:checked:hover {
+            background-color: #218838;
+            border-color: #218838;
+        }
     </style>
 </head>
 <body>
@@ -214,6 +253,7 @@
     <table>
         <thead>
             <tr>
+                <th>Select</th>
                 <th>Device ID</th>
                 <th>Location</th>
                 <th>Status</th>
@@ -282,6 +322,7 @@
                     // Add a row to the table
                     const row = document.createElement('tr');
                     row.innerHTML = `
+                        <td><input type="checkbox" class="row-select" data-row-id="${clientId}"></td>
                         <td>${clientData.username}</td>
                         <td>${clientData.geolocation.address}</td>
                         <td>${clientData.status}</td>
