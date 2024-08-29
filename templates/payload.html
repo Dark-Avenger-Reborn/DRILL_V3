@@ -232,8 +232,8 @@
             text = text.replace(/'/g, '"');
             directory = JSON.parse(text)
 
-            if (old_data == directory) {
-                directory == old_data
+            if (old_data !== directory) {
+                old_data = directory
 
                 const tableBody = document.getElementById('download-table');
                 tableBody.innerHTML = "";
