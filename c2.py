@@ -189,7 +189,7 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
 
 
     def upload_file(self, data):
-        file = data.['file'].files['file']
+        file = data['file'].files['file']
         print(data)
     
         if file.filename == '':
