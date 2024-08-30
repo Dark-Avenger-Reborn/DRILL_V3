@@ -110,7 +110,7 @@ class C2:
         explotation_module_type = data['explotation_module']
         ip_range = data['uuids']
 
-        print(uuids)
+        print(ip_range)
 
         if explotation_module_type == "steal-cookie":
             for ip in ip_addresses:
