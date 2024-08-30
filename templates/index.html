@@ -132,16 +132,6 @@
             border: none;
             border-radius: 5px;
         }
-        .payload-container input, .payload-container p {
-            width: 92%;
-            padding: 10px;
-            margin-bottom: 10px;
-            background-color: #444;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            text-align: center;
-        }
         .payload-container button {
             width: 100%;
             padding: 10px;
@@ -229,10 +219,7 @@
                 <option value="uac-bypass">UAC Bypass</option>
                 <option value="send-command">Send Command</option>
             </select>
-            <p>Structure Your IP like this<br>
-            10.5.1.1-50<br>
-            Will send command to every IP starting in 10.5.1 from 1 to 50</p>
-            <input type="text" id="ip-input" placeholder="Enter IP Address">
+            <button onclick="changeAll()">Select All</button>
             <button onclick="sendPayload()">Send Post Exploitation Module</button>
         </div>
     </div>
@@ -381,6 +368,14 @@
             });
         }
     });
+
+    isChecked = false
+    function changeAll() {
+        isChecked != isChecked;
+        document.querySelectorAll('.row-select').forEach(checkbox => {
+            checkbox.checked = isChecked;
+        })
+    }
 
 </script>
 
