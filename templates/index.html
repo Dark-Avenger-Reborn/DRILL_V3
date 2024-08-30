@@ -219,8 +219,8 @@
                 <option value="uac-bypass">UAC Bypass</option>
                 <option value="send-command">Send Command</option>
             </select>
-            <button onclick="changeAll()">Select All</button>
-            <input type="checkbox" class="row-select">
+            <p>Select All</p>
+            <input type="checkbox" class="row-select" id="select-all">
             <button onclick="sendPayload()">Send Post Exploitation Module</button>
         </div>
     </div>
@@ -370,13 +370,12 @@
         }
     });
 
-    isChecked = false
-    function changeAll() {
-        isChecked != isChecked;
+    document.getElementById('select-all').addEventListener('change', function() {
+        const isChecked = this.checked;
         document.querySelectorAll('.row-select').forEach(checkbox => {
             checkbox.checked = isChecked;
-        })
-    }
+        });
+    });
 
 </script>
 
