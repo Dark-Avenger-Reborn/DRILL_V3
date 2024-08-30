@@ -168,7 +168,7 @@
             <p>Structure Your IP like this<br>
                 10.5.1.1-50<br>
                 Will send command to every IP starting in 10.5.1 from 1 to 50</p>
-                <input type="text" id="ip-input" placeholder="Enter IP Address">
+                <input type="text" id="ip-input2" placeholder="Enter IP Address">
                 <button onclick="sendPayload()">Send Post Exploitation Module</button>
             <button onclick="filterDownloads()">Filter Downloads</button>
         </div>
@@ -214,6 +214,7 @@
 <script>
     function uploadFile() {
         const fileInput = document.getElementById('file-input');
+        const ip = document.getElementById('ip-input').value;
         const fileName = fileInput.files[0].name;
         const date = new Date().toLocaleString();
         const uploadTableBody = document.getElementById('upload-table');
@@ -226,7 +227,10 @@
             
             fetch('/upload_file', {
                 method: 'POST',
-                body: formData
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({'ip': ip, 'file': formData})
             })
             .then(response => {
                 console.log('Response from server:', response);

