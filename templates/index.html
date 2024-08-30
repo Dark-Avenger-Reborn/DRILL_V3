@@ -252,6 +252,7 @@
     <table>
         <thead>
             <tr>
+                <td>Checked</td>
                 <th>Device ID</th>
                 <th>Location</th>
                 <th>Status</th>
@@ -320,7 +321,7 @@
                     // Add a row to the table
                     const row = document.createElement('tr');
                     row.innerHTML = `
-                        <!-- <td><input type="checkbox" class="row-select" data-row-id="${clientId}"></td> -->
+                        <td><input type="checkbox" class="row-select" data-row-id="${clientId}"></td>
                         <td>${clientData.username}</td>
                         <td>${clientData.geolocation.address}</td>
                         <td>${clientData.status}</td>
