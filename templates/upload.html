@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Upload & Download Dashboard</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -69,13 +68,6 @@
             margin-top: 20px;
             justify-content: space-between;
         }
-        #map {
-            flex: 3;
-            height: 400px;
-            margin-left: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
         #panel {
             width: 300px;
             background-color: #333;
@@ -83,10 +75,10 @@
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-        .action-container, .payload-container {
+        .action-container {
             margin-top: 20px;
         }
-        .action-container select, .action-container input[type="file"], .payload-container select {
+        .action-container select, .action-container input[type="file"] {
             width: 100%;
             padding: 10px;
             margin-bottom: 10px;
@@ -95,7 +87,7 @@
             border: none;
             border-radius: 5px;
         }
-        .action-container button, .payload-container button {
+        .action-container button {
             width: 100%;
             padding: 10px;
             background-color: #555;
@@ -105,10 +97,10 @@
             cursor: pointer;
             transition: background-color 0.3s;
         }
-        .action-container button:hover, .payload-container button:hover {
+        .action-container button:hover {
             background-color: #666;
         }
-        #file-table-container, #upload-table-container, #device-table-container {
+        #file-table-container, #upload-table-container {
             width: 45%;
             max-height: 300px;
             overflow-y: auto;
@@ -139,41 +131,6 @@
         td:nth-child(4), td:nth-child(5) {
             text-align: center;
         }
-        input[type="checkbox"] {
-            appearance: none;
-            width: 20px;
-            height: 20px;
-            background-color: #444;
-            border: 2px solid #666;
-            border-radius: 4px;
-            cursor: pointer;
-            position: relative;
-            outline: none;
-            transition: background-color 0.3s, border-color 0.3s;
-        }
-        input[type="checkbox"]:checked {
-            background-color: #28a745;
-            border-color: #28a745;
-        }
-        input[type="checkbox"]:checked::after {
-            content: '';
-            position: absolute;
-            top: 2px;
-            left: 6px;
-            width: 5px;
-            height: 10px;
-            border: solid white;
-            border-width: 0 2px 2px 0;
-            transform: rotate(45deg);
-        }
-        input[type="checkbox"]:hover {
-            border-color: #888;
-            background-color: #555;
-        }
-        input[type="checkbox"]:checked:hover {
-            background-color: #218838;
-            border-color: #218838;
-        }
     </style>
 </head>
 <body>
@@ -181,7 +138,7 @@
 <header>
     <nav>
         <ul>
-            <li><a href="/" class="active">Control Panel</a></li>
+            <li><a href="/">Control Panel</a></li>
             <li><a href="/payload">Payload</a></li>
             <li><a href="/files" class="active">Files</a></li>
         </ul>
@@ -198,7 +155,7 @@
             <p>Structure Your IP like this<br>
                 10.5.1.1-50<br>
                 Will send command to every IP starting in 10.5.1 from 1 to 50</p>
-            <input type="text" id="ip-input" placeholder="Enter IP Address">
+                <input type="text" id="ip-input" placeholder="Enter IP Address">
             <input type="file" id="file-input">
             <button onclick="uploadFile()">Upload File</button>
         </div>
@@ -211,31 +168,11 @@
             <p>Structure Your IP like this<br>
                 10.5.1.1-50<br>
                 Will send command to every IP starting in 10.5.1 from 1 to 50</p>
-            <input type="text" id="ip-input2" placeholder="Enter IP Address">
-            <button onclick="sendPayload()">Send Post Exploitation Module</button>
+                <input type="text" id="ip-input2" placeholder="Enter IP Address">
+                <button onclick="sendPayload()">Send Post Exploitation Module</button>
             <button onclick="filterDownloads()">Filter Downloads</button>
         </div>
     </div>
-</div>
-
-<div id="device-table-container">
-    <table>
-        <thead>
-            <tr>
-                <th>Checked</th>
-                <th>Device ID</th>
-                <th>Location</th>
-                <th>Status</th>
-                <th>OS</th>
-                <th>IP Address</th>
-                <th>Connect</th>
-                <th>Delete</th>
-            </tr>
-        </thead>
-        <tbody id="device-table">
-            <!-- Device rows will be added here -->
-        </tbody>
-    </table>
 </div>
 
 <div id="file-table-container">
@@ -274,75 +211,91 @@
     </table>
 </div>
 
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script>
-    // Initialize the map
-    const map = L.map('map').setView([39.8283, -98.5795], 4); // Centered on the USA
-
-    // Add OpenMapTiles layer
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
-        attribution: '© OpenStreetMap'
-    }).addTo(map);
-
-    // Function to handle file uploads
     function uploadFile() {
         const fileInput = document.getElementById('file-input');
-        const ipAddress = document.getElementById('ip-input').value;
-        // Handle file upload logic here
-        alert(`File uploaded for IP Address: ${ipAddress}`);
-    }
+        const ip = document.getElementById('ip-input').value;
+        const fileName = fileInput.files[0].name;
+        const date = new Date().toLocaleString();
+        const uploadTableBody = document.getElementById('upload-table');
 
-    // Function to send payload to selected devices
-    function sendPayload() {
-        const ipAddress = document.getElementById('ip-input2').value;
-        // Handle payload sending logic here
-        alert(`Payload sent to IP Address: ${ipAddress}`);
-    }
+        const file = fileInput.files[0];
+  
+        if (file) {
+            const formData = new FormData();
+            formData.append('file', file);
+            
+            fetch('/upload_file', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({'ip': ip, 'file': formData})
+            })
+            .then(response => {
+                console.log('Response from server:', response);
+            })
+            .catch(error => {
+                console.error('Error sending delete request:', error);
+            })
+        }
 
-    // Function to filter downloads
-    function filterDownloads() {
-        const filter = document.getElementById('file-filter').value;
-        // Handle filtering logic here
-        alert(`Filtered downloads by: ${filter}`);
-    }
 
-    // Function to handle sending post exploitation modules
-    function send_pem() {
-        const selectedPem = document.getElementById('pem-dropdown').value;
-        // Handle sending post exploitation modules logic here
-        alert(`Post exploitation module sent: ${selectedPem}`);
-    }
 
-    // Example data for the client table
-    const devices = [
-        { checked: false, id: '123', location: 'New York', status: 'Active', os: 'Windows 10', ip: '192.168.1.1' },
-        { checked: false, id: '456', location: 'Los Angeles', status: 'Inactive', os: 'Ubuntu', ip: '192.168.1.2' }
-    ];
-
-    const deviceTable = document.getElementById('device-table');
-    devices.forEach(device => {
+        // Simulate file upload
         const row = document.createElement('tr');
         row.innerHTML = `
-            <td><input type="checkbox" class="client-checkbox"></td>
-            <td>${device.id}</td>
-            <td>${device.location}</td>
-            <td>${device.status}</td>
-            <td>${device.os}</td>
-            <td>${device.ip}</td>
-            <td><button>Connect</button></td>
-            <td><button>Delete</button></td>
+            <td>${os}</td>
+            <td>${arch}</td>
+            <td>${fileName}</td>
+            <td>${date}</td>
+            <td><button onclick="viewFile('${fileName}')">View</button></td>
         `;
-        deviceTable.appendChild(row);
-    });
+        uploadTableBody.appendChild(row);
 
-    // Event listener for "Select All" checkbox
-    document.getElementById('select-all').addEventListener('change', function() {
-        const checkboxes = document.querySelectorAll('.client-checkbox');
-        checkboxes.forEach(checkbox => {
-            checkbox.checked = this.checked;
+        // Clear file input
+        fileInput.value = "";
+    }
+
+    function viewFile(fileName) {
+        alert(`Viewing file: ${fileName}`);
+        // Implement actual file view logic here
+    }
+
+    function filterDownloads() {
+        const os = document.getElementById('download-os-dropdown').value;
+        const arch = document.getElementById('download-arch-dropdown').value;
+        const fileTableBody = document.getElementById('file-table');
+
+        fileTableBody.innerHTML = ''; // Clear previous results
+
+        // Simulate filtering downloads (this would normally come from a server)
+        const downloads = [
+            { os: 'Windows', arch: 'x64', fileName: 'setup.exe', date: '2024-08-01' },
+            { os: 'Linux', arch: 'x64', fileName: 'app.tar.gz', date: '2024-08-15' },
+            { os: 'macOS', arch: 'ARM64', fileName: 'installer.pkg', date: '2024-08-10' }
+        ];
+
+        downloads.forEach(download => {
+            if (download.os === os && download.arch === arch) {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${download.os}</td>
+                    <td>${download.arch}</td>
+                    <td>${download.fileName}</td>
+                    <td>${download.date}</td>
+                    <td><button onclick="downloadFile('${download.fileName}')">Download</button></td>
+                `;
+                fileTableBody.appendChild(row);
+            }
         });
-    });
+    }
+
+    function downloadFile(fileName) {
+        alert(`Downloading file: ${fileName}`);
+        // Implement actual file download logic here
+    }
 </script>
+
 </body>
 </html>
