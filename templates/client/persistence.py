@@ -84,6 +84,7 @@ def run(url, file_path):
     
     os_type = platform.system()
     download_path = file_path
+    print(f"{url}get_payloads/{download_path}.exe")
     
     if os_type == 'Windows':
         import winreg
