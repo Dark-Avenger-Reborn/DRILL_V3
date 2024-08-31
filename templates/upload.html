@@ -213,7 +213,7 @@
         <div class="action-container">
             <p>Input the directory in which you want to download</p>
             <input type="text" id="ip-input2" placeholder="Enter IP Address">
-            <p style="display: flex; align-items: center;">Select All <input type="checkbox" id="select-all"></p>
+            <p style="display: flex; align-items: center;">Select All <input type="checkbox" id="select-all2"></p>
             <button onclick="filterDownloads()">Filter Downloads</button>
         </div>
     </div>
@@ -361,6 +361,14 @@
     // Event listener for "Select All" checkbox
     document.getElementById('select-all').addEventListener('change', function() {
         const isChecked = this.checked;
+        document.getElementById("select-all2").checkbox.checked = isChecked
+        document.querySelectorAll('.row-select').forEach(checkbox => {
+            checkbox.checked = isChecked;
+        });
+    });
+    document.getElementById('select-all2').addEventListener('change', function() {
+        const isChecked = this.checked;
+        document.getElementById("select-all").checkbox.checked = isChecked
         document.querySelectorAll('.row-select').forEach(checkbox => {
             checkbox.checked = isChecked;
         });
