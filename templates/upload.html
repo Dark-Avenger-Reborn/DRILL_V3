@@ -234,8 +234,6 @@
                 <th>Status</th>
                 <th>OS</th>
                 <th>IP Address</th>
-                <th>Connect</th>
-                <th>Delete</th>
             </tr>
         </thead>
         <tbody id="device-table">
@@ -350,8 +348,6 @@
                         <td>${clientData.status}</td>
                         <td><img src="${osLogo}" alt="${osType} logo">${osType}</td>
                         <td>${clientData.public_ip}</td>
-                        <td><img src='https://upload.wikimedia.org/wikipedia/commons/6/6f/Octicons-terminal.svg' id='connect' alt="Connect icon" class='terminal-icon' data-row-id="${clientId}"></td>
-                        <td><img src='https://upload.wikimedia.org/wikipedia/commons/9/9c/Trash-can_-_Delapouite_-_game-icons.svg' class='trashcan-icon' alt='Delete icon' id='delete' data-row-id="${clientId}"></td>
                     `;
                     tableBody.appendChild(row);
                 });
