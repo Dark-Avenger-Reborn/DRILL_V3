@@ -194,12 +194,12 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
     
 
 
-    def upload_file(self, data):
-        file = data['file'].files['file']
-        print(data)
-    
+    def upload_file(self, request):
+        file = request.files['file']
+        uuids = json.loads(request.form['uuids'])
+        
         if file.filename == '':
-            return json.jsonify({'error': 'No selected file'}), 400
+            return jsonify({'error': 'No selected file'}), 400
         
         if file:
             # Read the file and convert to base64
@@ -208,8 +208,9 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
             
             print(base64_encoded)
 
-        for uuid in data['uuids']:
+        for uuid in uuids:
             self.sio.emit("upload_file", {'uuid': uuid, 'file_name': file.filename, 'file': base64_encoded})
+        
 
     
 

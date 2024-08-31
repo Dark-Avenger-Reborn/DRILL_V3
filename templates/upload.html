@@ -275,43 +275,46 @@
 
 <script>
     // Function to handle file uploads
-    function uploadFile() {
-        fileInput = document.getElementById('file-input');
-        file = fileInput.files[0];
+        function uploadFile() {
+            const fileInput = document.getElementById('file-input');
+            const file = fileInput.files[0];
 
-        checkboxes = document.querySelectorAll('.row-select');
-    
-        // Create an array to store the IDs of selected rows
-        selectedElements = [];
+            const checkboxes = document.querySelectorAll('.row-select');
+            
+            // Create an array to store the IDs of selected rows
+            const selectedElements = [];
 
-        // Loop through the checkboxes
-        checkboxes.forEach(checkbox => {
-            // Check if the checkbox is checked
-            if (checkbox.checked) {
-                // Add the row ID to the selectedElements array
-                selectedElements.push(checkbox.dataset.rowId);
-            }
-        });
+            // Loop through the checkboxes
+            checkboxes.forEach(checkbox => {
+                // Check if the checkbox is checked
+                if (checkbox.checked) {
+                    // Add the row ID to the selectedElements array
+                    selectedElements.push(checkbox.dataset.rowId);
+                }
+            });
 
-        console.log(selectedElements)
-        
-        fetch('/upload_file', {
+            console.log(selectedElements);
+            
+            // Create a FormData object to send the file
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('uuids', JSON.stringify(selectedElements));
+
+            fetch('/upload_file', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ 'file': file, 'uuids': selectedElements })
+                body: formData // Send formData instead of JSON
             })
-            .then(response => {
-                console.log('Response from server:', response);
+            .then(response => response.json())
+            .then(data => {
+                console.log('Response from server:', data);
                 updateDevices();
                 // Handle the response here (e.g., update the UI)
             })
             .catch(error => {
-                console.error('Error sending delete request:', error);
+                console.error('Error sending upload request:', error);
             });
-        
     }
+
 
     // Function to send payload to selected devices
     function sendPayload() {
