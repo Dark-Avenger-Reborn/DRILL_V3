@@ -304,14 +304,11 @@
                 method: 'POST',
                 body: formData // Send formData instead of JSON
             })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Response from server:', data);
-                updateDevices();
-                // Handle the response here (e.g., update the UI)
+            .then(response => {
+                console.log('Response from server:', response);
             })
             .catch(error => {
-                console.error('Error sending upload request:', error);
+                console.error('Error sending delete request:', error);
             });
     }
 

@@ -98,7 +98,7 @@ def send_explotation_module():
 
 @app.route('/upload_file', methods=['POST'])
 def upload_file():
-    data = request.get_json()
+    data = request
     malware.upload_file(data)
     return ""
 
