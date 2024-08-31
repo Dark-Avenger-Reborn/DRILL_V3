@@ -212,7 +212,7 @@
         <h2>Download a File</h2>
         <div class="action-container">
             <p>Input the directory in which you want to download</p>
-            <input type="text" id="ip-input2" placeholder="Enter IP Address">
+            <input type="text" id="ip-input" placeholder="Enter Path">
             <p style="display: flex; align-items: center;">Select All <input type="checkbox" id="select-all2"></p>
             <button onclick="filterDownloads()">Filter Downloads</button>
         </div>
@@ -277,9 +277,7 @@
     // Function to handle file uploads
     function uploadFile() {
         const fileInput = document.getElementById('file-input');
-        const ipAddress = document.getElementById('ip-input').value;
-        // Handle file upload logic here
-        alert(`File uploaded for IP Address: ${ipAddress}`);
+        alert(fileInput.title)
     }
 
     // Function to send payload to selected devices
@@ -296,12 +294,11 @@
         alert(`Filtered downloads by: ${filter}`);
     }
 
-    // Function to handle sending post exploitation modules
-    function send_pem() {
-        const selectedPem = document.getElementById('pem-dropdown').value;
-        // Handle sending post exploitation modules logic here
-        alert(`Post exploitation module sent: ${selectedPem}`);
-    }
+
+
+
+
+
 
     function deepEqual(obj1, obj2) {
         return JSON.stringify(obj1) === JSON.stringify(obj2);
