@@ -360,9 +360,9 @@
 
     // Event listener for "Select All" checkbox
     document.getElementById('select-all').addEventListener('change', function() {
-        const checkboxes = document.querySelectorAll('.client-checkbox');
-        checkboxes.forEach(checkbox => {
-            checkbox.checked = this.checked;
+        const isChecked = this.checked;
+        document.querySelectorAll('.row-select').forEach(checkbox => {
+            checkbox.checked = isChecked;
         });
     });
 </script>
