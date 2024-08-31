@@ -89,7 +89,7 @@ def run(url):
     # Get geolocation
     try:
         geo = geocoder.ip('me')
-        print(geo.latlng)
+        print(geo.latlng[0])
         geolocation = {
             'latitude': geo.latlng[0],
             'longitude': geo.latlng[1],
