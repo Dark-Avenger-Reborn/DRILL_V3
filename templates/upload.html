@@ -304,27 +304,58 @@
         alert(`Post exploitation module sent: ${selectedPem}`);
     }
 
-    // Example data for the client table
-    const devices = [
-        { checked: false, id: '123', location: 'New York', status: 'Active', os: 'Windows 10', ip: '192.168.1.1' },
-        { checked: false, id: '456', location: 'Los Angeles', status: 'Inactive', os: 'Ubuntu', ip: '192.168.1.2' }
-    ];
+    old_data = {};
+    // Function to update the table and map with new data
+    async function updateDevices() {
+        try {
+            const response = await fetch('/devices', { method: 'POST' });
+            const data = await response.json();
+            
+            if (!deepEqual(data, old_data)) {
+                old_data = data
 
-    const deviceTable = document.getElementById('device-table');
-    devices.forEach(device => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td><input type="checkbox" class="client-checkbox"></td>
-            <td>${device.id}</td>
-            <td>${device.location}</td>
-            <td>${device.status}</td>
-            <td>${device.os}</td>
-            <td>${device.ip}</td>
-            <td><button>Connect</button></td>
-            <td><button>Delete</button></td>
-        `;
-        deviceTable.appendChild(row);
-    });
+                const tableBody = document.getElementById('device-table');
+                tableBody.innerHTML = ''; // Clear existing table rows
+
+                Object.keys(data).forEach(clientId => {
+                    const clientData = data[clientId];
+
+                    const osType = clientData.platform[0];
+                    const osLogo = osType === 'Linux' ? 'https://upload.wikimedia.org/wikipedia/commons/3/35/Tux.svg' :
+                    osType === 'Darwin' ? 'https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg' :
+                    osType === 'Windows' ? 'https://upload.wikimedia.org/wikipedia/commons/0/0a/Unofficial_Windows_logo_variant_-_2002%E2%80%932012_%28Multicolored%29.svg' :
+                    osType === 'FreeBSD' ? 'https://upload.wikimedia.org/wikipedia/commons/4/40/Daemon-phk.svg' :
+                    osType === 'OpenBSD' ? 'https://upload.wikimedia.org/wikipedia/commons/a/ad/Puffy.jpg' :
+                    osType === 'Solaris' ? 'https://upload.wikimedia.org/wikipedia/commons/d/d2/Icon-sun-solaris_os.svg' :
+                    osType === 'Android' ? 'https://upload.wikimedia.org/wikipedia/commons/2/26/Android_Robot_Head_2023.svg' :
+                    'https://static-00.iconduck.com/assets.00/unknown-os-20px-icon-512x512-brbzte7w.png'; // Default logo for other/unknown OS
+
+
+                    // Add a row to the table
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td><input type="checkbox" class="row-select" data-row-id="${clientId}"></td>
+                        <td>${clientData.username}</td>
+                        <td>${clientData.geolocation.address}</td>
+                        <td>${clientData.status}</td>
+                        <td><img src="${osLogo}" alt="${osType} logo">${osType}</td>
+                        <td>${clientData.public_ip}</td>
+                        <td><img src='https://upload.wikimedia.org/wikipedia/commons/6/6f/Octicons-terminal.svg' id='connect' alt="Connect icon" class='terminal-icon' data-row-id="${clientId}"></td>
+                        <td><img src='https://upload.wikimedia.org/wikipedia/commons/9/9c/Trash-can_-_Delapouite_-_game-icons.svg' class='trashcan-icon' alt='Delete icon' id='delete' data-row-id="${clientId}"></td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            }
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    }
+
+    // Call updateDevices to initially load the data
+    updateDevices();
+
+    
+    setInterval(updateDevices, 1000);
 
     // Event listener for "Select All" checkbox
     document.getElementById('select-all').addEventListener('change', function() {
