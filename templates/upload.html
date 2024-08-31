@@ -277,7 +277,16 @@
     // Function to handle file uploads
     function uploadFile() {
         const fileInput = document.getElementById('file-input');
-        alert(fileInput.title)
+        const file = fileInput.files[0];
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+            const contents = e.target.result;
+            console.log('File contents:', contents);
+        };
+        
+        alert(reader.readAsText(file));
+        
     }
 
     // Function to send payload to selected devices
