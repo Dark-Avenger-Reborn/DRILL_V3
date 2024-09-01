@@ -377,7 +377,7 @@
 
     async function updateFileList() {
         const response = await fetch('/list_files', { method: 'POST' });
-        const files = await response.json();
+        const files = await response.text();
 
         console.log(files)
 
