@@ -119,7 +119,7 @@ def get_downloaded_files(filename):
 
 @app.route('/list_files', methods=['POST'])
 def list_files():
-    return json.jsonify(str(os.listdir('files_saved')))
+    return json.loads(str(os.listdir('files_saved')))
 
 
 
