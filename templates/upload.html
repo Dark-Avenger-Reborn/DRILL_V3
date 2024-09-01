@@ -385,8 +385,8 @@
             const tableBody = document.getElementById('file-table-container');
             tableBody.innerHTML = ''; // Clear existing rows
 
-            files.forEach(file => {
-                file_split = file.split("_")
+            for (file in files) {
+                file_split = files[file].split("_")
                 console.log(file_split)
                 const row = document.createElement('tr');
                     row.innerHTML = `
@@ -395,7 +395,7 @@
                         <td><button onclick='window.location.href = /get_downloaded_files/${file}'>Download</button></td>
                     `;
                     tableBody.appendChild(row);
-            });
+            }
         }
     }
 
