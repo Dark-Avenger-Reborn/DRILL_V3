@@ -412,7 +412,7 @@
                     row.innerHTML = `
                         <td>${file_split[2]}</td>
                         <td>${file_split[1]}</td>
-                        <td><button onclick="downloadFile('${escapeHtml(files[file])}')">Download</button></td>
+                        <td><button onclick="downloadFile(this)" data-filename="${escapeHtml(files[file])}">Download</button></td>
                     `;
                     tableBody.appendChild(row);
             }
