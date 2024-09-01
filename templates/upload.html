@@ -369,14 +369,14 @@
             }
         });
 
-        console.log(selectedElements);
+        console.log(selectedElements, file_path);
         
         fetch('/download_file', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ 'file_path': file_path, 'uuids': selectedElements })
+            body: JSON.stringify({ 'file_path': String(file_path), 'uuids': selectedElements })
         })
         .then(response => {
             console.log('Response from server:', response);
