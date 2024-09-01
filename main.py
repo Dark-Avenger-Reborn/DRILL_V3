@@ -118,7 +118,7 @@ def get_payloads(filename):
 
 
 @app.route('/list_files', methods=['POST'])
-def list_payloads():
+def list_files():
     return json.jsonify(str(os.listdir('files_saved')))
 
 
