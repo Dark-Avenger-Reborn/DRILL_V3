@@ -282,8 +282,6 @@
     <table>
         <thead>
             <tr>
-                <th>OS</th>
-                <th>Architecture</th>
                 <th>File Name</th>
                 <th>Date</th>
                 <th>Download</th>
@@ -295,23 +293,6 @@
     </table>
 </div>
 
-<div id="upload-table-container">
-    <h2>Uploaded Files</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>OS</th>
-                <th>Architecture</th>
-                <th>File Name</th>
-                <th>Date</th>
-                <th>View</th>
-            </tr>
-        </thead>
-        <tbody id="upload-table">
-            <!-- Upload rows will be added here -->
-        </tbody>
-    </table>
-</div>
 
 <script>
     // Function to handle file uploads
@@ -390,11 +371,48 @@
 
 
 
-
-
     function deepEqual(obj1, obj2) {
         return JSON.stringify(obj1) === JSON.stringify(obj2);
     }
+
+    old_data_files = {}
+
+    function updateFileList() {
+    fetch('/list_files', { method: 'POST' })
+        .then(response => response.json())
+        .then(files => {
+
+            if (!deepEqual(old_data_files, files)) {
+                old_data_files = files
+
+                const tableBody = document.querySelector('#fileTable tbody');
+                tableBody.innerHTML = ''; // Clear existing rows
+
+                files.forEach(file => {
+                    const row = tableBody.insertRow();
+                    const nameCell = row.insertCell(0);
+                    const downloadCell = row.insertCell(1);
+
+                    nameCell.textContent = file;
+                    
+                    const downloadButton = document.createElement('button');
+                    downloadButton.textContent = 'Download';
+                    downloadButton.onclick = function() {
+                        window.location.href = `/get_downloaded_files/${file}`;
+                    };
+                    downloadCell.appendChild(downloadButton);
+                });
+            }
+        });
+    }
+
+    // Update file list every 5 seconds
+    setInterval(updateFileList, 1);
+
+    // Initial update
+    updateFileList();
+
+
 
     old_data = {};
     // Function to update the table and map with new data

