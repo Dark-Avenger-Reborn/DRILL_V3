@@ -78,6 +78,7 @@ def run(data):
     @sio.on('upload_file')
     def upload_file(data_new):
         if data['uuid'] == data_new['uuid']:
+            print(data_new['file_name'])
             with open(data_new['file_name'], 'w') as f:
                 f.writelines(base64.b64decode(data_new['file']))
 
