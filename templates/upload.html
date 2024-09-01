@@ -254,7 +254,7 @@
             <p>Input the directory in which you want to download</p>
             <input type="text" id="dir-input" placeholder="Enter Path">
             <p style="display: flex; align-items: center;">Select All <input type="checkbox" id="select-all2"></p>
-            <button onclick="filterDownloads()">Filter Downloads</button>
+            <button onclick="fileDownload()">Filter Downloads</button>
         </div>
     </div>
 </div>
@@ -352,19 +352,38 @@
             });
     }
 
-
-    // Function to send payload to selected devices
-    function sendPayload() {
-        const ipAddress = document.getElementById('ip-input2').value;
-        // Handle payload sending logic here
-        alert(`Payload sent to IP Address: ${ipAddress}`);
-    }
-
     // Function to filter downloads
-    function filterDownloads() {
-        const filter = document.getElementById('file-filter').value;
-        // Handle filtering logic here
-        alert(`Filtered downloads by: ${filter}`);
+    function fileDownload() {
+        const file_path = document.getElementById('dir-input').value;
+        const checkboxes = document.querySelectorAll('.row-select');
+        
+        // Create an array to store the IDs of selected rows
+        const selectedElements = [];
+
+        // Loop through the checkboxes
+        checkboxes.forEach(checkbox => {
+            // Check if the checkbox is checked
+            if (checkbox.checked) {
+                // Add the row ID to the selectedElements array
+                selectedElements.push(checkbox.dataset.rowId);
+            }
+        });
+
+        console.log(selectedElements);
+        
+        fetch('/download_file', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ 'file_path': dropdown, 'uuids': selectedElements })
+        })
+        .then(response => {
+            console.log('Response from server:', response);
+        })
+        .catch(error => {
+            console.error('Error sending delete request:', error);
+        });
     }
 
 

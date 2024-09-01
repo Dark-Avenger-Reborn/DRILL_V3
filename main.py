@@ -104,6 +104,12 @@ def upload_file():
 
 
 
+@app.route('/download_file', methods=['POST'])
+def download_file():
+    data = request
+    malware.download_file(data)
+    return ""
+
 
 
 if __name__ == "__main__":
