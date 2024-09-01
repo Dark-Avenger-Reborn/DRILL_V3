@@ -11,7 +11,7 @@ def run(data):
         context = ssl._create_unverified_context()
         # Use the context when opening the URL
         with urlopen(url, context=context) as response:
-        code = response.read().decode('utf-8')
+            code = response.read().decode('utf-8')
     
         spec = importlib.util.spec_from_loader('temp', loader=None)
         module = importlib.util.module_from_spec(spec)
