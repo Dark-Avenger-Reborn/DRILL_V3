@@ -379,10 +379,10 @@
         const response = await fetch('/list_files', { method: 'POST' });
         const files = await response.json();
 
+        console.log(files)
+
         if (!deepEqual(old_data_files, files)) {
             old_data_files = files
-
-            console.log(files)
 
             const tableBody = document.querySelector('#fileTable tbody');
             tableBody.innerHTML = ''; // Clear existing rows
