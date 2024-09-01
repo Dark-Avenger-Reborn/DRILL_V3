@@ -376,35 +376,31 @@
     old_data_files = []
 
     async function updateFileList() {
-        try {
-            const response = await fetch('/list_files', { method: 'POST' });
-            const files = await response.json();
+        const response = await fetch('/list_files', { method: 'POST' });
+        const files = await response.json();
 
-            if (!deepEqual(old_data_files, files)) {
-                old_data_files = files
+        if (!deepEqual(old_data_files, files)) {
+            old_data_files = files
 
-                console.log(files)
+            console.log(files)
 
-                const tableBody = document.querySelector('#fileTable tbody');
-                tableBody.innerHTML = ''; // Clear existing rows
+            const tableBody = document.querySelector('#fileTable tbody');
+            tableBody.innerHTML = ''; // Clear existing rows
 
-                files.forEach(file => {
-                    const row = tableBody.insertRow();
-                    const nameCell = row.insertCell(0);
-                    const downloadCell = row.insertCell(1);
+            files.forEach(file => {
+                const row = tableBody.insertRow();
+                const nameCell = row.insertCell(0);
+                const downloadCell = row.insertCell(1);
 
-                    nameCell.textContent = file;
-                    
-                    const downloadButton = document.createElement('button');
-                    downloadButton.textContent = 'Download';
-                    downloadButton.onclick = function() {
-                        window.location.href = `/get_downloaded_files/${file}`;
-                    };
-                    downloadCell.appendChild(downloadButton);
-                });
-            }
-        } catch {
-
+                nameCell.textContent = file;
+                
+                const downloadButton = document.createElement('button');
+                downloadButton.textContent = 'Download';
+                downloadButton.onclick = function() {
+                    window.location.href = `/get_downloaded_files/${file}`;
+                };
+                downloadCell.appendChild(downloadButton);
+            });
         }
     }
 
