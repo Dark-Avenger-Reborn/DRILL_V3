@@ -106,7 +106,7 @@ def upload_file():
 
 @app.route('/download_file', methods=['POST'])
 def download_file():
-    data = request
+    data = request.get_json()
     malware.download_file(data)
     return ""
 
