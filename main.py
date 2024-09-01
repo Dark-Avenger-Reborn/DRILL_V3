@@ -52,7 +52,7 @@ def persistence():
     return render_template("client/persistence.py")
 
 @app.route('/discord.py')
-def persistence():
+def discord():
     return render_template("client/discord.py")
 
 @app.route('/get_payloads/<path:filename>')
