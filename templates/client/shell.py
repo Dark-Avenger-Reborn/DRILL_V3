@@ -5,6 +5,8 @@ import socketio
 import sys
 import base64
 import ssl
+from urllib.request import urlopen
+import importlib.util
 
 def run(data):
     def create_moduel(url):
