@@ -375,10 +375,10 @@
 
     old_data_files = {}
 
-    function updateFileList() {
-    fetch('/list_files', { method: 'POST' })
-        .then(response => response.json())
-        .then(files => {
+    async function updateFileList() {
+        try {
+            const response = await fetch('/list_files', { method: 'POST' });
+            const files = await response.json();
 
             if (!deepEqual(old_data_files, files)) {
                 old_data_files = files
@@ -401,7 +401,9 @@
                     downloadCell.appendChild(downloadButton);
                 });
             }
-        });
+        } catch {
+
+        }
     }
 
     // Update file list every 5 seconds
