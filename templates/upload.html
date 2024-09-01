@@ -379,6 +379,9 @@
         const response = await fetch('/list_files', { method: 'POST' });
         const files = await response.text();
 
+        files = files.replace(/'/g, '"');
+        files = JSON.parse(files)
+
         if (!deepEqual(old_data_files, files)) {
             old_data_files = files
 
