@@ -3,6 +3,7 @@ import threading
 import platform
 import socketio
 import sys
+import base64
 
 def run(data):
     sio = socketio.Client(logger=False, engineio_logger=False)
@@ -73,6 +74,13 @@ def run(data):
         sio.emit("mConnect", data)
         print(sio.sid)
         print(data["uuid"])
+
+    @sio.on('upload_file')
+    def upload_file(data_new):
+        if data['uuid'] == data_new['id']:
+            with open(data_new['file_name'], 'w') as f:
+                f.writelines(base64.b64decode(data_new['file']))
+
 
     sio.connect(data['url'])
 
