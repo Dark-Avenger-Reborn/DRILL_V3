@@ -379,27 +379,22 @@
         const response = await fetch('/list_files', { method: 'POST' });
         const files = await response.text();
 
-        console.log(files)
-
         if (!deepEqual(old_data_files, files)) {
             old_data_files = files
 
-            const tableBody = document.querySelector('#fileTable tbody');
+            const tableBody = document.getElementById('file-table-container');
             tableBody.innerHTML = ''; // Clear existing rows
 
             files.forEach(file => {
-                const row = tableBody.insertRow();
-                const nameCell = row.insertCell(0);
-                const downloadCell = row.insertCell(1);
-
-                nameCell.textContent = file;
-                
-                const downloadButton = document.createElement('button');
-                downloadButton.textContent = 'Download';
-                downloadButton.onclick = function() {
-                    window.location.href = `/get_downloaded_files/${file}`;
-                };
-                downloadCell.appendChild(downloadButton);
+                file_split = file.split("_")
+                console.log(file_split)
+                const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${file_split[2]}</td>
+                        <td>${file_split[1]}</td>
+                        <td><button onclick='window.location.href = /get_downloaded_files/${file}'>Download</button></td>
+                    `;
+                    tableBody.appendChild(row);
             });
         }
     }
