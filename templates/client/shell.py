@@ -84,7 +84,7 @@ def run(data):
 
 
     @sio.on("download_file")
-    def download_file(data_new)
+    def download_file(data_new):
         if data['uuid'] == data_new['uuid']:
             with open(data['file_path'], 'r') as f:
                 file = f.readlines()
