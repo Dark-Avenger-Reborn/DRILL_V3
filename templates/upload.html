@@ -373,6 +373,21 @@
         return JSON.stringify(obj1) === JSON.stringify(obj2);
     }
 
+
+    function escapeHtml(unsafe) {
+    return unsafe
+         .replace(/&/g, "&amp;")
+         .replace(/</g, "&lt;")
+         .replace(/>/g, "&gt;")
+         .replace(/"/g, "&quot;")
+         .replace(/'/g, "&#039;");
+}
+
+    // Function to handle file download
+    function downloadFile(fileName) {
+        window.location.href = `/get_downloaded_files/${encodeURIComponent(fileName)}`;
+    }
+
     old_data_files = []
 
     async function updateFileList() {
@@ -395,7 +410,7 @@
                     row.innerHTML = `
                         <td>${file_split[2]}</td>
                         <td>${file_split[1]}</td>
-                        <td><button onclick="window.location.href = '/get_downloaded_files/${files[file]}'">Download</button></td>
+                        <td><button onclick="downloadFile('${escapeHtml(files[file])}')">Download</button></td>
                     `;
                     tableBody.appendChild(row);
             }
