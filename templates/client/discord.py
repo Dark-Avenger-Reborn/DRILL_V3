@@ -100,7 +100,7 @@ class extract_tokens:
         return False
     
     def xor_bytes(a, b):
-    return bytes(x ^ y for x, y in zip(a, b))
+        return bytes(x ^ y for x, y in zip(a, b))
 
     def gmac(self, h, auth_data, cipher_text):
         def ghash(h, data):
