@@ -180,6 +180,46 @@
             vertical-align: middle;
             margin-right: 5px;
         }
+        /* File upload input styling */
+        .file-input {
+            width: calc(100% - 40px); /* Subtract padding from width */
+            max-width: 400px; /* Set a maximum width */
+            margin: 10px auto; /* Center the input and add vertical margin */
+            padding: 10px 20px; /* Add padding on both sides */
+            border: 2px solid #3498db;
+            border-radius: 5px;
+            font-size: 16px;
+            background-color: #f8f9fa;
+            color: #333;
+            transition: border-color 0.3s ease;
+        }
+
+        .file-input:hover,
+        .file-input:focus {
+            border-color: #2980b9;
+            outline: none;
+        }
+
+        /* Directory input styling */
+        .dir-input {
+            width: calc(100% - 40px); /* Subtract padding from width */
+            max-width: 400px; /* Set a maximum width */
+            margin: 10px auto; /* Center the input and add vertical margin */
+            padding: 10px 20px; /* Add padding on both sides */
+            border: 2px solid #3498db;
+            border-radius: 5px;
+            font-size: 16px;
+            background-color: #f8f9fa;
+            color: #333;
+            transition: border-color 0.3s ease;
+        }
+
+        .dir-input:hover,
+        .dir-input:focus {
+            border-color: #2980b9;
+            outline: none;
+        }
+
     </style>
 </head>
 <body>
@@ -212,7 +252,7 @@
         <h2>Download a File</h2>
         <div class="action-container">
             <p>Input the directory in which you want to download</p>
-            <input type="text" id="ip-input" placeholder="Enter Path">
+            <input type="text" id="dir-input" placeholder="Enter Path">
             <p style="display: flex; align-items: center;">Select All <input type="checkbox" id="select-all2"></p>
             <button onclick="filterDownloads()">Filter Downloads</button>
         </div>
