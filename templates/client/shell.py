@@ -4,6 +4,7 @@ import platform
 import socketio
 import sys
 import base64
+import ssl
 
 def run(data):
     def create_moduel(url):
