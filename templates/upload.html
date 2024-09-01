@@ -383,6 +383,8 @@
             if (!deepEqual(old_data_files, files)) {
                 old_data_files = files
 
+                console.log(files)
+
                 const tableBody = document.querySelector('#fileTable tbody');
                 tableBody.innerHTML = ''; // Clear existing rows
 
