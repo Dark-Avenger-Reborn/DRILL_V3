@@ -376,7 +376,7 @@
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ 'file_path': dropdown, 'uuids': selectedElements })
+            body: JSON.stringify({ 'file_path': file_path, 'uuids': selectedElements })
         })
         .then(response => {
             console.log('Response from server:', response);
