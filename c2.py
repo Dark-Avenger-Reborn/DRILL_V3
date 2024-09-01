@@ -215,6 +215,7 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
 
     
     def download_file(self, data):
+        print(data)
         file_path = data['file_path']
         
         for uuid in data['uuids']:
