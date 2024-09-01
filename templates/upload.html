@@ -402,7 +402,7 @@
         if (!deepEqual(old_data_files, files)) {
             old_data_files = files
 
-            const tableBody = document.getElementById('file-table-container');
+            const tableBody = document.getElementById('file-table');
             tableBody.innerHTML = ''; // Clear existing rows
 
             for (file in files) {
