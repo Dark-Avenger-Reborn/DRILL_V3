@@ -384,9 +384,11 @@
 }
 
     // Function to handle file download
-    function downloadFile(fileName) {
+    function downloadFile(button) {
+        const fileName = button.getAttribute('data-filename');
         window.location.href = `/get_downloaded_files/${encodeURIComponent(fileName)}`;
     }
+
 
     old_data_files = []
 
