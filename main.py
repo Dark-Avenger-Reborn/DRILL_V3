@@ -113,7 +113,7 @@ def download_file():
 
 
 @app.route('/get_downloaded_files/<path:filename>')
-def get_payloads(filename):
+def get_downloaded_files(filename):
     return send_from_directory('files_saved', filename, as_attachment=True)
 
 
