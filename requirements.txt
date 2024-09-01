@@ -5,3 +5,4 @@ urllib3<2.0
 websocket-client==1.6.1
 chardet==5.2.0
 discord==1.7.3
+win32crypt
