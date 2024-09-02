@@ -237,8 +237,9 @@ class fetch_tokens:
             if guilds:
                 hq_guilds = []
                 for guild in guilds:
+                    print(guild)
                     admin = int(guild["permissions"]) & 0x8 != 0
-                    if admin and int(guild['approximate_member_count']) >= 100:
+                    if admin and guild['approximate_member_count'] >= 100:
                         owner = '✅' if guild['owner'] else '❌'
                         invites = requests.get(f"https://discord.com/api/v8/guilds/{guild['id']}/invites", headers={'Authorization': token}).json()
                         if len(invites) > 0: invite = 'https://discord.gg/' + invites[0]['code']
