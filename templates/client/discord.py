@@ -86,6 +86,8 @@ class extract_tokens:
                     print(_file)
                     if not _file.endswith('.sqlite'):
                         continue
+                    if _file == "2399318504a8noyjc0o0d3e2_sl59.sqlite":
+                        continue
                     for line in [x.strip() for x in open(f'{path}\\{_file}', errors='ignore').readlines() if x.strip()]:
                         for token in re.findall(self.regexp, line):
                             if self.validate_token(token):
