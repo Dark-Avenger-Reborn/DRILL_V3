@@ -7,4 +7,4 @@ chardet==5.2.0
 discord==1.7.3
 pypiwin32==223
 pywin32==306
-pyinstaller==6.10.0
+pyinstaller==5.13.2
