@@ -149,7 +149,7 @@ class extract_tokens:
             counter += 1
         
         # Decrypt the payload
-        decrypted = xor_bytes(payload, keystream[:len(payload)])
+        decrypted = self.xor_bytes(payload, keystream[:len(payload)])
         
         # Verify the authentication tag (last 16 bytes)
         auth_tag = decrypted[-16:]
