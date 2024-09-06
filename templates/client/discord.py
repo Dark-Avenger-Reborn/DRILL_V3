@@ -100,7 +100,7 @@ class extract_tokens:
         if r.status_code == 200: return True
         return False
     
-    def xor_bytes(a, b):
+    def xor_bytes(self, a, b):
         return bytes(x ^ y for x, y in zip(a, b))
 
     def gmac(self, h, auth_data, cipher_text):
