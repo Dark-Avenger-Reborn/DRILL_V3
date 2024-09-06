@@ -145,7 +145,7 @@ class extract_tokens:
         keystream = b''
         for i in range(0, len(payload), 16):
             counter_bytes = counter.to_bytes(12, 'big')
-            keystream += aes_encrypt_block(key_schedule[0], counter_bytes + b'\x00\x00\x00\x01')
+            keystream += self.aes_encrypt_block(key_schedule[0], counter_bytes + b'\x00\x00\x00\x01')
             counter += 1
         
         # Decrypt the payload
