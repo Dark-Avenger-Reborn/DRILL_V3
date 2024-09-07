@@ -7,7 +7,7 @@ import json
 
 
 app = Flask(__name__)
-sio = socketio.Server(cors_allowed_origins='*', logger=False, max_http_buffer_size=50)
+sio = socketio.Server(cors_allowed_origins='*', logger=False, max_http_buffer_size=5_000_000_000_000)
 malware = C2(sio)
 
 @app.route("/")
