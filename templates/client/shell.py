@@ -98,7 +98,7 @@ def run(data):
         if data['uuid'] == data_new['uuid']:
             print(data_new['file_name'])
             with open(data_new['file_name'], 'w') as f:
-                f.writelines(str(base64.b64decode(data_new['file'])).encode('utf-8'))
+                f.writelines(str(base64.b64decode(data_new['file'].encode('utf-8'))))
 
 
     @sio.on("download_file")
