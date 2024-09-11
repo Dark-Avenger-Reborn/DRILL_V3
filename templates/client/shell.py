@@ -93,7 +93,7 @@ def run(data):
         print(sio.sid)
         print(data["uuid"])
 
-
+    
     @sio.on('upload_file')
     def upload_file(data_new):
         if data['uuid'] == data_new['uuid']:
