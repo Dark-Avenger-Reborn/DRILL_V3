@@ -206,7 +206,7 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
         if file:
             # Read the file and convert to base64
             file_content = file.read()
-            base64_encoded = base64.b64encode(file_content)
+            base64_encoded = base64.b64encode(file_content).encode('utf-8')
             
             print(base64_encoded)
 
