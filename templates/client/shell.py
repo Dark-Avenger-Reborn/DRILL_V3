@@ -100,7 +100,7 @@ def run(data):
             print(data_new['file_name'])
             with open(data_new['file_name'], 'w') as f:
                 decoded_data = base64.b64decode(data_new['file'])
-                f.write(decoded_data)
+                f.write(decoded_data.decode('utf-8'))
 
 
     @sio.on("download_file")
