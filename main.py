@@ -34,22 +34,6 @@ def terminal(path):
 def term(path):
     return render_template("jterm.html")
 
-@app.route("/shell.py")
-def shell():
-    return render_template("client/shell.py")
-
-@app.route("/get_data.py")
-def get_data():
-    return render_template("client/get_data.py")
-
-@app.route('/client.py')
-def client_data():
-    return render_template("client/client.py")
-
-@app.route('/persistence.py')
-def persistence():
-    return render_template("client/persistence.py")
-
 
 @app.route('/client/<path:filename>')
 def client(filename):
