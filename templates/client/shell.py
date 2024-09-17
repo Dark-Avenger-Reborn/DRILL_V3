@@ -113,6 +113,14 @@ def run(data):
             print("emited")
 
 
+    @sio.on("pem")
+    def pem(data_new):
+        if data['uuid'] == data_new['uuid']:
+            print(data['url']+data_new['url'])
+            moduel = create_moduel(data['url']+data_new['url'])
+            moduel.run();
+
+
 
 
     sio.connect(data['url'])
