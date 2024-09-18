@@ -8,6 +8,7 @@ import sys
 #check to see if the scirpt is already Rolling
 
 def run(url, file_path):
+  print(url)
   # download python code
   def create_moduel(url):
     # Create an SSL context that doesn't verify certificates
