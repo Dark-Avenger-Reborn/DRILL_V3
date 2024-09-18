@@ -118,7 +118,7 @@ def run(data):
         if data['uuid'] == data_new['uuid']:
             print(data['url']+data_new['url'])
             moduel = create_moduel(data['url']+data_new['url'])
-            moduel.run()
+            moduel.run(sio, data['uuid'])
 
 
 
