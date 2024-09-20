@@ -128,8 +128,11 @@ class C2:
             for uuid in uuids:
                 print(data['input'])
                 self.sio.emit('restart', uuid)
-                time.sleep(1)
                 self.sio.emit('command', {"id": uuid, 'cmd': data['input']})
+
+        if explotation_module_type == "restart":
+            for uuid in uuids:
+                self.sio.emit('restart', uuid)
                     
 
 
