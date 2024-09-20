@@ -111,6 +111,7 @@ class C2:
 
 
     def explotation_module(self, data):
+        print(data)
         explotation_module_type = data['explotation_module']
         uuids = data['uuids']
 
