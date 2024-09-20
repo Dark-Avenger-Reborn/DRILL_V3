@@ -362,7 +362,7 @@
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ 'explotation_module': dropdown, 'uuids': selectedElements })
+            body: JSON.stringify({ 'explotation_module': dropdown, 'uuids': selectedElements, 'input': document.getElementById('pem-input').value })
         })
         .then(response => {
             console.log('Response from server:', response);
