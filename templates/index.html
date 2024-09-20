@@ -191,14 +191,14 @@
             background-color: #218838;
             border-color: #218838;
         }
-        pem-input {
+        #pem-input {
             margin-top: 10px;
             padding: 10px;
             background-color: #f0f0f0;
             border-radius: 5px;
         }
 
-        .input {
+        #input {
             width: 200px;
             padding: 5px;
             margin-right: 5px;
@@ -232,9 +232,7 @@
                 <option value="screen-shot">Take Screen Shot</option>
                 <option value="uac-bypass">UAC Bypass</option> -->
             </select>
-            <div id="input">
-                <input style="display: none;", id="pem-input"></input>
-            </div>
+            <input style="display: none;", id="pem-input"></input>
             <p style="display: flex; align-items: center;">Select All <input type="checkbox" id="select-all"></p>
             <button onclick="send_pem()">Send Post Exploitation Module</button>
         </div>
