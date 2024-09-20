@@ -213,13 +213,14 @@
             <select id="pem-dropdown">
                 <option value="bsod">Blue Screen of Death</option>
                 <option value="wifi-password">Steal wifi passwords</option>
+                <option value="send-command">Send Command</option>
                 <!-- <option value="steal-token">Steal Discord Token</option>
                 <option value="steal-password">Steal Browser Passwords</option>
                 <option value="steal-cookie">Get Browser Cookies</option>
                 <option value="screen-shot">Take Screen Shot</option>
-                <option value="uac-bypass">UAC Bypass</option>
-                <option value="send-command">Send Command</option> -->
+                <option value="uac-bypass">UAC Bypass</option> -->
             </select>
+            <input style="display: none;", id="pem-input"></input>
             <p style="display: flex; align-items: center;">Select All <input type="checkbox" id="select-all"></p>
             <button onclick="send_pem()">Send Post Exploitation Module</button>
         </div>
@@ -388,6 +389,22 @@
             checkbox.checked = isChecked;
         });
     });
+
+
+    // Function to update architecture dropdown
+    function updateArchDropdown() {
+        const selected_input = document.getElementById('pem-dropdown').value;
+
+        if (selected_input === "send-command") {
+            document.getElementById('pem-input').display = "block"
+        } 
+    }
+
+    // Initial update of architecture dropdown
+    updateArchDropdown();
+
+    // Add event listener to OS dropdown
+    osDropdown.addEventListener("change", updateArchDropdown);
 
 </script>
 
