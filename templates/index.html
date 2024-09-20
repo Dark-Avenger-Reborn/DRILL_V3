@@ -390,10 +390,11 @@
         });
     });
 
+    const pem_dropdown = document.getElementById('pem-dropdown')
     const pem_input = document.getElementById('pem-input')
     // Function to update architecture dropdown
     function updateArchDropdown() {
-        const selected_input = pem_input.value;
+        const selected_input = pem_dropdown.value;
         console.log(selected_input)
         if (selected_input === "send-command") {
             pem_input.style.display = "block"
@@ -406,7 +407,7 @@
     updateArchDropdown();
 
     // Add event listener to OS dropdown
-    pem_input.addEventListener("change", updateArchDropdown);
+    pem_dropdown.addEventListener("change", updateArchDropdown);
 
 </script>
 
