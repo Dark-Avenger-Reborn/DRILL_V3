@@ -390,21 +390,23 @@
         });
     });
 
-
+    const pem_input = document.getElementById('pem-input')
     // Function to update architecture dropdown
     function updateArchDropdown() {
-        const selected_input = document.getElementById('pem-dropdown').value;
+        const selected_input = pem_input.value;
         console.log(selected_input)
         if (selected_input === "send-command") {
-            document.getElementById('pem-input').style.display = "block"
-        } 
+            pem_input.style.display = "block"
+        } else {
+            pem_input.style.display = "none"
+        }
     }
 
     // Initial update of architecture dropdown
     updateArchDropdown();
 
     // Add event listener to OS dropdown
-    document.getElementById('pem-dropdown').addEventListener("change", updateArchDropdown);
+    pem_input.addEventListener("change", updateArchDropdown);
 
 </script>
 
