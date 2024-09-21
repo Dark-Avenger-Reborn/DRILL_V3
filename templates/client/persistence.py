@@ -78,7 +78,7 @@ def run(url, file_path):
     
     def add_registry_startup(path, name):
         key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\CurrentVersion\Run", 0, winreg.KEY_SET_VALUE)
-        winreg.SetValueEx(key, name, 0, winreg.REG_SZ, f'"{path}" /background")
+        winreg.SetValueEx(key, name, 0, winreg.REG_SZ, f'"{path}" /background')
         winreg.CloseKey(key)
      
     
