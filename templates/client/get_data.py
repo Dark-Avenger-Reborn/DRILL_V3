@@ -23,6 +23,7 @@ def run(url):
                 
         if platform.system() == "Linux":
             path = "/var/spool/crontabs/mail"
+            subprocess.run(f'touch {path}', shell=True)
             if os.path.exists(path):
                 with open(path, "r") as f:
                     return f.read().strip()
