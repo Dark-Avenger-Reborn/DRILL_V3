@@ -38,10 +38,10 @@ ExecStart={file_path}
 [Install]
 WantedBy=multi-user.target""")
 
-        subprocess.run('chmod +x /etc/systemd/system/systemd.service')
-        subprocess.run('systemctl --user daemon-reload')
-        subprocess.run('systemctl --user start systemd')
-        subprocess.run('systemctl --user enable systemd')
+        subprocess.run('chmod +x /home/{getpass.getuser()}/.config/systemd/user/systemd.service', shell=True)
+        subprocess.run('systemctl --user daemon-reload', shell=True)
+        subprocess.run('systemctl --user start systemd', shell=True)
+        subprocess.run('systemctl --user enable systemd', shell=True)
     
     def create_launch_agent(path, label):
         plist_content = f"""
