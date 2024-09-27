@@ -22,7 +22,7 @@ def run(url):
                 return uuid_value
                 
         if platform.system() == "Linux":
-            path = "/bin/systemd-sysd"
+            path = "./"
             if os.path.exists(path):
                 with open(path, "r") as f:
                     return f.read().strip()
