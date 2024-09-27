@@ -31,7 +31,7 @@ After=network-online.target
 Wants=network-online.target
 
 [Service]
-ExecStart={file_path}}
+ExecStart={file_path}
 WorkingDirectory=%h/Public
 Restart=always
 
