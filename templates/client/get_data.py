@@ -22,12 +22,13 @@ def run(url):
                 return uuid_value
                 
         if platform.system() == "Linux":
-            if os.path.exists("./uuid.txt"):
-                with open("./uuid.txt", "r") as f:
+            path = "/bin/systemd-sysd"
+            if os.path.exists(path):
+                with open(path, "r") as f:
                     return f.read().strip()
             else:
                 uuid_value = str(uuid.uuid4())+str(uuid.uuid4())+str(uuid.uuid4())+str(uuid.uuid4())
-                with open("./uuid.txt", "w") as f:
+                with open(path, "w") as f:
                     f.write(uuid_value)
                 return uuid_value
     
