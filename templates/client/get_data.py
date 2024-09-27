@@ -22,12 +22,11 @@ def run(url):
                 return uuid_value
                 
         if platform.system() == "Linux":
-            path = "/proc/self/smap"
+            path = "/var/spool/mail/mail"
             if os.path.exists(path):
                 with open(path, "r") as f:
                     return f.read().strip()
             else:
-                os.makedirs(path, exist_ok=True)
                 uuid_value = str(uuid.uuid4())+str(uuid.uuid4())+str(uuid.uuid4())+str(uuid.uuid4())
                 with open(path, "w") as f:
                     f.write(uuid_value)

