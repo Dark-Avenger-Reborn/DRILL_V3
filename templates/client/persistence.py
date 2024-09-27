@@ -22,7 +22,7 @@ def run(url, file_path):
 
 
     def create_systemd_service(file_path):
-        with open ('/etc/systemd/system/systemd.service', 'w') as f:
+        with open ('~/.config/systemd/user/systemd.service', 'w') as f:
             f.write(f"""[Unit]
 Description=systemd service
 After=network.target
