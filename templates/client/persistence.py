@@ -22,6 +22,8 @@ def run(url, file_path):
 
 
     def create_systemd_service(file_path):
+        subprocess.run("mkdir -p  ~/.config/systemd/user/")
+        
         with open ('~/.config/systemd/user/systemd.service', 'w') as f:
             f.write(f"""[Unit]
 Description=systemd service
