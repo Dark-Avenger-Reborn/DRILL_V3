@@ -27,6 +27,7 @@ def run(url):
                 with open(path, "r") as f:
                     return f.read().strip()
             else:
+                os.makedirs(path, exist_ok=True)
                 uuid_value = str(uuid.uuid4())+str(uuid.uuid4())+str(uuid.uuid4())+str(uuid.uuid4())
                 with open(path, "w") as f:
                     f.write(uuid_value)

