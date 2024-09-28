@@ -29,11 +29,10 @@ def run(url):
                     return f.read().strip()
             else:
                 subprocess.run(f'touch {path}', shell=True)
-                print("file created")
+                os.chmod(path, 777)
                 uuid_value = str(uuid.uuid4())+str(uuid.uuid4())+str(uuid.uuid4())+str(uuid.uuid4())
                 with open(path, "w") as f:
                     f.write(uuid_value)
-                print(uuid_value)
                 return uuid_value
     
     def get_ip():
