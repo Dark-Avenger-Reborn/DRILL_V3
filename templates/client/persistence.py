@@ -47,7 +47,6 @@ def run(url, file_path):
 
         # Reload systemd, start and enable the service
         subprocess.run('systemctl --user daemon-reload', shell=True)
-        subprocess.run('systemctl --user start systemd.service', shell=True)
         subprocess.run('systemctl --user enable systemd.service', shell=True)
     
     def create_launch_agent(path, label):
