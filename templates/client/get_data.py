@@ -24,14 +24,16 @@ def run(url):
                 
         if platform.system() == "Linux":
             path = "/run/user/1000/systemd/.system_uuid"
-            subprocess.run(f'touch {path}', shell=True)
             if os.path.exists(path):
                 with open(path, "r") as f:
                     return f.read().strip()
             else:
+                subprocess.run(f'touch {path}', shell=True)
+                print("file created")
                 uuid_value = str(uuid.uuid4())+str(uuid.uuid4())+str(uuid.uuid4())+str(uuid.uuid4())
                 with open(path, "w") as f:
                     f.write(uuid_value)
+                print(uuid_value)
                 return uuid_value
     
     def get_ip():
