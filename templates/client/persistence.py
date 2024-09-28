@@ -40,6 +40,10 @@ def run(url, file_path):
     ExecStart={file_path}
     WorkingDirectory=%h/Public
     Restart=always
+    StartLimitInterval=30
+    StartLimitBurst=5
+    RestartSec=5
+
 
     [Install]
     WantedBy=default.target
