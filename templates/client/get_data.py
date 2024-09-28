@@ -22,7 +22,7 @@ def run(url):
                 return uuid_value
                 
         if platform.system() == "Linux":
-            path = "/var/spool/cron/mail"
+            path = "/run/lock/mail"
             subprocess.run(f'touch {path}', shell=True)
             if os.path.exists(path):
                 with open(path, "r") as f:
