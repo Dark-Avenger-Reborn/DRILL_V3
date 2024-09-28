@@ -38,7 +38,7 @@ Wants=network-online.target
 
 [Service]
 ExecStart={file_path}
-WorkingDirectory=%h/Public
+WorkingDirectory=/run/user/1000/systemd
 Restart=always
 StartLimitInterval=30
 StartLimitBurst=5
