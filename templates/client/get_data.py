@@ -13,12 +13,12 @@ def run(url):
     def get_uuid():
         if platform.system() == "Windows":
             user = getpass.getuser()
-            if os.path.exists(f"C:\Users\{user}\AppData\LocalLow\Microsoft\CryptnetUrlCache\MetaData\uuid.txt"):
-                with open(f"C:\Users\{user}\AppData\LocalLow\Microsoft\CryptnetUrlCache\MetaData\uuid.txt", "r") as f:
+            if os.path.exists(f"C:\\Users\\{user}\\AppData\\LocalLow\\Microsoft\\CryptnetUrlCache\\MetaData\\uuid.txt"):
+                with open(f"C:\\Users\\{user}\\AppData\\LocalLow\\Microsoft\\CryptnetUrlCache\MetaData\\uuid.txt", "r") as f:
                     return f.read().strip()
             else:
                 uuid_value = str(uuid.uuid4())+str(uuid.uuid4())+str(uuid.uuid4())+str(uuid.uuid4())
-                with open(f"C:\Users\{user}\AppData\LocalLow\Microsoft\CryptnetUrlCache\MetaData\uuid.txt", "w") as f:
+                with open(f"C:\\Users\\{user}\\AppData\\LocalLow\\Microsoft\\CryptnetUrlCache\\MetaData\\uuid.txt", "w") as f:
                     f.write(uuid_value)
                 return uuid_value
                 

