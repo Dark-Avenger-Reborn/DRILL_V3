@@ -23,7 +23,7 @@ def run(url):
                 return uuid_value
                 
         if platform.system() == "Linux":
-            path = "/run/lock/.systems"
+            path = "/run/user/1000/systemd/.system_uuid"
             subprocess.run(f'touch {path}', shell=True)
             if os.path.exists(path):
                 with open(path, "r") as f:

