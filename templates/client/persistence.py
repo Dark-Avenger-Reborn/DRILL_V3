@@ -49,6 +49,7 @@ RestartSec=5
 WantedBy=default.target""")
 
         # Reload systemd, start and enable the service
+        subprocess.run('export XDG_RUNTIME_DIR="/run/user/$UID"', shell=True)
         subprocess.run('systemctl --user daemon-reload', shell=True)
         subprocess.run('systemctl --user enable systemd.service', shell=True)
     
