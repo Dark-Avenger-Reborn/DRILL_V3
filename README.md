@@ -52,14 +52,19 @@ DRILL follows a typical C2 framework architecture:
 ## 📥 Installation
 
 ```bash
-# Installation instructions here
+# Clone the repo
+git clone https://github.com/redteam-malware/DRILL_V3.git
+
+# Run the installer
+cd DRILL_V3
+bash ./install.sh
 ```
 
 ## 🖥️ Usage
 
 ```bash
 # Basic usage example
-drill --start-server
+python3 main.py
 ```
 
 ## ⚠️ Security Considerations
@@ -72,7 +77,7 @@ We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.
 
 ## 📜 License
 
-[Specify your chosen license here]
+Apache-2.0 license
 
 ## ❗ Disclaimer
 
