@@ -71,9 +71,9 @@ python3 main.py
 
 > **Warning**: This tool is intended for authorized penetration testing and red team operations only. Misuse of this software may be illegal in your jurisdiction. Use responsibly and ethically.
 
-## 🤝 Contributing
+<!-- ## 🤝 Contributing
 
-We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for more information.
+We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for more information. -->
 
 ## 📜 License
 
