@@ -14,7 +14,7 @@ All traffic flows through a single port using HTTP/HTTPS, simplifying network tr
 DRILL can be easily tunneled through Cloudflare, providing an additional layer of security and obfuscation for C2 communications.
 
 ### 🐳 Cross-Platform Payload Generation
-Built-in Docker integration enables seamless payload creation for both Linux and macOS targets, expanding the framework's versatility.
+Built-in Docker integration enables seamless payload creation for both Linux and Windows targets, expanding the framework's versatility.
 
 ### 🔒 Robust Persistence Mechanisms
 - **Windows**: Implements startup registry keys and PowerShell profile modifications
