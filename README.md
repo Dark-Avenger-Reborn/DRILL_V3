@@ -48,6 +48,7 @@ DRILL follows a typical C2 framework architecture:
   - Input mirroring from operator to target
   - Target screen viewing
   - Webcam access
+  - Docker for MacOS
 
 ## 📥 Installation
 
