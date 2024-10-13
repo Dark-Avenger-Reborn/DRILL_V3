@@ -16,6 +16,8 @@ if ! command_exists docker; then
     sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
     sudo apt-get update
     sudo apt-get install -y docker-ce
+    sudo usermod -aG docker $USER
+    newgrp docker
     sudo systemctl start docker
     sudo systemctl enable docker
     echo "Docker installed successfully."
@@ -45,6 +47,6 @@ fi
 
 ## Install Python Packages
 echo "Installing required Python packages..."
-pip3 install python-socketio flask eventlet
+pip3 install python-socketio flask eventlet --break-system-packages
 
 echo "Script execution completed."

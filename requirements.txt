@@ -4,5 +4,3 @@ python-socketio==5.11.0
 urllib3<2.0
 websocket-client==1.6.1
 chardet==5.2.0
-discord==1.7.3
-pyinstaller==5.13.2

