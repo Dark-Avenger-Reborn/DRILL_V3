@@ -89,10 +89,14 @@ This project is for educational and authorized testing purposes only. The author
 <details>
 <summary>📊 Project Stats</summary>
 
-- **Version**: 3.0
-- **Last Updated**: 10/1
-- **Contributors**: 1
-- **Stars**: 0
-- **Forks**: 0
+## Star History
+
+<a href="https://star-history.com/#Dark-Avenger-Reborn/DRILL_V3&Date">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=Dark-Avenger-Reborn/DRILL_V3&type=Date&theme=dark" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=Dark-Avenger-Reborn/DRILL_V3&type=Date" />
+   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=Dark-Avenger-Reborn/DRILL_V3&type=Date" />
+ </picture>
+</a>
 
 </details>
