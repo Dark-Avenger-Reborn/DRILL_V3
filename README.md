@@ -14,11 +14,13 @@ All traffic flows through a single port using HTTP/HTTPS, simplifying network tr
 DRILL can be easily tunneled through Cloudflare, providing an additional layer of security and obfuscation for C2 communications.
 
 ### 🐳 Cross-Platform Payload Generation
-Built-in Docker integration enables seamless payload creation for both Linux and Windows targets, expanding the framework's versatility.
+Built-in Docker integration enables seamless payload creation for both Linux, Windows and OSX targets, expanding the framework's versatility.
 
 ### 🔒 Robust Persistence Mechanisms
 - **Windows**: Implements startup registry keys and PowerShell profile modifications
 - **Linux**: Creates a user-local systemd process for persistent access
+- **OSX**: Uses launch agents to run itself on startup
+
 
 ### 📂 Advanced File Transfer Capabilities
 - Send and receive files to/from single or multiple machines simultaneously
@@ -48,7 +50,6 @@ DRILL follows a typical C2 framework architecture:
   - Input mirroring from operator to target
   - Target screen viewing
   - Webcam access
-  - Docker for MacOS
 
 ## 📥 Installation
 

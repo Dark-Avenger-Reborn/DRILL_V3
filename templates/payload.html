@@ -159,6 +159,7 @@
             <select id="os-dropdown">
                 <option value="Windows">Windows</option>
                 <option value="Linux">Linux</option>
+                <option value="OSX">OSX</option>
             </select>
             <select id="arch-dropdown">
                 <!-- Options will be dynamically populated -->
@@ -191,7 +192,8 @@
     // Define architecture options for each OS
     const archOptions = {
         Windows: ["x86", "x64"],
-        Linux: ["i386", "x64"]
+        Linux: ["i386", "x64"],
+        OSX: ["x86", "x86_64", "arm64"]
     };
 
     // Function to update architecture dropdown
