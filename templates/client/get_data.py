@@ -13,7 +13,7 @@ def run(url):
     def get_uuid():
         if platform.system() == "Windows":
             user = getpass.getuser()
-            if os.path.exists(f"C:\\Users\\{user}}\\AppData\\Roaming\\Microsoft\\Windows\\PowerShell\\PSReadLine\\uuid.txt"):
+            if os.path.exists(f"C:\\Users\\{user}\\AppData\\Roaming\\Microsoft\\Windows\\PowerShell\\PSReadLine\\uuid.txt"):
                 with open(f"C:\\Users\\{user}}\\AppData\\Roaming\\Microsoft\\Windows\\PowerShell\\PSReadLine\\uuid.txt", "r") as f:
                     return f.read().strip()
             else:
