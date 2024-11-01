@@ -6,3 +6,4 @@ websocket-client==1.6.1
 chardet==5.2.0
 pyinstaller==6.11.0 
 dxcam
+opencv-python
