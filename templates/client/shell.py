@@ -8,7 +8,6 @@ import base64
 import ssl
 from urllib.request import urlopen
 import importlib.util
-import numpy
 import cv2
 import dxcam
 
