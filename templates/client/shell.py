@@ -8,7 +8,7 @@ import base64
 import ssl
 from urllib.request import urlopen
 import importlib.util
-import cv2
+from cv2 import cv2
 import dxcam
 
 def run(data):
