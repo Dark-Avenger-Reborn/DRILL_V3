@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js" integrity="sha512-aMGMvNYu8Ue4G+fHa359jcPb1u+ytAF+P2SCb+PxrjCdO3n3ZTxJ30zuH39rimUggmTwmh2u7wvQsDTHESnmfQ==" crossorigin="anonymous"></script>
+    <title>Screen</title>
+</head>
+<body>
+    <h1>Captured Image</h1>
+    <button id="start">Start</button>
+    <button id="stop">Stop</button>
+    <img id="capturedImage" alt="Captured Screenshot" />
+
+    <script>
+        var socket = io();
+        socket.connect(window.location.origin);
+        const pageSID = window.location.pathname.split('/')[2];
+
+        let isLooping = false;
+        let loopInterval;
+
+        const startButton = document.getElementById('start');
+        const stopButton = document.getElementById('stop');
+
+        startButton.addEventListener('click', () => {
+            socket.emit('screen_status', {"status": "start", "uid": pageSID});
+        });
+
+        stopButton.addEventListener('click', () => {
+            socket.emit('screen_status', {"status": "stop", "uid": pageSID});
+        });
+
+        socket.on('screenshot', function(response) {
+            if (response["uid"] == pageSID) {
+                print(response['screen'])
+                const imageBase64 = `data:image/png;base64,${response['image']}`;
+                document.getElementById('capturedImage').src = imageBase64;
+            }
+        });
+
+
+        // Assume 'imageBase64' is the variable containing your Base64 string
+        const imageBase64 = 'data:image/png;base64,PUT_YOUR_BASE64_STRING_HERE';
+
+        // Set the src of the image element to the Base64 string
+        document.getElementById('capturedImage').src = imageBase64;
+    </script>
+</body>
+</html>

