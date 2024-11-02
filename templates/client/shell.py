@@ -127,7 +127,6 @@ def run(data):
     def take_screenshots(sio, uid):
         while True:
             with mss.mss() as sct:
-                time.sleep(1)
                 # Capture the entire screen
                 monitor = sct.monitors[0]
                 screenshot = sct.grab(monitor)
