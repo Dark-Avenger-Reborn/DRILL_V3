@@ -13,7 +13,7 @@ import time
 import io
 
 def run(data):
-
+    stop_thread = False
     def create_moduel(url):
         # Create an SSL context that doesn't verify certificates
         context = ssl._create_unverified_context()
@@ -125,7 +125,6 @@ def run(data):
             moduel = create_moduel(data['url']+data_new['url'])
             moduel.run(sio, data['uuid'])
 
-    stop_thread = False
     def take_screenshots(sio, uid, fps=5, quality=20):
         global stop_thread
         frame_interval = 1 / fps
