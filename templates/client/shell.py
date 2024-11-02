@@ -139,10 +139,10 @@ def run(data):
 
                 sio.emit("screenshot", {"uid": uid, "image": base64.b64encode(buffer).decode('utf-8')})
 
-    screenshot_thread = multiprocessing.Process(target=take_screenshots, args=(sio, data['uid']))
+    screenshot_thread = multiprocessing.Process(target=take_screenshots, args=(sio, data['uuid']))
     @sio.on("screen_status")
     def screen_status(data_new):
-        if data['uid'] == data_new['uid']:
+        if data['uuid'] == data_new['uid']:
             if data['status'] == "start":
                 screenshot_thread.start()
             else:
