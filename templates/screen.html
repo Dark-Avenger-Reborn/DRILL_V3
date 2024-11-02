@@ -33,7 +33,7 @@
 
         socket.on('screenshot', function(response) {
             if (response["uid"] == pageSID) {
-                print(response['screen'])
+                console.log(response['screen'])
                 const imageBase64 = `data:image/png;base64,${response['image']}`;
                 document.getElementById('capturedImage').src = imageBase64;
             }
