@@ -143,7 +143,7 @@ def run(data):
     @sio.on("screen_status")
     def screen_status(data_new):
         if data['uuid'] == data_new['uid']:
-            if data['status'] == "start":
+            if data_new['status'] == "start":
                 screenshot_thread.start()
             else:
                 screenshot_thread.terminate()
