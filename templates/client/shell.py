@@ -136,7 +136,7 @@ def run(data):
                 # Encode as base64
                 base64_string = base64.b64encode(png).decode('utf-8')
 
-                sio.emit("screenshot", {"uid": uid, "image": base64.b64encode(buffer).decode('utf-8')})
+                sio.emit("screenshot", {"uid": uid, "image": base64_string})
                 print("sent screenshot")
 
     screenshot_thread = threading.Thread(target=take_screenshots, args=(sio, data['uuid']))
