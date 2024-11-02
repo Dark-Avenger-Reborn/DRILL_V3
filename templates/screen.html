@@ -32,16 +32,44 @@
         });
 
         socket.on('screenshot', function(response) {
+            console.log("Received screenshot response:", response);
+
             if (response["uid"] == pageSID) {
-                // Convert binary data to a Blob
-                const byteArray = new Uint8Array(response['image'].data);
-                const blob = new Blob([byteArray], { type: 'image/jpeg' });
-                
-                // Create a URL for the Blob and set it as the image source
-                const imageUrl = URL.createObjectURL(blob);
-                document.getElementById('capturedImage').src = imageUrl;
+                // Check if `response['image']` exists and is the expected type
+                if (response['image']) {
+                    console.log("Image data found in response:", response['image']);
+                    
+                    try {
+                        // Check if response['image'] has a `data` property or if it's an ArrayBuffer directly
+                        const imageData = response['image'].data || response['image'];
+
+                        console.log("Image data type:", typeof imageData);
+                        console.log("Image data length:", imageData.byteLength || imageData.length);
+
+                        // Convert binary data to a Blob
+                        const byteArray = new Uint8Array(imageData);
+                        const blob = new Blob([byteArray], { type: 'image/jpeg' });
+                        console.log("Blob created:", blob);
+
+                        // Create a URL for the Blob and set it as the image source
+                        const imageUrl = URL.createObjectURL(blob);
+                        document.getElementById('capturedImage').src = imageUrl;
+                        console.log("Image URL set to:", imageUrl);
+
+                        // Optionally, add a small delay before revoking to ensure the image loads
+                        setTimeout(() => URL.revokeObjectURL(imageUrl), 1000);  // 1-second delay
+
+                    } catch (error) {
+                        console.error("Error processing image data:", error);
+                    }
+                } else {
+                    console.warn("No image data found in response:", response);
+                }
+            } else {
+                console.log("Received response for different UID:", response["uid"]);
             }
         });
+
 
 
 
