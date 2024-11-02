@@ -124,21 +124,35 @@ def run(data):
             moduel = create_moduel(data['url']+data_new['url'])
             moduel.run(sio, data['uuid'])
 
-    def take_screenshots(sio, uid):
-        while True:
-            with mss.mss() as sct:
-                # Capture the entire screen
-                monitor = sct.monitors[0]
-                screenshot = sct.grab(monitor)
 
-                # Convert to PNG
-                png = mss.tools.to_png(screenshot.rgb, screenshot.size)
+    def take_screenshots(sio, uid, fps=30):
+        frame_interval = 1 / fps
+        last_capture_time = 0
 
-                # Encode as base64
-                base64_string = base64.b64encode(png).decode('utf-8')
+        with mss.mss() as sct:
+            monitor = sct.monitors[0]  # Capture the entire screen
 
-                sio.emit("screenshot", {"uid": uid, "image": base64_string})
-                print("sent screenshot")
+            while True:
+                current_time = time.time()
+                if current_time - last_capture_time >= frame_interval:
+                    # Capture screenshot
+                    screenshot = sct.grab(monitor)
+
+                    # Convert to bytes
+                    png = mss.tools.to_png(screenshot.rgb, screenshot.size)
+
+                    # Encode as base64
+                    base64_string = base64.b64encode(png).decode('utf-8')
+
+                    # Emit the screenshot
+                    sio.emit("screenshot", {"uid": uid, "image": base64_string})
+                    print("Sent screenshot")
+
+                    last_capture_time = current_time
+
+                # Small sleep to prevent tight loop
+                time.sleep(0.001)
+
 
     screenshot_thread = threading.Thread(target=take_screenshots, args=(sio, data['uuid']))
     @sio.on("screen_status")
