@@ -72,6 +72,23 @@
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
+        .controls {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px 0;
+        }
+        .dropdown {
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #444;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+        }
+        .slider {
+            margin: 10px 0;
+        }
     </style>
 </head>
 <body>
@@ -90,6 +107,21 @@
     <button id="stop">Stop</button>
     <img id="capturedImage" alt="Captured Screenshot" />
 
+    <div class="controls">
+        <button id="mouseInput">Get Mouse Input</button>
+        <button id="keyboardInput">Get Keyboard Input</button>
+        <button id="lockKeyboard">Lock Keyboard</button>
+        <button id="lockMouse">Lock Mouse</button>
+        
+        <select id="screenDropdown" class="dropdown">
+            <option value="screen">Screen</option>
+            <option value="camera">Camera</option>
+        </select>
+        
+        <input type="range" id="viewToggle" class="slider" min="0" max="1" step="1">
+        <label for="viewToggle">Toggle View (0: Screen, 1: Camera)</label>
+    </div>
+
     <script>
         var socket = io();
         socket.connect(window.location.origin);
@@ -104,6 +136,48 @@
 
         stopButton.addEventListener('click', () => {
             socket.emit('screen_status', {"status": "stop", "uid": pageSID});
+        });
+
+        // New button listeners
+        document.getElementById('mouseInput').addEventListener('click', () => {
+            socket.emit('mouse_input', {"uid": pageSID});
+        });
+
+        document.getElementById('keyboardInput').addEventListener('click', () => {
+            socket.emit('keyboard_input', {"uid": pageSID});
+        });
+
+        document.getElementById('lockKeyboard').addEventListener('click', () => {
+            socket.emit('lock_keyboard', {"uid": pageSID});
+        });
+
+        document.getElementById('lockMouse').addEventListener('click', () => {
+            socket.emit('lock_mouse', {"uid": pageSID});
+        });
+
+        const screenDropdown = document.getElementById('screenDropdown');
+        const viewToggle = document.getElementById('viewToggle');
+
+        screenDropdown.addEventListener('change', (event) => {
+            const selectedScreen = event.target.value;
+            socket.emit('switch_screen', {"screen": selectedScreen, "uid": pageSID});
+        });
+
+        viewToggle.addEventListener('input', (event) => {
+            const viewMode = event.target.value;
+            const mode = viewMode == 0 ? 'screen' : 'camera';
+            socket.emit('toggle_view', {"mode": mode, "uid": pageSID});
+
+            if (mode === 'camera') {
+                // Change dropdown options for camera selection
+                // Placeholder: Add logic here to list cameras
+            } else {
+                // Revert dropdown to screen selection
+                screenDropdown.innerHTML = `
+                    <option value="screen">Screen</option>
+                    <option value="camera">Camera</option>
+                `;
+            }
         });
 
         socket.on('screenshot', function(response) {
