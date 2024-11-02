@@ -1,6 +1,5 @@
 import subprocess
 import threading
-import multiprocessing
 import platform
 import socketio
 import sys
@@ -139,7 +138,7 @@ def run(data):
 
                 sio.emit("screenshot", {"uid": uid, "image": base64.b64encode(buffer).decode('utf-8')})
 
-    screenshot_thread = multiprocessing.Process(target=take_screenshots, args=(sio, data['uuid']))
+    screenshot_thread = threading.Trhead(target=take_screenshots, args=(sio, data['uuid']))
     @sio.on("screen_status")
     def screen_status(data_new):
         if data['uuid'] == data_new['uid']:
