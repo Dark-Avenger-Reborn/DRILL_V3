@@ -158,10 +158,12 @@ def run(data):
         if data['uuid'] == data_new['uid']:
             if data_new['status'] == "start":
                 stop_event.clear()  # Reset the event to False
+                screenshot_thread = threading.Thread(target=take_screenshots, args=(sio, data['uuid']))
                 screenshot_thread.start()
             else:
                 stop_event.set()  # Signal the thread to stop
                 screenshot_thread.join()  # Wait for the thread to finish
+
 
     sio.connect(data['url'])
 
