@@ -126,7 +126,7 @@ def run(data):
             moduel.run(sio, data['uuid'])
 
 
-    def take_screenshots(sio, uid, fps=20, quality=50):
+    def take_screenshots(sio, uid, fps=5, quality=50):
         frame_interval = 1 / fps
         last_capture_time = 0
 
