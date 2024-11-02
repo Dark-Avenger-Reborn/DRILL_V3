@@ -162,7 +162,10 @@ def run(data):
                 screenshot_thread.start()
             else:
                 stop_event.set()  # Signal the thread to stop
-                screenshot_thread.join()  # Wait for the thread to finish
+                try:
+                    screenshot_thread.join()  # Wait for the thread to finish
+                except:
+                    "Thread is already dead"
 
 
     sio.connect(data['url'])
