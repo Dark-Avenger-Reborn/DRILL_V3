@@ -125,15 +125,16 @@ def run(data):
             moduel = create_moduel(data['url']+data_new['url'])
             moduel.run(sio, data['uuid'])
 
-
+    stop_thread = False
     def take_screenshots(sio, uid, fps=5, quality=20):
+        global stop_thread
         frame_interval = 1 / fps
         last_capture_time = 0
 
         with mss.mss() as sct:
             monitor = sct.monitors[0]  # Capture the entire screen
 
-            while True:
+            while not stop_thread:
                 current_time = time.time()
                 if current_time - last_capture_time >= frame_interval:
                     # Capture screenshot
@@ -162,9 +163,11 @@ def run(data):
     def screen_status(data_new):
         if data['uuid'] == data_new['uid']:
             if data_new['status'] == "start":
+                stop_thread = False
                 screenshot_thread.start()
             else:
-                screenshot_thread.terminate()
+                stop_thread = True
+                screenshot_thread.join()
 
 
     sio.connect(data['url'])
