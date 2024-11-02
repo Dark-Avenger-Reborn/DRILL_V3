@@ -33,11 +33,19 @@
 
         socket.on('screenshot', function(response) {
             if (response["uid"] == pageSID) {
-                console.log(response['screen'])
-                const imageBase64 = `data:image/png;base64,${response['image']}`;
-                document.getElementById('capturedImage').src = imageBase64;
+                // Convert binary data to a Blob
+                const byteArray = new Uint8Array(response['image'].data);
+                const blob = new Blob([byteArray], { type: 'image/jpeg' });
+                
+                // Create a URL for the Blob and set it as the image source
+                const imageUrl = URL.createObjectURL(blob);
+                document.getElementById('capturedImage').src = imageUrl;
+
+                // Revoke the object URL after setting the image to release memory
+                URL.revokeObjectURL(imageUrl);
             }
         });
+
 
 
         // Assume 'imageBase64' is the variable containing your Base64 string
