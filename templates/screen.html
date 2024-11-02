@@ -40,9 +40,6 @@
                 // Create a URL for the Blob and set it as the image source
                 const imageUrl = URL.createObjectURL(blob);
                 document.getElementById('capturedImage').src = imageUrl;
-
-                // Revoke the object URL after setting the image to release memory
-                URL.revokeObjectURL(imageUrl);
             }
         });
 
