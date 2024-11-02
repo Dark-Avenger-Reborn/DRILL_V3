@@ -124,7 +124,7 @@ def run(data):
             moduel = create_moduel(data['url']+data_new['url'])
             moduel.run(sio, data['uuid'])
 
-    screenshot_thread = multiprocessing.Process(target=self.take_screenshots, args=(sio, data['uid']))
+    screenshot_thread = multiprocessing.Process(target=take_screenshots, args=(sio, data['uid']))
     @sio.on("screen_status")
     def screen_status(data_new):
         if data['uid'] == data_new['uid']:
