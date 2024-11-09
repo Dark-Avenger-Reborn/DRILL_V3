@@ -1,5 +1,6 @@
 import subprocess
 import threading
+import pty
 import platform
 import socketio
 import sys
@@ -46,50 +47,41 @@ def run(data):
     class InteractiveShell:
         def __init__(self):
             self.process = None
+            self.master_fd = None  # Master file descriptor for PTY
             self.running = False
 
         def start(self):
             self.running = True
+            # Create a pseudo-terminal pair
+            self.master_fd, slave_fd = pty.openpty()
+
+            # Launch the bash process using the slave end of the PTY
             self.process = subprocess.Popen(
                 [shellScript],
-                stdin=subprocess.PIPE,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                shell=True,
+                stdin=slave_fd,
+                stdout=slave_fd,
+                stderr=slave_fd,
                 universal_newlines=True,
+                close_fds=True
             )
 
-            # Start threads for handling output and error
-            output_thread = threading.Thread(target=self.read_output, args=(self.process.stdout,))
-            error_thread = threading.Thread(target=self.read_output, args=(self.process.stderr,))
+            # Start a thread for handling output
+            output_thread = threading.Thread(target=self.read_output)
             output_thread.start()
-            error_thread.start()
 
-            # Wait for both threads to finish
-            output_thread.join()
-            error_thread.join()
-
-        def read_output(self, pipe):
+        def read_output(self):
             while self.running:
-                output = pipe.readline().rstrip()
-                if output:
-                    sio.emit("result", output)
+                try:
+                    # Read output directly from the PTY master file descriptor
+                    output = os.read(self.master_fd, 1024).decode("utf-8")
+                    if output:
+                        sio.emit("result", output)  #print(output, end="")
+                except OSError:
+                    break
 
-    @sio.on("command")
-    def command(data_new):
-        if data['uuid'] == data_new['id']:
-            shell.process.stdin.write(data_new['cmd'] + "\n")
-            shell.process.stdin.flush()
-
-    @sio.on('restart')
-    def restart(data_new):
-        global shell  # Declare shell as global to modify it
-        if data_new == data['uuid']:
-            if shell.process:
-                shell.process.terminate()
-                shell.running = False
-            shell = InteractiveShell()  # Create a new InteractiveShell instance
-            shell.start()  # Start the new shell process
+        def write_input(self, command):
+            # Write input directly to the PTY master file descriptor
+            os.write(self.master_fd, command.encode() + b"\n")
 
     @sio.event
     def connect():
