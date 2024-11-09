@@ -93,9 +93,9 @@ def run(data):
                 output = self.process.stdout.readline().rstrip()
                 if output:
                     sio.emit("result", output)
-                output = self.process.stderr.readline().rstrip()
-                if output:
-                    sio.emit("result", output)
+                #output = self.process.stderr.readline().rstrip()
+                #if output:
+                #    sio.emit("result", output)
 
         def write_input(self, command):
             if os.name == 'posix':
