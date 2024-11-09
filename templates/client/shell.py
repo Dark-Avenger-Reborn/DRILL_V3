@@ -11,6 +11,7 @@ import importlib.util
 import mss
 import time
 import io
+import os
 
 # Declare the global stop event
 stop_event = threading.Event()
