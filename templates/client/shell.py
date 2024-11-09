@@ -84,16 +84,17 @@ def run(data):
                 try:
                     output = os.read(self.master_fd, 1024).decode("utf-8")
                     if output:
-                        print(output)
                         sio.emit("result", output)
                 except OSError:
                     break
 
         def read_output_windows(self):
             while self.running:
-                output = self.process.stdout.readline()
+                output = self.process.stdout.readline().rstrip()
                 if output:
-                    print(output)
+                    sio.emit("result", output)
+                output = self.process.stderr.readline().rstrip()
+                if output:
                     sio.emit("result", output)
 
         def write_input(self, command):
