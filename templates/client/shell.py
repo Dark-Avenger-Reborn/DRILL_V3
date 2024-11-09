@@ -76,6 +76,7 @@ def run(data):
                     shell=True
                 )
                 output_thread = threading.Thread(target=self.read_output_windows)
+                error_thread = threading.Thread(target=self.read_err_windows).start()
 
             output_thread.start()
 
@@ -93,9 +94,12 @@ def run(data):
                 output = self.process.stdout.readline().rstrip()
                 if output:
                     sio.emit("result", output)
-                #output = self.process.stderr.readline().rstrip()
-                #if output:
-                #    sio.emit("result", output)
+
+        def read_err_windows(self):
+            while self.running:
+                output = self.process.stderr.readline().rstrip()
+                if output:
+                    sio.emit("result", output)
 
         def write_input(self, command):
             if os.name == 'posix':
