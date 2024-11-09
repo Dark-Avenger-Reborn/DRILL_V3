@@ -50,6 +50,7 @@ def run(data):
         def start(self):
             self.running = True
             if os.name == 'posix':  # Unix-like systems
+                print("Linux shell")
                 import pty
                 self.master_fd, slave_fd = pty.openpty()
                 self.process = subprocess.Popen(
@@ -62,6 +63,7 @@ def run(data):
                 )
                 output_thread = threading.Thread(target=self.read_output_posix)
             else:  # Windows
+                print("Windows shell")
                 self.process = subprocess.Popen(
                     [shellScript],
                     stdin=subprocess.PIPE,
@@ -79,6 +81,7 @@ def run(data):
                 try:
                     output = os.read(self.master_fd, 1024).decode("utf-8")
                     if output:
+                        print(output)
                         sio.emit("result", output)
                 except OSError:
                     break
@@ -87,6 +90,7 @@ def run(data):
             while self.running:
                 output = self.process.stdout.readline()
                 if output:
+                    print(output)
                     sio.emit("result", output)
 
         def write_input(self, command):
