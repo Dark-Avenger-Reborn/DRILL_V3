@@ -4,12 +4,13 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Loading</title>
+  <title>Terminal</title>
   <script src="https://cdn.jsdelivr.net/npm/jquery"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js" integrity="sha512-aMGMvNYu8Ue4G+fHa359jcPb1u+ytAF+P2SCb+PxrjCdO3n3ZTxJ30zuH39rimUggmTwmh2u7wvQsDTHESnmfQ==" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jquery.terminal/js/jquery.terminal.min.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery.terminal/css/jquery.terminal.min.css" />
 </head>
+<body>
   <template id="greetings">
     _________                                     __             .___
     \_   ___ \  ____   ____   ____   ____   _____/  |_  ____   __| _/
@@ -21,28 +22,28 @@
     ----------------------------------------------------------------------
 
   </template>
-<body>
 
-</body>
   <script>
-    var socket = io();
+    const socket = io();
     socket.connect(window.location.origin);
     const pageSID = window.location.pathname.split('/')[2];
 
     $(function() {
       $('body').terminal(function(command, term) {
-        socket.emit('command', {"cmd": command, "id": pageSID});
+        socket.emit('command', { "cmd": command, "id": pageSID });
       }, {
-        greetings: greetings.innerHTML,
+        greetings: document.getElementById('greetings').innerHTML,
         prompt: '>',
-        completion: false
+        completion: false,
+        ansi: true  // Enable ANSI color support
       });
 
       socket.on('result', function(response) {
-        if (response["id"] == pageSID) {
-            $('body').terminal().echo(response['result']);
+        if (response["id"] === pageSID) {
+          $('body').terminal().echo(response['result']);
         }
       });
     });
   </script>
+</body>
 </html>
