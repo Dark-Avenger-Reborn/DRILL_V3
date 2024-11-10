@@ -34,7 +34,7 @@
         socket.emit('command', { "cmd": command, "id": pageSID });
       }, {
         greetings: document.getElementById('greetings').innerHTML,
-        prompt: '>',
+        //prompt: '>',
         completion: false,
         ansi: true,
       });
@@ -43,7 +43,7 @@
         if (response["id"] === pageSID) {
           console.log(response['result']);
           const cleanedResult = response['result'];
-          $('body').terminal().echo(cleanedResult, {newline: false});
+          $('body').terminal().echo(cleanedResult);
         }
       });
     });
