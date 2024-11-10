@@ -57,7 +57,7 @@ def run(data):
                 import pty
                 self.master_fd, slave_fd = pty.openpty()
                 self.process = subprocess.Popen(
-                    [shellScript, "--noprofile", "--norc"],
+                    [shellScript],
                     stdin=slave_fd,
                     stdout=slave_fd,
                     stderr=slave_fd,
