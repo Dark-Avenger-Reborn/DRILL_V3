@@ -35,6 +35,7 @@
         greetings: document.getElementById('greetings').innerHTML,
         prompt: '>',
         completion: false,
+        ansi: true,
       });
 
       socket.on('result', function(response) {
