@@ -43,7 +43,7 @@
         if (response["id"] === pageSID) {
           console.log(response['result']);
           const cleanedResult = response['result'];
-          $('body').terminal().echo(cleanedResult);
+          $('body').terminal().echo(cleanedResult, {newline: false});
         }
       });
     });
