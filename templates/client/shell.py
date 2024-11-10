@@ -82,8 +82,14 @@ def run(data):
             output_thread.start()
 
         def strip_ansi_escape_codes(self, text):
-            ansi_escape = re.compile(r'\x1b\[[0-9;]*[mK]')
-            return ansi_escape.sub('', text)
+            # Remove all ANSI escape sequences, including colors, cursor movement, and title changes
+            ansi_escape = re.compile(r'\x1b\[[0-9;]*[mK]')  # For standard ANSI sequences
+            title_escape = re.compile(r'\x1b\]0;[^\a]*\a')  # For window title change escape sequences
+
+            text = ansi_escape.sub('', text)  # Remove color and formatting codes
+            text = title_escape.sub('', text)  # Remove window title change sequences
+            
+            return text
 
         def read_output_posix(self):
             while self.running:
