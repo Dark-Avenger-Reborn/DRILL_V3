@@ -81,7 +81,7 @@ def run(data):
 
             output_thread.start()
 
-        def strip_ansi_escape_codes(text):
+        def strip_ansi_escape_codes(self, text):
             ansi_escape = re.compile(r'\x1b\[[0-9;]*[mK]')
             return ansi_escape.sub('', text)
 
