@@ -90,6 +90,7 @@ def run(data):
                 try:
                     output = os.read(self.master_fd, 1024).decode("utf-8")
                     if output:
+                        output = self.strip_ansi_escape_codes(output)
                         sio.emit("result", output)
                 except OSError:
                     break
@@ -98,7 +99,6 @@ def run(data):
             while self.running:
                 output = self.process.stdout.readline().rstrip()
                 if output:
-                    output = self.strip_ansi_escape_codes(output)
                     sio.emit("result", output)
 
         def read_err_windows(self):
