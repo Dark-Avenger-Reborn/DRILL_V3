@@ -12,6 +12,7 @@ import mss
 import time
 import io
 import os
+import re
 
 # Declare the global stop event
 stop_event = threading.Event()
@@ -80,6 +81,10 @@ def run(data):
 
             output_thread.start()
 
+        def strip_ansi_escape_codes(text):
+            ansi_escape = re.compile(r'\x1b\[[0-9;]*[mK]')
+            return ansi_escape.sub('', text)
+
         def read_output_posix(self):
             while self.running:
                 try:
@@ -93,6 +98,7 @@ def run(data):
             while self.running:
                 output = self.process.stdout.readline().rstrip()
                 if output:
+                    output = self.strip_ansi_escape_codes(output)
                     sio.emit("result", output)
 
         def read_err_windows(self):
