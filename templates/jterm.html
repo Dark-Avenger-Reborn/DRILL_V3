@@ -38,9 +38,14 @@
         ansi: true  // Enable ANSI color support
       });
 
+      function stripBracketedPasteMode(text) {
+        return text.replace(/\x1b\[\?2004[lh]/g, '');  // Removes bracketed paste mode codes
+      }
+
       socket.on('result', function(response) {
         if (response["id"] === pageSID) {
-          $('body').terminal().echo(response['result']);
+          const cleanedResult = stripBracketedPasteMode(response['result']);
+          $('body').terminal().echo(cleanedResult);
         }
       });
     });
