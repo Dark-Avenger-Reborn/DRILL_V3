@@ -57,6 +57,10 @@ def run(data):
                 print("Linux shell")
                 import pty
                 self.master_fd, slave_fd = pty.openpty()
+                import termios
+                attrs = termios.tcgetattr(slave_fd)
+                attrs[3] = attrs[3] & ~termios.ECHO  # Disable ECHO flag
+                termios.tcsetattr(slave_fd, termios.TCSANOW, attrs)
                 self.process = subprocess.Popen(
                     [shellScript],
                     stdin=slave_fd,
@@ -81,23 +85,12 @@ def run(data):
 
             output_thread.start()
 
-        def strip_ansi_escape_codes(self, text):
-            # Remove all ANSI escape sequences, including colors, cursor movement, and title changes
-            ansi_escape = re.compile(r'\x1b\[[0-9;]*[mK]')  # For standard ANSI sequences
-            title_escape = re.compile(r'\x1b\]0;[^\a]*\a')  # For window title change escape sequences
-
-            text = ansi_escape.sub('', text)  # Remove color and formatting codes
-            text = title_escape.sub('', text)  # Remove window title change sequences
-            
-            return text
-
         def read_output_posix(self):
             while self.running:
                 try:
-                    output = os.read(self.master_fd, 1024).decode("utf-8")
+                    output = os.read(self.master_fd, 1024).decode("utf-8", errors="ignore").replace("\r\n", "\n").replace("\r", "\n").strip()
                     if output:
-                        output = self.strip_ansi_escape_codes(output)
-                        sio.emit("result", output)
+                        sio.emit("result", str(output))
                 except OSError:
                     break
 
@@ -115,7 +108,9 @@ def run(data):
 
         def write_input(self, command):
             if os.name == 'posix':
-                os.write(self.master_fd, command.encode() + b"\n")
+                        if not command.endswith("\n"):
+                            command += "\n"
+                            os.write(self.master_fd, command.encode())
             else:
                 self.process.stdin.write(command + "\n")
                 self.process.stdin.flush()

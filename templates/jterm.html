@@ -35,17 +35,12 @@
         greetings: document.getElementById('greetings').innerHTML,
         prompt: '>',
         completion: false,
-        ansi: true  // Enable ANSI color support
       });
-
-      function stripBracketedPasteMode(text) {
-        return text.replace(/\x1b\[\?2004[lh]/g, '');  // Removes bracketed paste mode codes
-      }
 
       socket.on('result', function(response) {
         if (response["id"] === pageSID) {
           console.log(response['result']);
-          const cleanedResult = stripBracketedPasteMode(response['result']).trim();
+          const cleanedResult = response['result'];
           $('body').terminal().echo(cleanedResult);
         }
       });
