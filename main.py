@@ -84,7 +84,10 @@ def download1():
 
 @app.route('/list_payloads', methods=['POST'])
 def list_payloads():
-    return str(os.listdir('payloads'))
+    try:
+        return str(os.listdir('payloads'))
+    except:
+        return "[]"
 
 @app.route('/explotation_module', methods=['POST'])
 def send_explotation_module():
