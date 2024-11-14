@@ -28,7 +28,7 @@ class C2:
         self.sio.on('screen_status', self.screen_status)
         self.sio.on('screenshot', self.screenshot_taken)
 
-        print("Current time: "+datetime.datetime.now())
+        print(f"Current time: {datetime.datetime.now()}")
 
 
     def on_connect(self, sid, data):
