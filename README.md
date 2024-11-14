@@ -17,7 +17,7 @@ DRILL can be easily tunneled through Cloudflare, providing an additional layer o
 Built-in Docker integration enables seamless payload creation for both Linux, Windows and OSX targets, expanding the framework's versatility.
 
 ### 🔒 Robust Persistence Mechanisms
-- **Windows**: Implements startup registry keys and PowerShell profile modifications
+- **Windows**: Implements startup registry keys and PowerShell profile modifications (Powershell profile is temporarily disabled due to a bug)
 - **Linux**: Creates a user-local systemd process for persistent access
 - **OSX**: Uses launch agents to run itself on startup
 
