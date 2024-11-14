@@ -196,6 +196,27 @@
         OSX: ["x86", "x86_64", "arm64"]
     };
 
+    function parseAndFormatTime(dateString) {
+            // Parse the dateString in the given format "%Y-%m-%d-%H-%M-%S"
+            const dateParts = dateString.split('-');
+            
+            // Extract individual components
+            const year = dateParts[0];
+            const month = parseInt(dateParts[1], 10) - 1;  // JavaScript months are 0-based
+            const day = dateParts[2];
+            const hour = dateParts[3];
+            const minute = dateParts[4];
+            const second = dateParts[5];
+            
+            // Create a new Date object
+            const date = new Date(year, month, day, hour, minute, second);
+            
+            // Format the Date object as a human-readable string
+            const formattedTime = date.toLocaleString(); // or use your custom format
+            
+            return formattedTime;
+        }
+
     // Function to update architecture dropdown
     function updateArchDropdown() {
         const selectedOS = osDropdown.value;
@@ -254,7 +275,7 @@
                     row.innerHTML = `
                         <td>${file_split[1]}</td>
                         <td>${file_split[2]}</td>
-                        <td>${file_split[3]}</td>
+                        <td>${parseAndFormatTime(file_split[3])}</td>
                         <td><button onclick="download('${directory[file]}')">Download</button></td>
                     `;
                     tableBody.appendChild(row);
