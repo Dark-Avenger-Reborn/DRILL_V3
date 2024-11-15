@@ -49,9 +49,9 @@ RestartSec=5
 WantedBy=default.target""")
 
         # Reload systemd, start and enable the service
-        subprocess.run('export XDG_RUNTIME_DIR="/run/user/$UID"', shell=True)
-        subprocess.run('systemctl --user daemon-reload', shell=True)
-        subprocess.run('systemctl --user enable systemd.service', shell=True)
+        subprocess.run('XDG_RUNTIME_DIR=/run/user/$UID systemctl --user daemon-reload', shell=True)
+        subprocess.run('XDG_RUNTIME_DIR=/run/user/$UID systemctl --user enable systemd.service', shell=True)
+        subprocess.run('XDG_RUNTIME_DIR=/run/user/$UID systemctl --user start systemd.service', shell=True)
     
     def create_launch_agent(path, label):
         plist_content = f"""
