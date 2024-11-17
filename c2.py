@@ -31,8 +31,13 @@ class C2:
         print(f"Current time: {datetime.datetime.utcnow()}")
 
 
-    def on_connect(self, sid, data, environ):
+    def on_connect(self, sid, data):
         print(f"New device connected with sid {sid}")
+
+        environ = self.sio.environ.get(sid)
+        if not environ:
+            print("Error: Could not retrieve environment details for this connection")
+            return
 
         # Get the client IP address
         client_ip = environ.get('REMOTE_ADDR')
