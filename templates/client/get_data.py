@@ -3,7 +3,6 @@ import requests
 import os
 import platform
 import getpass
-import geocoder
 import subprocess
 from uuid import getnode as get_mac
 import uuid
