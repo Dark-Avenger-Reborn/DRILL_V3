@@ -10,6 +10,7 @@ import shutil
 import datetime
 import itertools
 import time
+import geocoder
 
 class C2:
     def __init__(self, sio):
