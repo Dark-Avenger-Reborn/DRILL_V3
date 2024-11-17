@@ -163,7 +163,7 @@ class C2:
         if not os.path.isdir('payloads'):
             os.makedirs('payloads')
 
-        date = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
+        date = datetime.datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")
         payload_file_name = f"payload_{os_name}_{arch}_{date}_{uuid.uuid4()}"
 
 
