@@ -31,7 +31,19 @@ class C2:
         print(f"Current time: {datetime.datetime.utcnow()}")
 
 
-    def on_connect(self, sid, data):
+    def on_connect(self, sid, data, environ):
+        print(f"New device connected with sid {sid}")
+
+        # Get the client IP address
+        client_ip = environ.get('REMOTE_ADDR')
+        
+        # If the server is behind a reverse proxy, check the 'X-Forwarded-For' header
+        x_forwarded_for = environ.get('HTTP_X_FORWARDED_FOR')
+        if x_forwarded_for:
+            client_ip = x_forwarded_for.split(',')[0]  # Get the first IP in the list
+
+        print(f"IP: {client_ip}")
+
         print(f"New device connected with sid {sid}")
         if data['uuid'] not in self.devices:
             data['sid'] = sid

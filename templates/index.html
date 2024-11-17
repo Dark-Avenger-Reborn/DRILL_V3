@@ -308,11 +308,15 @@
                     'https://static-00.iconduck.com/assets.00/unknown-os-20px-icon-512x512-brbzte7w.png'; // Default logo for other/unknown OS
 
 
-                    // Add a marker to the map
-                    L.marker([clientData.geolocation.latitude, clientData.geolocation.longitude])
-                        .addTo(map)
-                        .bindPopup(`<b>${clientData.username}</b><br>${clientData.hostname}`)
-                        .openPopup();
+                    try {
+                        // Add a marker to the map
+                        L.marker([clientData.geolocation.latitude, clientData.geolocation.longitude])
+                            .addTo(map)
+                            .bindPopup(`<b>${clientData.username}</b><br>${clientData.hostname}`)
+                            .openPopup();
+                    } catch {
+                        "Unable to locate geolocaction"
+                    }
 
                     // Add a row to the table
                     const row = document.createElement('tr');
