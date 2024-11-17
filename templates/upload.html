@@ -389,6 +389,28 @@
     }
 
 
+    function parseAndFormatTime(dateString) {
+        // Parse the dateString in the given format "%Y-%m-%d-%H-%M-%S"
+        const dateParts = dateString.split('-');
+        
+        // Extract individual components
+        const year = dateParts[0];
+        const month = parseInt(dateParts[1], 10) - 1;  // JavaScript months are 0-based
+        const day = dateParts[2];
+        const hour = dateParts[3];
+        const minute = dateParts[4];
+        const second = dateParts[5];
+        
+        // Create a new Date object as UTC
+        const date = new Date(Date.UTC(year, month, day, hour, minute, second));
+        
+        // Convert the UTC date to local time
+        const formattedTime = date.toLocaleString(); // Automatically converts to local time
+        
+        return formattedTime;
+    }
+
+
     old_data_files = []
 
     async function updateFileList() {
@@ -410,7 +432,7 @@
                 const row = document.createElement('tr');
                     row.innerHTML = `
                         <td>${file_split[2]}</td>
-                        <td>${file_split[1]}</td>
+                        <td>${parseAndFormatTime(file_split[1])}</td>
                         <td><button onclick="downloadFile(this)" data-filename="${escapeHtml(files[file])}">Download</button></td>
                     `;
                     tableBody.appendChild(row);
