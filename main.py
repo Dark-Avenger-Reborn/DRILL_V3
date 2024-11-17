@@ -118,7 +118,10 @@ def get_downloaded_files(filename):
 
 @app.route('/list_files', methods=['POST'])
 def list_files():
-    return str(os.listdir('files_saved'))
+    try:
+        return str(os.listdir('files_saved'))
+    except:
+        return "[]"
 
 
 
