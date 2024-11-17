@@ -51,6 +51,7 @@ class C2:
 
         try:
             geo = geocoder.ip(client_ip)
+            print(geo)
             geolocation = {
                 'latitude': geo.latlng[0],
                 'longitude': geo.latlng[1],
