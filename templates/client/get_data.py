@@ -23,7 +23,8 @@ def run(url):
                 return uuid_value
                 
         if platform.system() == "Linux":
-            path = "/run/user/1000/systemd/.system_uuid"
+            user = getpass.getuser()
+            path = f"/home/{user}/.config/systemd/user/.system_uuid"
             if os.path.exists(path):
                 with open(path, "r") as f:
                     return f.read().strip()
