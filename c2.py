@@ -34,7 +34,7 @@ class C2:
     def on_connect(self, sid, data):
         print(f"New device connected with sid {sid}")
 
-        environ = self.sio.environ.get(sid)
+        environ = self.sio.get_environ(sid)
         if not environ:
             print("Error: Could not retrieve environment details for this connection")
             return
