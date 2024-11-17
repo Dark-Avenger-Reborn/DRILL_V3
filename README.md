@@ -57,7 +57,7 @@ DRILL follows a typical C2 framework architecture:
 # Clone the repo
 git clone https://github.com/redteam-malware/DRILL_V3.git
 
-# Run the installer
+# Run the installer, avoid running it as root
 cd DRILL_V3
 bash ./install.sh
 ```
