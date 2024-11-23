@@ -214,6 +214,12 @@
                 setTimeout(() => URL.revokeObjectURL(imageUrl), 1000);
             }
         });
+
+        document.onvisibilitychange = function() {
+            if (document.visibilityState === 'hidden') {
+                socket.emit('screen_status', {"status": "stop", "uid": pageSID});
+            }
+        };
     </script>
 </body>
 </html>
