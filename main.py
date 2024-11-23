@@ -80,7 +80,7 @@ def payload1():
 @app.route('/download', methods=['POST'])
 def download1():
     data = request.get_json()
-    threading.Thread(target=malware.generate(data)).start()
+    threading.Thread(target=malware.generate, args=(data,)).start()
     return ""
 
 @app.route('/list_payloads', methods=['POST'])
