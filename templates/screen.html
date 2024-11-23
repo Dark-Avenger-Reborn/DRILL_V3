@@ -220,6 +220,26 @@
                 socket.emit('screen_status', {"status": "stop", "uid": pageSID});
             }
         };
+
+
+
+
+
+
+        //sending information
+        var element = document.getElementById('capturedImage');
+
+        if (element.matches(':hover')) {
+            console.log('Mouse is over the element now.');
+        }
+
+        document.getElementById('capturedImage').onclick = function(e) {
+            // e = Mouse click event.
+            var rect = e.target.getBoundingClientRect();
+            var x = e.clientX - rect.left; //x position within the element.
+            var y = e.clientY - rect.top;  //y position within the element.
+            console.log("Left? : " + x + " ; Top? : " + y + ".");
+        }
     </script>
 </body>
 </html>
