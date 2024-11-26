@@ -35,6 +35,7 @@ def run(url):
                 with open(path, "w") as f:
                     f.write(uuid_value)
                 return uuid_value
+                
         if platform.system() == "Darwin":
             user = getpass.getuser()
             if os.path.exists(f"./uuid.txt"):

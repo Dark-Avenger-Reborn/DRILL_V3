@@ -13,9 +13,6 @@ import time
 import io
 import os
 import re
-import queue
-import cv2
-import numpy as np
 
 # Declare the global stop event
 stop_event = threading.Event()
@@ -163,66 +160,40 @@ def run(data):
             module = create_module(data['url'] + data_new['url'])
             module.run(sio, data['uuid'])
 
-    def compress_image_opencv(img, quality):
-        """Compress image using OpenCV for faster performance."""
-        img_np = np.array(img)  # Convert PIL Image to NumPy array
-        success, jpeg_data = cv2.imencode('.jpg', img_np, [cv2.IMWRITE_JPEG_QUALITY, quality])
-        return jpeg_data.tobytes() if success else None
-
-    def take_screenshots(sio, uid, fps=15, quality=5):
+    def take_screenshots(sio, uid, fps=5, quality=20):
         frame_interval = 1 / fps
         last_capture_time = 0
-    
-        # Use a queue to offload emissions to a separate thread
-        frame_queue = queue.Queue()
-    
-        def emit_frames():
-            while not stop_event.is_set() or not frame_queue.empty():
-                try:
-                    frame_data = frame_queue.get(timeout=0.1)  # Wait for frames in the queue
-                    sio.emit("screenshot", {"uid": uid, "image": frame_data})
-                    print("Frame emitted")
-                except queue.Empty:
-                    continue  # No frames in the queue; keep waiting
-    
-        # Start a thread for emitting frames
-        emitter_thread = threading.Thread(target=emit_frames)
-        emitter_thread.start()
-    
+
         with mss.mss() as sct:
             monitor = sct.monitors[0]  # Capture the entire screen
-    
+
             while not stop_event.is_set():
                 current_time = time.time()
                 if current_time - last_capture_time >= frame_interval:
                     # Capture screenshot
                     screenshot = sct.grab(monitor)
+                    
+                    # Convert screenshot to PIL Image
                     img = Image.frombytes("RGB", screenshot.size, screenshot.rgb)
-    
-                    # Compress the image with OpenCV
-                    compressed_data = compress_image_opencv(img, quality)
-    
-                    # Add the compressed frame to the queue
-                    if compressed_data:
-                        frame_queue.put(compressed_data)
-                        print("Frame added to queue")
-    
+                    
+                    # Compress to JPEG with adjustable quality
+                    with io.BytesIO() as output:
+                        img.save(output, format="JPEG", quality=quality)
+                        jpeg_data = output.getvalue()
+                    
+                    # Emit the raw JPEG data instead of base64
+                    sio.emit("screenshot", {"uid": uid, "image": jpeg_data})
+                    print("Sent compressed screenshot")
+
                     last_capture_time = current_time
-    
-                # Sleep to maintain FPS
-                time.sleep(max(0, frame_interval - (time.time() - current_time)))
-    
-        # Wait for the emitter thread to finish
-        frame_queue.put(None)  # Signal the emitter thread to stop
-        emitter_thread.join()
-    
-    # Example usage with socket.io
-    screenshot_thread = None
-    
+
+                # Small sleep to prevent a tight loop
+                time.sleep(0.001)
+
+    screenshot_thread = threading.Thread(target=take_screenshots, args=(sio, data['uuid']))
+
     @sio.on("screen_status")
     def screen_status(data_new):
-        global screenshot_thread
-    
         if data['uuid'] == data_new['uid']:
             if data_new['status'] == "start":
                 stop_event.clear()  # Reset the event to False
@@ -230,9 +201,10 @@ def run(data):
                 screenshot_thread.start()
             else:
                 stop_event.set()  # Signal the thread to stop
-                if screenshot_thread:
+                try:
                     screenshot_thread.join()  # Wait for the thread to finish
-                    screenshot_thread = None
+                except:
+                    "Thread is already dead"
 
 
     sio.connect(data['url'])
