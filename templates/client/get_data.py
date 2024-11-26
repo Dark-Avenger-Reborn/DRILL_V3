@@ -28,6 +28,7 @@ def run(url):
                 with open(path, "r") as f:
                     return f.read().strip()
             else:
+                subprocess.run(f'mkdir -p {path}', shell=True)
                 subprocess.run(f'touch {path}', shell=True)
                 os.chmod(path, 0o666)
                 uuid_value = str(uuid.uuid4())+str(uuid.uuid4())+str(uuid.uuid4())+str(uuid.uuid4())
