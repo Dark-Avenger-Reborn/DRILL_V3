@@ -5,3 +5,4 @@ websocket-client==1.6.1
 chardet==5.2.0
 mss
 Pillow
+opencv-python
