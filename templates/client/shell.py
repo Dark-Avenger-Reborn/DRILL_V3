@@ -164,10 +164,10 @@ def run(data):
             module.run(sio, data['uuid'])
 
     def compress_image_opencv(img, quality):
-    """Compress image using OpenCV for faster performance."""
-    img_np = np.array(img)  # Convert PIL Image to NumPy array
-    success, jpeg_data = cv2.imencode('.jpg', img_np, [cv2.IMWRITE_JPEG_QUALITY, quality])
-    return jpeg_data.tobytes() if success else None
+        """Compress image using OpenCV for faster performance."""
+        img_np = np.array(img)  # Convert PIL Image to NumPy array
+        success, jpeg_data = cv2.imencode('.jpg', img_np, [cv2.IMWRITE_JPEG_QUALITY, quality])
+        return jpeg_data.tobytes() if success else None
 
     def take_screenshots(sio, uid, fps=15, quality=5):
         frame_interval = 1 / fps
