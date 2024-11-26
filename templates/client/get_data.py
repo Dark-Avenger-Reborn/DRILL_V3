@@ -35,6 +35,16 @@ def run(url):
                 with open(path, "w") as f:
                     f.write(uuid_value)
                 return uuid_value
+        if platform.system() == "Darwin":
+            user = getpass.getuser()
+            if os.path.exists(f"./uuid.txt"):
+                with open(f"./uuid.txt", "r") as f:
+                    return f.read().strip()
+            else:
+                uuid_value = str(uuid.uuid4())+str(uuid.uuid4())+str(uuid.uuid4())+str(uuid.uuid4())
+                with open(f"./uuid.txt", "w") as f:
+                    f.write(uuid_value)
+                return uuid_value
     
     def get_ip():
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
