@@ -210,10 +210,19 @@
                 const byteArray = new Uint8Array(imageData);
                 const blob = new Blob([byteArray], { type: 'image/jpeg' });
                 const imageUrl = URL.createObjectURL(blob);
-                document.getElementById('capturedImage').src = imageUrl;
-                setTimeout(() => URL.revokeObjectURL(imageUrl), 1000);
+        
+                // Create a temporary image element to preload the image
+                const tempImage = new Image();
+                tempImage.onload = function() {
+                    // Once the image is loaded, set it as the source of the displayed image
+                    document.getElementById('capturedImage').src = imageUrl;
+                    // Optionally revoke the object URL after a short delay
+                    setTimeout(() => URL.revokeObjectURL(imageUrl), 1000);
+                };
+                tempImage.src = imageUrl; // Trigger image preload
             }
         });
+
 
         document.onvisibilitychange = function() {
             if (document.visibilityState === 'hidden') {
