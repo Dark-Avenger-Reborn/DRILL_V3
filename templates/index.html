@@ -254,6 +254,18 @@
         .payload-container button:hover {
             background-color: #666;
         }
+        #pem-input + div {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 10px;
+        }
+
+        #pem-windows, #pem-linux, #pem-osx {
+            width: 30px;
+            height: 30px;
+            vertical-align: middle;
+        }
     </style>
 </head>
 <body>
@@ -285,10 +297,18 @@
                 <option value="uac-bypass">UAC Bypass</option> -->
             </select>
             <input style="display: none;", id="pem-input"></input>
+            Supported OS
+            <div>
+                <img id="pem-windows" src='https://upload.wikimedia.org/wikipedia/commons/0/0a/Unofficial_Windows_logo_variant_-_2002%E2%80%932012_%28Multicolored%29.svg' alt="Windows OS">
+                <img id="pem-linux" src='https://upload.wikimedia.org/wikipedia/commons/3/35/Tux.svg' alt="Linux OS">
+                <img id="pem-osx" src='https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg' alt="OSX">
+            </div>
+            <br>
             <!-- OS Select All with Checkboxes -->
             <div class="os-selection">
-                <p>Select All OS 
+                <p>
                     <input type="checkbox" id="select-all-os">
+                    Select All&nbsp;
                 </p>
                 <p>
                     <input type="checkbox" id="select-linux" class="os-checkbox">
@@ -523,13 +543,39 @@
 
     const pem_dropdown = document.getElementById('pem-dropdown')
     const pem_input = document.getElementById('pem-input')
+    const pem_windows = document.getElementById('pem-windows')
+    const pem_linux = document.getElementById('pem-linux')
+    const pem_osx = document.getElementById('pem-osx')
     // Function to update architecture dropdown
     function updateArchDropdown() {
         const selected_input = pem_dropdown.value;
         if (selected_input === "send-command") {
             pem_input.style.display = "block"
+            pem_windows.style.display = "block"
+            pem_linux.style.display = "block"
+            pem_osx.style.display = "block"
         } else {
             pem_input.style.display = "none"
+        }
+        if (selected_input === "bsod") {
+            pem_windows.style.display = "block"
+            pem_linux.style.display = "none"
+            pem_osx.style.display = "none"
+        }
+        if (selected_input === "wifi-password") {
+            pem_windows.style.display = "block"
+            pem_linux.style.display = "none"
+            pem_osx.style.display = "none"
+        }
+        if (selected_input === "send-command") {
+            pem_windows.style.display = "block"
+            pem_linux.style.display = "block"
+            pem_osx.style.display = "block"
+        }
+        if (selected_input === "restart") {
+            pem_windows.style.display = "block"
+            pem_linux.style.display = "block"
+            pem_osx.style.display = "block"
         }
     }
 

