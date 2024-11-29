@@ -61,7 +61,7 @@ git clone https://github.com/redteam-malware/DRILL_V3.git
 cd DRILL_V3
 bash ./install.sh
 ```
-
+We recommend not running DRILL V3 behind a proxy as it can mess with IP grabbing issues. If you can, please use an open port or tested software like ngrok or Cloudflare Tunnels to reduce problems.
 ## 🖥️ Usage
 
 ```bash
