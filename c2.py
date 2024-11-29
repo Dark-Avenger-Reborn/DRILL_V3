@@ -52,7 +52,6 @@ class C2:
                         ip = ip.strip()
                         try:
                             ip_obj = ipaddress.ip_address(ip)
-                            print(ip_obj)
                             if not ip_obj.is_private:
                                 print(f"Found public IP in {header}: {ip}")
                                 return ip
@@ -70,8 +69,6 @@ class C2:
         if not environ:
             print("Error: Could not retrieve environment details for this connection")
             return
-
-        print(f"X-Forwarded-For: {environ.get('HTTP_X_FORWARDED_FOR', '')}")
 
         client_ip = self.get_client_ip(environ)
 
