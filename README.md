@@ -34,6 +34,24 @@ Built-in Docker integration enables seamless payload creation for both Linux, Wi
 ### 🎨 Redesigned User Interface
 Version 3.0 features a completely overhauled UI, improving usability and efficiency for operators.
 
+---
+
+## 📸 Screenshots
+
+### Main Dashboard
+![Main Dashboard](images/main_dashboard.png)
+
+### Payload Generation
+![Payload Generation](images/payload_generation.png)
+
+### File Upload/Download
+![File Upload/Download](images/file_transfer.png)
+
+### Console of Connected Device
+![Console of Connected Device](images/device_console.png)
+
+---
+
 ## 🏗️ Architecture
 
 DRILL follows a typical C2 framework architecture:
