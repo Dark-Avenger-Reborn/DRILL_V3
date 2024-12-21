@@ -1,13 +1,13 @@
 FROM ubuntu:24.04
 
-LABEL maintainer="f.batonogov@yandex.ru"
+LABEL maintainer="ozabramovs@gmail.com"
 
 ENV DEBIAN_FRONTEND=noninteractive
 
 ARG WINE_VERSION=winehq-devel
 
 ARG PYTHON_VERSION=3.13.0
-ARG PYINSTALLER_VERSION=6.11.0
+ARG PYINSTALLER_VERSION=6.11.1
 
 # we need wine for this all to work, so we'll use the PPA
 RUN set -x \
