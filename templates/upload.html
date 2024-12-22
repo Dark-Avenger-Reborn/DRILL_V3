@@ -318,7 +318,7 @@
             // Create a FormData object to send the file
             const formData = new FormData();
             formData.append('file', file);
-            formData.append('uuids', JSON.stringify(selectedElements));
+            formData.append('uids', JSON.stringify(selectedElements));
 
             fetch('/upload_file', {
                 method: 'POST',
@@ -356,7 +356,7 @@
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ 'file_path': String(file_path), 'uuids': selectedElements })
+            body: JSON.stringify({ 'file_path': String(file_path), 'uids': selectedElements })
         })
         .then(response => {
             console.log('Response from server:', response);
