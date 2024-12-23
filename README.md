@@ -1,6 +1,4 @@
-<center>
-<img src="images/Drill-V3_With_Hammer.svg" width="300" height="300">
-</center>
+[//]: # (<img src="images/Drill-V3_With_Hammer.svg" width="300" height="300">)
 
 # 🎯 DRILL: Advanced C2 Framework v3.0
 
