@@ -1,3 +1,7 @@
+<center>
+<img src="images/Drill-V3_With_Hammer.svg" width="300" height="300">
+</center>
+
 # 🎯 DRILL: Advanced C2 Framework v3.0
 
 **DRILL** (Distributable Remote Integrated Lightweight Link) is a powerful and stealthy Command and Control (C2) framework designed for seamless operation across various environments.
