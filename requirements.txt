@@ -5,3 +5,5 @@ websocket-client==1.6.1
 chardet==5.2.0
 mss
 Pillow
+discord==2.3.2
+audioop-lts==0.2.1

