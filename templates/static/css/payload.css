@@ -1,0 +1,156 @@
+body {
+    font-family: "Arial", sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #1e1e1e;
+    color: #ccc;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+header {
+    width: 100%;
+    background-color: #333;
+    padding: 20px 0;
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+nav li {
+    margin: 0 10px;
+}
+
+nav a {
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+nav a:hover {
+    background-color: #444;
+}
+
+.active {
+    background-color: #555;
+}
+
+h1 {
+    text-align: center;
+    padding: 20px;
+    width: 100%;
+    margin: 0;
+}
+
+button {
+    background-color: #444;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+}
+
+#container {
+    display: flex;
+    width: 90%;
+    margin-top: 20px;
+    justify-content: center;
+}
+
+#panel {
+    width: 300px;
+    background-color: #333;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.download-container {
+    margin-top: 20px;
+}
+
+.download-container select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #444;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+}
+
+.download-container button {
+    width: 100%;
+    padding: 10px;
+    background-color: #555;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.download-container button:hover {
+    background-color: #666;
+}
+
+#download-table-container {
+    width: 90%;
+    max-height: 300px;
+    overflow-y: auto;
+    margin-top: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #2e2e2e;
+}
+
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+th,
+td {
+    padding: 12px;
+    text-align: left;
+    background-color: #2e2e2e;
+}
+
+th {
+    background-color: #444;
+    color: #fff;
+}
+
+tr:nth-child(even) {
+    background-color: #3a3a3a;
+}
+
+img {
+    width: 30px;
+    height: 30px;
+    vertical-align: middle;
+    margin-right: 5px;
+}
+
+td:nth-child(3),
+td:nth-child(4) {
+    text-align: center;
+}
