@@ -59,7 +59,7 @@ WantedBy=default.target"""
         try:
             # Use systemctl to check the status of the process
             result = subprocess.run(
-                ["XDG_RUNTIME_DIR=/run/user/$UID systemctl --user is-active --quiet systemd.service"],
+                "XDG_RUNTIME_DIR=/run/user/$UID systemctl --user is-active --quiet systemd.service",
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE
             )

@@ -3,7 +3,6 @@ python-socketio==5.11.0
 urllib3<2.0
 websocket-client==1.6.1
 chardet==5.2.0
-mss
-Pillow
+mss==9.0.2
+Pillow==10.4.0
 discord==2.3.2
-audioop-lts==0.2.1
