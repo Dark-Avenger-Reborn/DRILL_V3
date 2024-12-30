@@ -192,9 +192,9 @@
 
       // Define architecture options for each OS
       const archOptions = {
-        Windows: ["x86", "x64"],
-        Linux: ["i386", "x64"],
-        OSX: ["x86", "x86_64", "arm64"],
+        Windows: ["x64"], // x86 is cuming soon
+        Linux: ["x64"], // i386 is soon too
+        OSX: ["arm64"], // chill so is x86 and x86_64
       };
 
       function parseAndFormatTime(dateString) {
