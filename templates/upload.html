@@ -1,482 +1,501 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Upload & Download Dashboard</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #1e1e1e;
-            color: #ccc;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        header {
-            width: 100%;
-            background-color: #333;
-            padding: 20px 0;
-        }
-        nav {
-            display: flex;
-            justify-content: center;
-        }
-        nav ul {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            display: flex;
-        }
-        nav li {
-            margin: 0 10px;
-        }
-        nav a {
-            color: #fff;
-            text-decoration: none;
-            padding: 10px 15px;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-        }
-        nav a:hover {
-            background-color: #444;
-        }
-        .active {
-            background-color: #555;
-        }
-        h1 {
-            text-align: center;
-            padding: 20px;
-            width: 100%;
-            margin: 0;
-        }
-        button {
-            background-color: #444;
-            color: #fff;
-            border: none;
-            padding: 10px;
-            margin-top: 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            width: 100%;
-        }
-        #container {
-            display: flex;
-            width: 90%;
-            margin-top: 20px;
-            justify-content: space-between;
-        }
-        #map {
-            flex: 3;
-            height: 400px;
-            margin-left: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        #panel {
-            width: 300px;
-            background-color: #333;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        .action-container, .payload-container {
-            margin-top: 20px;
-        }
-        .action-container select, .action-container input[type="file"], .payload-container select {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            background-color: #444;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-        }
-        .action-container button, .payload-container button {
-            width: 100%;
-            padding: 10px;
-            background-color: #555;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        .action-container button:hover, .payload-container button:hover {
-            background-color: #666;
-        }
-        #file-table-container, #upload-table-container, #device-table-container {
-            width: 45%;
-            max-height: 300px;
-            overflow-y: auto;
-            margin-top: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            background-color: #2e2e2e;
-        }
-        table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-        th, td {
-            padding: 12px;
-            text-align: left;
-            background-color: #2e2e2e;
-        }
-        th {
-            background-color: #444;
-            color: #fff;
-        }
-        tr:nth-child(even) {
-            background-color: #3a3a3a;
-        }
-        td:nth-child(4), td:nth-child(5) {
-            text-align: center;
-        }
-        input[type="checkbox"] {
-            appearance: none;
-            width: 20px;
-            height: 20px;
-            background-color: #444;
-            border: 2px solid #666;
-            border-radius: 4px;
-            cursor: pointer;
-            position: relative;
-            outline: none;
-            transition: background-color 0.3s, border-color 0.3s;
-        }
-        input[type="checkbox"]:checked {
-            background-color: #28a745;
-            border-color: #28a745;
-        }
-        input[type="checkbox"]:checked::after {
-            content: '';
-            position: absolute;
-            top: 2px;
-            left: 6px;
-            width: 5px;
-            height: 10px;
-            border: solid white;
-            border-width: 0 2px 2px 0;
-            transform: rotate(45deg);
-        }
-        input[type="checkbox"]:hover {
-            border-color: #888;
-            background-color: #555;
-        }
-        input[type="checkbox"]:checked:hover {
-            background-color: #218838;
-            border-color: #218838;
-        }
-        img {
-            width: 30px;
-            height: 30px;
-            vertical-align: middle;
-            margin-right: 5px;
-        }
-        /* File upload input styling */
-        #file-input {
-            width: calc(100% - 40px); /* Subtract padding from width */
-            max-width: 400px; /* Set a maximum width */
-            margin: 10px auto; /* Center the input and add vertical margin */
-            padding: 10px 20px; /* Add padding on both sides */
-            border: 2px solid;
-            border-radius: 10px;
-            font-size: 16px;
-            color: #333;
-            transition: border-color 0.3s ease;
-            background-color: #555;
-        }
+      body {
+        font-family: "Arial", sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #1e1e1e;
+        color: #ccc;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      header {
+        width: 100%;
+        background-color: #333;
+        padding: 20px 0;
+      }
+      nav {
+        display: flex;
+        justify-content: center;
+      }
+      nav ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+      }
+      nav li {
+        margin: 0 10px;
+      }
+      nav a {
+        color: #fff;
+        text-decoration: none;
+        padding: 10px 15px;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+      }
+      nav a:hover {
+        background-color: #444;
+      }
+      .active {
+        background-color: #555;
+      }
+      h1 {
+        text-align: center;
+        padding: 20px;
+        width: 100%;
+        margin: 0;
+      }
+      button {
+        background-color: #444;
+        color: #fff;
+        border: none;
+        padding: 10px;
+        margin-top: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 100%;
+      }
+      #container {
+        display: flex;
+        width: 90%;
+        margin-top: 20px;
+        justify-content: space-between;
+      }
+      #map {
+        flex: 3;
+        height: 400px;
+        margin-left: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      #panel {
+        width: 300px;
+        background-color: #333;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      .action-container,
+      .payload-container {
+        margin-top: 20px;
+      }
+      .action-container select,
+      .action-container input[type="file"],
+      .payload-container select {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        background-color: #444;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+      }
+      .action-container button,
+      .payload-container button {
+        width: 100%;
+        padding: 10px;
+        background-color: #555;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+      .action-container button:hover,
+      .payload-container button:hover {
+        background-color: #666;
+      }
+      #file-table-container,
+      #upload-table-container,
+      #device-table-container {
+        width: 45%;
+        max-height: 300px;
+        overflow-y: auto;
+        margin-top: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        background-color: #2e2e2e;
+      }
+      table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        border-radius: 10px;
+        overflow: hidden;
+      }
+      th,
+      td {
+        padding: 12px;
+        text-align: left;
+        background-color: #2e2e2e;
+      }
+      th {
+        background-color: #444;
+        color: #fff;
+      }
+      tr:nth-child(even) {
+        background-color: #3a3a3a;
+      }
+      td:nth-child(4),
+      td:nth-child(5) {
+        text-align: center;
+      }
+      input[type="checkbox"] {
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        background-color: #444;
+        border: 2px solid #666;
+        border-radius: 4px;
+        cursor: pointer;
+        position: relative;
+        outline: none;
+        transition: background-color 0.3s, border-color 0.3s;
+      }
+      input[type="checkbox"]:checked {
+        background-color: #28a745;
+        border-color: #28a745;
+      }
+      input[type="checkbox"]:checked::after {
+        content: "";
+        position: absolute;
+        top: 2px;
+        left: 6px;
+        width: 5px;
+        height: 10px;
+        border: solid white;
+        border-width: 0 2px 2px 0;
+        transform: rotate(45deg);
+      }
+      input[type="checkbox"]:hover {
+        border-color: #888;
+        background-color: #555;
+      }
+      input[type="checkbox"]:checked:hover {
+        background-color: #218838;
+        border-color: #218838;
+      }
+      img {
+        width: 30px;
+        height: 30px;
+        vertical-align: middle;
+        margin-right: 5px;
+      }
+      /* File upload input styling */
+      #file-input {
+        width: calc(100% - 40px); /* Subtract padding from width */
+        max-width: 400px; /* Set a maximum width */
+        margin: 10px auto; /* Center the input and add vertical margin */
+        padding: 10px 20px; /* Add padding on both sides */
+        border: 2px solid;
+        border-radius: 10px;
+        font-size: 16px;
+        color: #333;
+        transition: border-color 0.3s ease;
+        background-color: #555;
+      }
 
-        #file-input:hover,
-        #file-input:focus {
-            outline: none;
-            background-color: #555;
-        }
+      #file-input:hover,
+      #file-input:focus {
+        outline: none;
+        background-color: #555;
+      }
 
-        /* Directory input styling */
-        #dir-input {
-            width: calc(100% - 40px); /* Subtract padding from width */
-            max-width: 400px; /* Set a maximum width */
-            margin: 10px auto; /* Center the input and add vertical margin */
-            padding: 10px 20px; /* Add padding on both sides */
-            border: 2px solid;
-            border-radius: 10px;
-            font-size: 16px;
-            color: #333;
-            transition: border-color 0.3s ease;
-            background-color: #555;
-        }
+      /* Directory input styling */
+      #dir-input {
+        width: calc(100% - 40px); /* Subtract padding from width */
+        max-width: 400px; /* Set a maximum width */
+        margin: 10px auto; /* Center the input and add vertical margin */
+        padding: 10px 20px; /* Add padding on both sides */
+        border: 2px solid;
+        border-radius: 10px;
+        font-size: 16px;
+        color: #333;
+        transition: border-color 0.3s ease;
+        background-color: #555;
+      }
 
-        #dir-input:hover,
-        #dir-input:focus {
-            background-color: #555;
-            outline: none;
-        }
-
+      #dir-input:hover,
+      #dir-input:focus {
+        background-color: #555;
+        outline: none;
+      }
     </style>
-</head>
-<body>
-
-<header>
-    <nav>
+  </head>
+  <body>
+    <header>
+      <nav>
         <ul>
-            <li><a href="/">Control Panel</a></li>
-            <li><a href="/payload">Payload</a></li>
-            <li><a href="/files" class="active">Files</a></li>
+          <li><a href="/">Control Panel</a></li>
+          <li><a href="/payload">Payload</a></li>
+          <li><a href="/files" class="active">Files</a></li>
         </ul>
-    </nav>
-</header>
+      </nav>
+    </header>
 
-<h1>Upload & Download Dashboard</h1>
+    <h1>Upload & Download Dashboard</h1>
 
-<div id="container">
-    <!-- Upload Section -->
-    <div id="panel">
+    <div id="container">
+      <!-- Upload Section -->
+      <div id="panel">
         <h2>Upload a File</h2>
         <div class="action-container">
-            <input type="file" id="file-input">
-            <p style="display: flex; align-items: center;">Select All <input type="checkbox" id="select-all"></p>
-            <button onclick="uploadFile()">Upload File</button>
+          <input type="file" id="file-input" />
+          <p style="display: flex; align-items: center">
+            Select All <input type="checkbox" id="select-all" />
+          </p>
+          <button onclick="uploadFile()">Upload File</button>
         </div>
-    </div>
+      </div>
 
-    <!-- Download Section -->
-    <div id="panel">
+      <!-- Download Section -->
+      <div id="panel">
         <h2>Download a File</h2>
         <div class="action-container">
-            <p>Input the directory in which you want to download</p>
-            <input type="text" id="dir-input" placeholder="Enter Path">
-            <p style="display: flex; align-items: center;">Select All <input type="checkbox" id="select-all2"></p>
-            <button onclick="fileDownload()">Filter Downloads</button>
+          <p>Input the directory in which you want to download</p>
+          <input type="text" id="dir-input" placeholder="Enter Path" />
+          <p style="display: flex; align-items: center">
+            Select All <input type="checkbox" id="select-all2" />
+          </p>
+          <button onclick="fileDownload()">Filter Downloads</button>
         </div>
+      </div>
     </div>
-</div>
 
-<div id="device-table-container">
-    <table>
+    <div id="device-table-container">
+      <table>
         <thead>
-            <tr>
-                <th>Checked</th>
-                <th>Device ID</th>
-                <th>Location</th>
-                <th>Status</th>
-                <th>OS</th>
-                <th>IP Address</th>
-            </tr>
+          <tr>
+            <th>Checked</th>
+            <th>Device ID</th>
+            <th>Location</th>
+            <th>Status</th>
+            <th>OS</th>
+            <th>IP Address</th>
+          </tr>
         </thead>
         <tbody id="device-table">
-            <!-- Device rows will be added here -->
+          <!-- Device rows will be added here -->
         </tbody>
-    </table>
-</div>
+      </table>
+    </div>
 
-<div id="file-table-container">
-    <table>
+    <div id="file-table-container">
+      <table>
         <thead>
-            <tr>
-                <th>File Name</th>
-                <th>Date</th>
-                <th>Download</th>
-            </tr>
+          <tr>
+            <th>File Name</th>
+            <th>Date</th>
+            <th>Download</th>
+          </tr>
         </thead>
         <tbody id="file-table">
-            <!-- Download rows will be added here -->
+          <!-- Download rows will be added here -->
         </tbody>
-    </table>
-</div>
+      </table>
+    </div>
 
+    <script>
+      // Function to handle file uploads
+      function uploadFile() {
+        const fileInput = document.getElementById("file-input");
+        const file = fileInput.files[0];
 
-<script>
-    // Function to handle file uploads
-        function uploadFile() {
-            const fileInput = document.getElementById('file-input');
-            const file = fileInput.files[0];
+        const checkboxes = document.querySelectorAll(".row-select");
 
-            const checkboxes = document.querySelectorAll('.row-select');
-            
-            // Create an array to store the IDs of selected rows
-            const selectedElements = [];
-
-            // Loop through the checkboxes
-            checkboxes.forEach(checkbox => {
-                // Check if the checkbox is checked
-                if (checkbox.checked) {
-                    // Add the row ID to the selectedElements array
-                    selectedElements.push(checkbox.dataset.rowId);
-                }
-            });
-
-            console.log(selectedElements);
-            
-            // Create a FormData object to send the file
-            const formData = new FormData();
-            formData.append('file', file);
-            formData.append('uids', JSON.stringify(selectedElements));
-
-            fetch('/upload_file', {
-                method: 'POST',
-                body: formData // Send formData instead of JSON
-            })
-            .then(response => {
-                alert('File Uploaded')
-                console.log('Response from server:', response);
-            })
-            .catch(error => {
-                console.error('Error sending delete request:', error);
-            });
-    }
-
-    // Function to filter downloads
-    function fileDownload() {
-        const file_path = document.getElementById('dir-input').value;
-        const checkboxes = document.querySelectorAll('.row-select');
-        
         // Create an array to store the IDs of selected rows
         const selectedElements = [];
 
         // Loop through the checkboxes
-        checkboxes.forEach(checkbox => {
-            // Check if the checkbox is checked
-            if (checkbox.checked) {
-                // Add the row ID to the selectedElements array
-                selectedElements.push(checkbox.dataset.rowId);
-            }
+        checkboxes.forEach((checkbox) => {
+          // Check if the checkbox is checked
+          if (checkbox.checked) {
+            // Add the row ID to the selectedElements array
+            selectedElements.push(checkbox.dataset.rowId);
+          }
+        });
+
+        console.log(selectedElements);
+
+        // Create a FormData object to send the file
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("uids", JSON.stringify(selectedElements));
+
+        fetch("/upload_file", {
+          method: "POST",
+          body: formData, // Send formData instead of JSON
+        })
+          .then((response) => {
+            alert("File Uploaded");
+            console.log("Response from server:", response);
+          })
+          .catch((error) => {
+            console.error("Error sending delete request:", error);
+          });
+      }
+
+      // Function to filter downloads
+      function fileDownload() {
+        const file_path = document.getElementById("dir-input").value;
+        const checkboxes = document.querySelectorAll(".row-select");
+
+        // Create an array to store the IDs of selected rows
+        const selectedElements = [];
+
+        // Loop through the checkboxes
+        checkboxes.forEach((checkbox) => {
+          // Check if the checkbox is checked
+          if (checkbox.checked) {
+            // Add the row ID to the selectedElements array
+            selectedElements.push(checkbox.dataset.rowId);
+          }
         });
 
         console.log(selectedElements, file_path);
-        
-        fetch('/download_file', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ 'file_path': String(file_path), 'uids': selectedElements })
+
+        fetch("/download_file", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            file_path: String(file_path),
+            uids: selectedElements,
+          }),
         })
-        .then(response => {
-            console.log('Response from server:', response);
-        })
-        .catch(error => {
-            console.error('Error sending delete request:', error);
-        });
-    }
+          .then((response) => {
+            console.log("Response from server:", response);
+          })
+          .catch((error) => {
+            console.error("Error sending delete request:", error);
+          });
+      }
 
-
-
-    function deepEqual(obj1, obj2) {
+      function deepEqual(obj1, obj2) {
         return JSON.stringify(obj1) === JSON.stringify(obj2);
-    }
+      }
 
+      function escapeHtml(unsafe) {
+        return unsafe
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+      }
 
-    function escapeHtml(unsafe) {
-    return unsafe
-         .replace(/&/g, "&amp;")
-         .replace(/</g, "&lt;")
-         .replace(/>/g, "&gt;")
-         .replace(/"/g, "&quot;")
-         .replace(/'/g, "&#039;");
-}
+      // Function to handle file download
+      function downloadFile(button) {
+        const fileName = button.getAttribute("data-filename");
+        window.location.href = `/get_downloaded_files/${encodeURIComponent(
+          fileName
+        )}`;
+      }
 
-    // Function to handle file download
-    function downloadFile(button) {
-        const fileName = button.getAttribute('data-filename');
-        window.location.href = `/get_downloaded_files/${encodeURIComponent(fileName)}`;
-    }
-
-
-    function parseAndFormatTime(dateString) {
+      function parseAndFormatTime(dateString) {
         // Parse the dateString in the given format "%Y-%m-%d-%H-%M-%S"
-        const dateParts = dateString.split('-');
-        
+        const dateParts = dateString.split("-");
+
         // Extract individual components
         const year = dateParts[0];
-        const month = parseInt(dateParts[1], 10) - 1;  // JavaScript months are 0-based
+        const month = parseInt(dateParts[1], 10) - 1; // JavaScript months are 0-based
         const day = dateParts[2];
         const hour = dateParts[3];
         const minute = dateParts[4];
         const second = dateParts[5];
-        
+
         // Create a new Date object as UTC
         const date = new Date(Date.UTC(year, month, day, hour, minute, second));
-        
+
         // Convert the UTC date to local time
         const formattedTime = date.toLocaleString(); // Automatically converts to local time
-        
+
         return formattedTime;
-    }
+      }
 
+      old_data_files = [];
 
-    old_data_files = []
-
-    async function updateFileList() {
-        const response = await fetch('/list_files', { method: 'POST' });
+      async function updateFileList() {
+        const response = await fetch("/list_files", { method: "POST" });
         files = await response.text();
 
         files = files.replace(/'/g, '"');
-        files = JSON.parse(files)
+        files = JSON.parse(files);
 
         if (!deepEqual(old_data_files, files)) {
-            old_data_files = files
+          old_data_files = files;
 
-            const tableBody = document.getElementById('file-table');
-            tableBody.innerHTML = ''; // Clear existing rows
+          const tableBody = document.getElementById("file-table");
+          tableBody.innerHTML = ""; // Clear existing rows
 
-            for (file in files) {
-                file_split = files[file].split("_")
-                console.log(file_split)
-                const row = document.createElement('tr');
-                    row.innerHTML = `
+          for (file in files) {
+            file_split = files[file].split("_");
+            console.log(file_split);
+            const row = document.createElement("tr");
+            row.innerHTML = `
                         <td>${file_split[2]}</td>
                         <td>${parseAndFormatTime(file_split[1])}</td>
-                        <td><button onclick="downloadFile(this)" data-filename="${escapeHtml(files[file])}">Download</button></td>
+                        <td><button onclick="downloadFile(this)" data-filename="${escapeHtml(
+                          files[file]
+                        )}">Download</button></td>
                     `;
-                    tableBody.appendChild(row);
-            }
+            tableBody.appendChild(row);
+          }
         }
-    }
+      }
 
-    // Update file list every 5 seconds
-    setInterval(updateFileList,  1000);
+      // Update file list every 5 seconds
+      setInterval(updateFileList, 1000);
 
-    // Initial update
-    updateFileList();
+      // Initial update
+      updateFileList();
 
-    old_data = {};
-    // Function to update the table and map with new data
-    async function updateDevices() {
+      old_data = {};
+      // Function to update the table and map with new data
+      async function updateDevices() {
         try {
-            const response = await fetch('/devices', { method: 'POST' });
-            const data = await response.json();
-            
-            if (!deepEqual(data, old_data)) {
-                old_data = data
+          const response = await fetch("/devices", { method: "POST" });
+          const data = await response.json();
 
-                const tableBody = document.getElementById('device-table');
-                tableBody.innerHTML = ''; // Clear existing table rows
+          if (!deepEqual(data, old_data)) {
+            old_data = data;
 
-                Object.keys(data).forEach(clientId => {
-                    const clientData = data[clientId];
+            const tableBody = document.getElementById("device-table");
+            tableBody.innerHTML = ""; // Clear existing table rows
 
-                    const osType = clientData.platform[0];
-                    const osLogo = osType === 'Linux' ? 'https://upload.wikimedia.org/wikipedia/commons/3/35/Tux.svg' :
-                    osType === 'Darwin' ? 'https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg' :
-                    osType === 'Windows' ? 'https://upload.wikimedia.org/wikipedia/commons/0/0a/Unofficial_Windows_logo_variant_-_2002%E2%80%932012_%28Multicolored%29.svg' :
-                    osType === 'FreeBSD' ? 'https://upload.wikimedia.org/wikipedia/commons/4/40/Daemon-phk.svg' :
-                    osType === 'OpenBSD' ? 'https://upload.wikimedia.org/wikipedia/commons/a/ad/Puffy.jpg' :
-                    osType === 'Solaris' ? 'https://upload.wikimedia.org/wikipedia/commons/d/d2/Icon-sun-solaris_os.svg' :
-                    osType === 'Android' ? 'https://upload.wikimedia.org/wikipedia/commons/2/26/Android_Robot_Head_2023.svg' :
-                    'https://static-00.iconduck.com/assets.00/unknown-os-20px-icon-512x512-brbzte7w.png'; // Default logo for other/unknown OS
+            Object.keys(data).forEach((clientId) => {
+              const clientData = data[clientId];
 
+              const osType = clientData.platform[0];
+              const osLogo =
+                osType === "Linux"
+                  ? "https://upload.wikimedia.org/wikipedia/commons/3/35/Tux.svg"
+                  : osType === "Darwin"
+                  ? "https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg"
+                  : osType === "Windows"
+                  ? "https://upload.wikimedia.org/wikipedia/commons/0/0a/Unofficial_Windows_logo_variant_-_2002%E2%80%932012_%28Multicolored%29.svg"
+                  : osType === "FreeBSD"
+                  ? "https://upload.wikimedia.org/wikipedia/commons/4/40/Daemon-phk.svg"
+                  : osType === "OpenBSD"
+                  ? "https://upload.wikimedia.org/wikipedia/commons/a/ad/Puffy.jpg"
+                  : osType === "Solaris"
+                  ? "https://upload.wikimedia.org/wikipedia/commons/d/d2/Icon-sun-solaris_os.svg"
+                  : osType === "Android"
+                  ? "https://upload.wikimedia.org/wikipedia/commons/2/26/Android_Robot_Head_2023.svg"
+                  : "https://static-00.iconduck.com/assets.00/unknown-os-20px-icon-512x512-brbzte7w.png"; // Default logo for other/unknown OS
 
-                    // Add a row to the table
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
+              // Add a row to the table
+              const row = document.createElement("tr");
+              row.innerHTML = `
                         <td><input type="checkbox" class="row-select" data-row-id="${clientId}"></td>
                         <td>${clientData.username}</td>
                         <td>${clientData.geolocation.address}</td>
@@ -484,33 +503,36 @@
                         <td><img src="${osLogo}" alt="${osType} logo">${osType}</td>
                         <td>${clientData.public_ip}</td>
                     `;
-                    tableBody.appendChild(row);
-                });
-            }
+              tableBody.appendChild(row);
+            });
+          }
         } catch (error) {
-            console.error('Error fetching data:', error);
+          console.error("Error fetching data:", error);
         }
-    }
+      }
 
-    // Call updateDevices to initially load the data
-    updateDevices();
+      // Call updateDevices to initially load the data
+      updateDevices();
 
-    
-    setInterval(updateDevices, 1000);
+      setInterval(updateDevices, 1000);
 
-    // Event listener for "Select All" checkbox
-    document.getElementById('select-all').addEventListener('change', function() {
-        const isChecked = this.checked;
-        document.querySelectorAll('.row-select').forEach(checkbox => {
+      // Event listener for "Select All" checkbox
+      document
+        .getElementById("select-all")
+        .addEventListener("change", function () {
+          const isChecked = this.checked;
+          document.querySelectorAll(".row-select").forEach((checkbox) => {
             checkbox.checked = isChecked;
+          });
         });
-    });
-    document.getElementById('select-all2').addEventListener('change', function() {
-        const isChecked = this.checked;
-        document.querySelectorAll('.row-select').forEach(checkbox => {
+      document
+        .getElementById("select-all2")
+        .addEventListener("change", function () {
+          const isChecked = this.checked;
+          document.querySelectorAll(".row-select").forEach((checkbox) => {
             checkbox.checked = isChecked;
+          });
         });
-    });
-</script>
-</body>
+    </script>
+  </body>
 </html>

