@@ -70,14 +70,10 @@ def term(path):
 
 @app.route("/client/<path:filename>")
 def client(filename):
-    if not is_logged_in():
-        return redirect(url_for('login'))
     return send_from_directory("templates/client", filename)
 
 @app.route("/get_payloads/<path:filename>")
 def get_payloads(filename):
-    if not is_logged_in():
-        return redirect(url_for('login'))
     return send_from_directory("payloads", filename, as_attachment=True)
 
 @app.route("/devices", methods=["POST"])
