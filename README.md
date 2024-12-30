@@ -89,6 +89,13 @@ We recommend not running DRILL V3 behind a proxy as it can mess with IP grabbing
 python3 main.py
 ```
 
+## 🔑 Change Username and Password
+If you wish to change the default username and password for the DRILL framework, simply edit the configuration file located at config.json. Modify the username and password fields to your desired values.
+```bash
+# Edit config file
+nano config.json
+```
+
 ## ⚠️ Security Considerations
 
 > **Warning**: This tool is intended for authorized penetration testing and red team operations only. Misuse of this software may be illegal in your jurisdiction. Use responsibly and ethically.
