@@ -6,5 +6,9 @@
 
     "settings": {
         "require_login": true
+    },
+
+    "style": {
+        "light_mode": false
     }
 }
