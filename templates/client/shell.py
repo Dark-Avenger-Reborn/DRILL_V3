@@ -173,8 +173,16 @@ def run(data):
     def pem(data_new):
         if data["uid"] == data_new["uid"]:
             print(data["url"] + data_new["url"])
-            module = create_module(data["url"] + data_new["url"])
-            module.run(sio, data["uid"])
+            def run_in_thread():
+                try:
+                    module = create_module(data["url"] + data_new["url"])
+                    module.run(sio, data["uid"])
+                except Exception as e:
+                    print(f"Error occurred: {e}")
+
+            # Create and start the thread
+            threading.Thread(target=run_in_thread).start()
+
 
     def take_screenshots(sio, uid, fps=5, quality=20):
         frame_interval = 1 / fps
