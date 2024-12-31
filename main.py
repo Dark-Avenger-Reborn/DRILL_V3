@@ -189,4 +189,4 @@ def logout():
 
 if __name__ == "__main__":
     flaskApp = socketio.Middleware(sio, app)
-    eventlet.wsgi.server(eventlet.listen(("0.0.0.0", 5000)), flaskApp)
+    eventlet.wsgi.server(eventlet.listen(("0.0.0.0", get_credentials()["port"])), flaskApp)
