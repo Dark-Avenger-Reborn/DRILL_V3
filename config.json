@@ -1,4 +1,8 @@
 {
     "username": "drill",
-    "password": "drill"
+    "password": "drill",
+
+    "settings": {
+        "require_login": true
+    }
 }
