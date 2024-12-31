@@ -153,12 +153,12 @@ th,
 td {
     padding: 12px;
     text-align: left;
-    background-color: #fff; /* White table cells */
+    background-color: #f9f9f9; /* Lighter table rows */
 }
 
 th {
-    background-color: #f1f1f1; /* Light gray header */
-    color: #333;
+    background-color: #007bff; /* Blue header */
+    color: #fff;
 }
 
 tr:nth-child(even) {
