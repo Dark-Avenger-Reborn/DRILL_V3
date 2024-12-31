@@ -1,0 +1,131 @@
+body {
+    font-family: "Arial", sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4; /* Lighter background */
+    color: #333; /* Dark text for readability */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+header {
+    width: 100%;
+    background-color: #fff; /* White background for header */
+    padding: 20px 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Light shadow for header */
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+nav li {
+    margin: 0 10px;
+}
+
+nav a {
+    color: #333; /* Dark text for links */
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+nav a:hover {
+    background-color: #ddd; /* Light hover background */
+}
+
+.active {
+    background-color: #ccc; /* Slightly darker background for active link */
+}
+
+h1 {
+    text-align: center;
+    padding: 20px;
+    width: 100%;
+    margin: 0;
+    color: #333; /* Dark text for the heading */
+}
+
+.controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px 0;
+}
+
+button {
+    background-color: #007bff; /* Blue button background */
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    margin: 10px 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+#capturedImage {
+    max-width: 90%;
+    margin: 20px 0;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for images */
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px; /* Space between buttons */
+}
+
+.slider {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 200px; /* Fixed width for the slider */
+    height: 40px; /* Height of the slider */
+    border-radius: 20px; /* Rounded corners */
+    background-color: #ccc; /* Light background */
+    margin: 20px 0;
+    transition: background-color 0.3s;
+}
+
+.slider-button {
+    flex: 1; /* Equal space for buttons */
+    height: 100%; /* Fill height of the slider */
+    border: none; /* No borders */
+    border-radius: 20px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor */
+    position: relative;
+    z-index: 2; /* Above the background */
+    font-weight: bold; /* Bold text */
+    background-color: transparent; /* Transparent background */
+    color: #1e1e1e; /* Dark text color */
+    transition: color 0.3s;
+}
+
+.slider-highlight {
+    position: absolute; /* Position the highlight */
+    top: 0;
+    left: 0;
+    height: 100%; /* Full height */
+    border-radius: 20px; /* Rounded corners */
+    transition: left 0.3s; /* Smooth sliding */
+    background-color: rgba(0, 123, 255, 0.8); /* Blue highlight */
+    width: 50%; /* Default to the first button */
+}

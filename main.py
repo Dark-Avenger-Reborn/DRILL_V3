@@ -35,13 +35,13 @@ def index():
 def upload():
     if not is_logged_in():
         return redirect(url_for('login'))
-    return render_template("upload.html")
+    return render_template("upload.html", style=get_credentials()["style"]["light_mode"])
 
 @app.route("/payload")
 def payload():
     if not is_logged_in():
         return redirect(url_for('login'))
-    return render_template("payload.html")
+    return render_template("payload.html", style=get_credentials()["style"]["light_mode"])
 
 @app.route("/screen/<path:path>")
 def screen(path):
@@ -49,7 +49,7 @@ def screen(path):
         return redirect(url_for('login'))
     devices = malware.list_devices()
     if path in devices:
-        return render_template("screen.html")
+        return render_template("screen.html", style=get_credentials()["style"]["light_mode"])
     else:
         return redirect("/")
 
@@ -59,7 +59,7 @@ def terminal(path):
         return redirect(url_for('login'))
     devices = malware.list_devices()
     if path in devices:
-        return render_template("terminal.html")
+        return render_template("terminal.html", style=get_credentials()["style"]["light_mode"])
     else:
         return redirect("/")
 

@@ -1,0 +1,163 @@
+body {
+    font-family: "Arial", sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4; /* Lighter background */
+    color: #333; /* Dark text for readability */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+header {
+    width: 100%;
+    background-color: #fff; /* Lighter background for header */
+    padding: 20px 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Light shadow */
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+nav li {
+    margin: 0 10px;
+}
+
+nav a {
+    color: #333; /* Dark text for links */
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+nav a:hover {
+    background-color: #ddd; /* Light hover background */
+}
+
+.active {
+    background-color: #ccc; /* Slightly darker background for active link */
+}
+
+h1 {
+    text-align: center;
+    padding: 20px;
+    width: 100%;
+    margin: 0;
+    color: #333; /* Dark text for the heading */
+}
+
+button {
+    background-color: #007bff; /* Blue button background */
+    color: #fff;
+    border: none;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+#container {
+    display: flex;
+    width: 90%;
+    margin-top: 20px;
+    justify-content: center;
+}
+
+#panel {
+    width: 300px;
+    background-color: #fff; /* Lighter panel background */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Light shadow */
+}
+
+.download-container {
+    margin-top: 20px;
+}
+
+.download-container select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #fff; /* White background for select */
+    color: #333; /* Dark text */
+    border: 1px solid #ccc; /* Light border */
+    border-radius: 5px;
+}
+
+.download-container button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff; /* Blue background */
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.download-container button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+#download-table-container {
+    width: 90%;
+    max-height: 300px;
+    overflow-y: auto;
+    margin-top: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Light shadow */
+    background-color: #fff; /* Light background */
+}
+
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+th,
+td {
+    padding: 12px;
+    text-align: left;
+    background-color: #f9f9f9; /* Lighter table rows */
+}
+
+th {
+    background-color: #007bff; /* Blue header */
+    color: #fff;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2; /* Lighter alternating rows */
+}
+
+img {
+    width: 30px;
+    height: 30px;
+    vertical-align: middle;
+    margin-right: 5px;
+}
+
+td:nth-child(3),
+td:nth-child(4) {
+    text-align: center;
+}

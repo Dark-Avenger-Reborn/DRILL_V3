@@ -4,7 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Download Dashboard</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/payload.css') }}">
+    {% if style == True %}
+      <link rel="stylesheet" href="{{ url_for('static', filename='css/light/payload.css') }}">
+    {% else %}
+      <link rel="stylesheet" href="{{ url_for('static', filename='css/dark/payload.css') }}">
+    {% endif %}
   </head>
   <body>
     <header>

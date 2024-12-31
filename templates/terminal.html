@@ -4,7 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Terminal Dashboard</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/terminal.css') }}">
+    {% if style == True %}
+      <link rel="stylesheet" href="{{ url_for('static', filename='css/light/terminal.css') }}">
+    {% else %}
+      <link rel="stylesheet" href="{{ url_for('static', filename='css/dark/terminal.css') }}">
+    {% endif %}
   </head>
   <body>
     <header>
