@@ -14,7 +14,7 @@ malware = C2(sio)
 # Helper function to check if user is logged in
 def is_logged_in():
     credentials = get_credentials()
-    return ("logged_in" in session and session["logged_in"]) or (!credentials["settings"]["require_login"])
+    return ("logged_in" in session and session["logged_in"]) or (not credentials["settings"]["require_login"])
 
 # Function to read credentials from the JSON file
 def get_credentials():
