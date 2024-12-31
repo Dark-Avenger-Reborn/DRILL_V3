@@ -29,7 +29,7 @@ def get_credentials():
 def index():
     if not is_logged_in():
         return redirect(url_for('login'))  # Redirect to login page if not logged in
-    return render_template("index.html" style=get_credentials()["style"]["light_mode"])
+    return render_template("index.html", style=get_credentials()["style"]["light_mode"])
 
 @app.route("/files")
 def upload():
