@@ -179,6 +179,9 @@ def login():
             return "Invalid credentials, try again.", 401  # Handle failed login
 
     # If GET request, show login form
+    if ((not credentials["settings"]["require_login"])) {
+        redirect(url_for('index'))
+    }
     return render_template("login.html", style=get_credentials()["style"]["light_mode"])
 
 # Route for logging out
