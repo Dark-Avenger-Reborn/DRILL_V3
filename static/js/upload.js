@@ -3,6 +3,19 @@ function uploadFile() {
   const fileInput = document.getElementById("file-input");
   const file = fileInput.files[0];
 
+  // Check if file exists
+  if (!file) {
+    alert("Please select a file to upload.");
+    return;
+  }
+
+  // Check file size (50MB = 50 * 1024 * 1024 bytes)
+  const maxSize = 50 * 1024 * 1024; // 50MB
+  if (file.size > maxSize) {
+    alert("File size exceeds the 50MB limit. Please choose a smaller file.");
+    return;
+  }
+
   const checkboxes = document.querySelectorAll(".row-select");
 
   // Create an array to store the IDs of selected rows
@@ -29,13 +42,19 @@ function uploadFile() {
     body: formData, // Send formData instead of JSON
   })
     .then((response) => {
-      alert("File Uploaded");
+      if (response.ok) {
+        alert("File Uploaded successfully!");
+      } else {
+        alert("Failed to upload the file.");
+      }
       console.log("Response from server:", response);
     })
     .catch((error) => {
-      console.error("Error sending delete request:", error);
+      console.error("Error uploading file:", error);
+      alert("Error uploading file.");
     });
 }
+
 
 // Function to filter downloads
 function fileDownload() {
