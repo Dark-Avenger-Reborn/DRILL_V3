@@ -118,6 +118,15 @@
     </div>
 
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    {% if ip_state == True %}
+    <script>
+      var private_public = true;
+    </script>
+    {% else %}
+      <script>
+        var private_public = false;
+      </script>
+    {% endif %}
     <script src="{{ url_for('static', filename='js/index.js') }}"></script>
   </body>
 </html>

@@ -1,14 +1,16 @@
 {
-    "username": "drill",
-    "password": "drill",
-
-    "port": 5000,
+    "auth": {
+        "username": "drill",
+        "password": "drill"
+    },
 
     "settings": {
-        "require_login": true
+        "require_login": true,
+        "port": 5000
     },
 
     "style": {
-        "light_mode": false
+        "light_mode": false,
+        "private_ip": false
     }
 }

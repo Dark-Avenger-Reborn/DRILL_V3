@@ -62,13 +62,14 @@ async function updateDevices() {
 
         // Add a row to the table
         const row = document.createElement("tr");
+        if (private_public) {ip_state = clientData.private_ip} else {ip_state = clientData.public_ip}
         row.innerHTML = `
                   <td><input type="checkbox" class="row-select" data-row-id="${clientId}"></td>
                   <td>${clientData.username}</td>
                   <td>${clientData.geolocation.address}</td>
                   <td>${clientData.status}</td>
                   <td><img src="${osLogo}" type="os" alt="${osType}">${osType}</td>
-                  <td>${clientData.public_ip}</td>
+                  <td>${ip_state}</td>
                   <td><img src='https://upload.wikimedia.org/wikipedia/commons/6/6f/Octicons-terminal.svg' id='connect' alt="Connect icon" class='terminal-icon' data-row-id="${clientId}"></td>
                   <td><img src='https://upload.wikimedia.org/wikipedia/commons/9/9c/Trash-can_-_Delapouite_-_game-icons.svg' class='trashcan-icon' alt='Delete icon' id='delete' data-row-id="${clientId}"></td>
               `;

@@ -29,13 +29,13 @@ def get_credentials():
 def index():
     if not is_logged_in():
         return redirect(url_for('login'))  # Redirect to login page if not logged in
-    return render_template("index.html", style=get_credentials()["style"]["light_mode"])
+    return render_template("index.html", style=get_credentials()["style"]["light_mode"], ip_state=get_credentials()["style"]["private_ip"])
 
 @app.route("/files")
 def upload():
     if not is_logged_in():
         return redirect(url_for('login'))
-    return render_template("upload.html", style=get_credentials()["style"]["light_mode"])
+    return render_template("upload.html", style=get_credentials()["style"]["light_mode"], ip_state=get_credentials()["style"]["private_ip"])
 
 @app.route("/payload")
 def payload():
@@ -172,7 +172,7 @@ def login():
 
         credentials = get_credentials()
 
-        if credentials and username == credentials["username"] and password == credentials["password"]:
+        if credentials and username == credentials["auth"]["username"] and password == credentials["auth"]["password"]:
             session["logged_in"] = True  # Set session variable
             return redirect(url_for('index'))  # Redirect to the homepage after login
         else:
@@ -189,4 +189,4 @@ def logout():
 
 if __name__ == "__main__":
     flaskApp = socketio.Middleware(sio, app)
-    eventlet.wsgi.server(eventlet.listen(("0.0.0.0", get_credentials()["port"])), flaskApp)
+    eventlet.wsgi.server(eventlet.listen(("0.0.0.0", get_credentials()["settings"]["port"])), flaskApp)
