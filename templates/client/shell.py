@@ -192,7 +192,7 @@ def run(data):
         if data["uid"] == data_new["uid"]:
             print(data_new['screen'])
             screen_or_camera = data_new["screen"]
-
+            print(screen_or_camera)
             stop_event.set()  # Signal the thread to stop
             try:
                 screenshot_thread.join()  # Wait for the thread to finish
@@ -202,6 +202,8 @@ def run(data):
     def take_screenshots(sio, uid, fps=60, quality=30):
         frame_interval = 1 / fps
         last_capture_time = 0
+
+        print(screen_or_camera)
 
         if screen_or_camera == "screen":
             with mss.mss() as sct:
