@@ -190,9 +190,7 @@ def run(data):
     def switch_screen(data_new):
         global screen_or_camera
         if data["uid"] == data_new["uid"]:
-            print(data_new['screen'])
             screen_or_camera = data_new["screen"]
-            print(screen_or_camera)
             stop_event.set()  # Signal the thread to stop
             try:
                 screenshot_thread.join()  # Wait for the thread to finish
