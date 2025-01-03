@@ -76,6 +76,7 @@ async function updateDevices() {
                   <td>${ip_state}</td>
                   <td><img src='https://upload.wikimedia.org/wikipedia/commons/6/6f/Octicons-terminal.svg' id='connect' alt="Connect icon" class='terminal-icon' data-row-id="${clientId}"></td>
                   <td><img src='https://upload.wikimedia.org/wikipedia/commons/9/9c/Trash-can_-_Delapouite_-_game-icons.svg' class='trashcan-icon' alt='Delete icon' id='delete' data-row-id="${clientId}"></td>
+                  <td><img src='https://upload.wikimedia.org/wikipedia/commons/4/4b/Linecons_screen-outline.svg' class='connect-icon' alt='Connect Screen' id='screen' data-row-id="${clientId}"></td>
               `;
         tableBody.appendChild(row);
       });
@@ -151,6 +152,10 @@ document.addEventListener("click", (event) => {
       .catch((error) => {
         console.error("Error sending delete request:", error);
       });
+  } else if (event.target.id === "screen") {
+    const rowId = event.target.dataset.rowId;
+    console.log(`Connect clicked for device ID: ${rowId}`);
+    window.location.href = "/screen/" + rowId;
   }
 });
 
