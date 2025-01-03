@@ -18,6 +18,7 @@ import cv2  # Import OpenCV for camera access
 
 # Declare the global stop event
 stop_event = threading.Event()
+screen_or_camera = "screen"
 
 def run(data):
     def create_module(url):
@@ -183,8 +184,6 @@ def run(data):
 
             # Create and start the thread
             threading.Thread(target=run_in_thread).start()
-
-    screen_or_camera = "screen"
 
     @sio.on("switch_screen")
     def switch_screen(data_new):
