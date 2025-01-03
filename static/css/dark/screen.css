@@ -1,18 +1,19 @@
+/* General body styles */
 body {
     font-family: "Arial", sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #1e1e1e;
-    color: #ccc;
+    background-color: #fafafa; /* Light background for light mode */
+    color: #333; /* Dark text color for better readability */
     display: flex;
     flex-direction: column;
     align-items: center;
-    overflow: hidden;
 }
 
+/* Header styles */
 header {
     width: 100%;
-    background-color: #333;
+    background-color: #f1f1f1; /* Lighter header background */
     padding: 20px 0;
 }
 
@@ -33,7 +34,7 @@ nav li {
 }
 
 nav a {
-    color: #fff;
+    color: #333; /* Dark text color for links */
     text-decoration: none;
     padding: 10px 15px;
     border-radius: 5px;
@@ -41,55 +42,90 @@ nav a {
 }
 
 nav a:hover {
-    background-color: #444;
+    background-color: #e0e0e0; /* Light gray background on hover */
 }
 
 .active {
-    background-color: #555;
+    background-color: #ddd; /* Slightly darker background for active link */
 }
 
+/* Heading styles */
 h1 {
     text-align: center;
     padding: 20px;
     width: 100%;
     margin: 0;
+    color: #333; /* Dark heading text */
 }
 
+/* Controls Section */
 .controls {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 20px 0;
+    margin-top: 20px;
+    width: 100%;
 }
 
+/* Start and Stop buttons in row */
+.start-stop {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+/* Button styles */
 button {
-    background-color: #444;
-    color: #fff;
-    border: none;
+    background-color: #e0e0e0; /* Lighter background for buttons */
+    color: #333; /* Dark text color */
+    border: 1px solid #ccc; /* Light border */
     padding: 10px 20px;
     margin: 10px 5px;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
+    font-size: 14px; /* Consistent font size */
 }
 
 button:hover {
-    background-color: #555;
+    background-color: #ccc; /* Slightly darker background on hover */
 }
 
-#capturedImage {
+/* Captured image container */
+.capture-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px;
+}
+
+.screenshot {
     max-width: 90%;
     margin: 20px 0;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* Button container styles */
 .button-container {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
     gap: 10px;
-    /* Space between buttons */
+}
+
+/* Slider wrapper styles with surrounding box */
+.slider-container {
+    display: flex;
+    justify-content: center;
+    margin: 20px;
+}
+
+.slider-wrapper {
+    border: 2px solid #ddd; /* Light border color for the surrounding box */
+    padding: 5px;
+    border-radius: 20px; /* Rounded corners */
 }
 
 .slider {
@@ -98,53 +134,51 @@ button:hover {
     justify-content: center;
     align-items: center;
     width: 200px;
-    /* Fixed width for the slider */
     height: 40px;
-    /* Height of the slider */
     border-radius: 20px;
-    /* Rounded corners */
-    background-color: #ccc;
-    /* Light background */
-    margin: 20px 0;
+    background-color: #f1f1f1; /* Light background for the slider */
+    margin: 0;
     transition: background-color 0.3s;
 }
 
 .slider-button {
     flex: 1;
-    /* Equal space for buttons */
     height: 100%;
-    /* Fill height of the slider */
     border: none;
-    /* No borders */
     border-radius: 20px;
-    /* Rounded corners */
     cursor: pointer;
-    /* Pointer cursor */
     position: relative;
     z-index: 2;
-    /* Above the background */
     font-weight: bold;
-    /* Bold text */
     background-color: transparent;
-    /* Transparent background */
-    color: #1e1e1e;
-    /* Text color */
+    color: #333; /* Dark text color for buttons */
     transition: color 0.3s;
 }
 
 .slider-highlight {
     position: absolute;
-    /* Position the highlight */
     top: 0;
     left: 0;
     height: 100%;
-    /* Full height */
     border-radius: 20px;
-    /* Rounded corners */
     transition: left 0.3s;
-    /* Smooth sliding */
     background-color: rgba(70, 70, 70, 0.8);
-    /* Darker highlight */
     width: 50%;
-    /* Default to the first button */
+}
+
+/* Specific colors for each button in the slider */
+#screenButton {
+    color: #333; /* Dark text for screen button */
+}
+
+#cameraButton {
+    color: #333; /* Dark text for camera button */
+}
+
+#screenButton:hover {
+    color: #000; /* Darker color for hover */
+}
+
+#cameraButton:hover {
+    color: #000; /* Darker color for hover */
 }

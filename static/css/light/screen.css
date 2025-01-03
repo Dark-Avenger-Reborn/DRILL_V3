@@ -1,20 +1,20 @@
+/* General body styles */
 body {
     font-family: "Arial", sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4; /* Lighter background */
-    color: #333; /* Dark text for readability */
+    background-color: #1e1e1e;
+    color: #ccc;
     display: flex;
     flex-direction: column;
     align-items: center;
-    overflow: hidden;
 }
 
+/* Header styles */
 header {
     width: 100%;
-    background-color: #fff; /* White background for header */
+    background-color: #333;
     padding: 20px 0;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Light shadow for header */
 }
 
 nav {
@@ -34,7 +34,7 @@ nav li {
 }
 
 nav a {
-    color: #333; /* Dark text for links */
+    color: #fff;
     text-decoration: none;
     padding: 10px 15px;
     border-radius: 5px;
@@ -42,30 +42,41 @@ nav a {
 }
 
 nav a:hover {
-    background-color: #ddd; /* Light hover background */
+    background-color: #444;
 }
 
 .active {
-    background-color: #ccc; /* Slightly darker background for active link */
+    background-color: #555;
 }
 
+/* Heading styles */
 h1 {
     text-align: center;
     padding: 20px;
     width: 100%;
     margin: 0;
-    color: #333; /* Dark text for the heading */
 }
 
+/* Controls Section */
 .controls {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 20px 0;
+    margin-top: 20px;
+    width: 100%;
 }
 
+/* Start and Stop buttons in row */
+.start-stop {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+/* Button styles */
 button {
-    background-color: #007bff; /* Blue button background */
+    background-color: #444; /* Match main page button color */
     color: #fff;
     border: none;
     padding: 10px 20px;
@@ -73,24 +84,47 @@ button {
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
+    font-size: 14px; /* Matching font size */
 }
 
 button:hover {
-    background-color: #0056b3; /* Darker blue on hover */
+    background-color: #555;
 }
 
-#capturedImage {
+/* Captured image container */
+.capture-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px;
+}
+
+.screenshot {
     max-width: 90%;
     margin: 20px 0;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for images */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* Button container styles */
 .button-container {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    gap: 10px; /* Space between buttons */
+    gap: 10px;
+}
+
+/* Slider wrapper styles with surrounding box */
+.slider-container {
+    display: flex;
+    justify-content: center;
+    margin: 20px;
+}
+
+.slider-wrapper {
+    border: 2px solid #444; /* Border color for the surrounding box */
+    padding: 5px;
+    border-radius: 20px; /* Rounded corners */
 }
 
 .slider {
@@ -98,35 +132,52 @@ button:hover {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 200px; /* Fixed width for the slider */
-    height: 40px; /* Height of the slider */
-    border-radius: 20px; /* Rounded corners */
-    background-color: #ccc; /* Light background */
-    margin: 20px 0;
+    width: 200px;
+    height: 40px;
+    border-radius: 20px;
+    background-color: #333; /* Dark background for the slider */
+    margin: 0;
     transition: background-color 0.3s;
 }
 
 .slider-button {
-    flex: 1; /* Equal space for buttons */
-    height: 100%; /* Fill height of the slider */
-    border: none; /* No borders */
-    border-radius: 20px; /* Rounded corners */
-    cursor: pointer; /* Pointer cursor */
+    flex: 1;
+    height: 100%;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
     position: relative;
-    z-index: 2; /* Above the background */
-    font-weight: bold; /* Bold text */
-    background-color: transparent; /* Transparent background */
-    color: #1e1e1e; /* Dark text color */
+    z-index: 2;
+    font-weight: bold;
+    background-color: transparent;
+    color: #ccc;
     transition: color 0.3s;
 }
 
 .slider-highlight {
-    position: absolute; /* Position the highlight */
+    position: absolute;
     top: 0;
     left: 0;
-    height: 100%; /* Full height */
-    border-radius: 20px; /* Rounded corners */
-    transition: left 0.3s; /* Smooth sliding */
-    background-color: rgba(0, 123, 255, 0.8); /* Blue highlight */
-    width: 50%; /* Default to the first button */
+    height: 100%;
+    border-radius: 20px;
+    transition: left 0.3s;
+    background-color: rgba(70, 70, 70, 0.8);
+    width: 50%;
+}
+
+/* Specific colors for each button in the slider */
+#screenButton {
+    color: #ccc; /* Light gray text for screen button */
+}
+
+#cameraButton {
+    color: #ccc; /* Light gray text for camera button */
+}
+
+#screenButton:hover {
+    color: #fff;
+}
+
+#cameraButton:hover {
+    color: #fff;
 }

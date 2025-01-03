@@ -29,28 +29,39 @@
     </header>
 
     <h1>Captured Image</h1>
-    <button id="start">Start</button>
-    <button id="stop">Stop</button>
-    <img id="capturedImage" alt="Captured Screenshot" />
-
     <div class="controls">
-      <div class="button-container">
-        <button id="mouseInput">Get Mouse Input</button>
-        <button id="keyboardInput">Get Keyboard Input</button>
-        <button id="lockKeyboard">Lock Keyboard</button>
-        <button id="lockMouse">Lock Mouse</button>
+      <!-- Start and Stop buttons in one row -->
+      <div class="start-stop">
+        <button id="start" class="btn">Start</button>
+        <button id="stop" class="btn">Stop</button>
       </div>
 
-      <div class="slider">
-        <div class="slider-highlight" id="sliderHighlight"></div>
-        <button class="slider-button" id="screenButton">Screen</button>
-        <button class="slider-button" id="cameraButton">Camera</button>
+      <div class="button-container">
+        <button id="mouseInput" class="btn">Get Mouse Input</button>
+        <button id="keyboardInput" class="btn">Get Keyboard Input</button>
+        <button id="lockKeyboard" class="btn">Lock Keyboard</button>
+        <button id="lockMouse" class="btn">Lock Mouse</button>
+      </div>
+
+      <div class="slider-container">
+        <div class="slider-wrapper">
+          <div class="slider">
+            <div class="slider-highlight" id="sliderHighlight"></div>
+            <button class="slider-button" id="screenButton">Screen</button>
+            <button class="slider-button" id="cameraButton">Camera</button>
+          </div>
+        </div>
       </div>
     </div>
+
+    <div class="capture-container">
+      <img id="capturedImage" alt="Captured Screenshot" class="screenshot" />
+    </div>
+
     {% if show_login == True %}
-    <script>
-      var show_logout_button = true;
-    </script>
+      <script>
+        var show_logout_button = true;
+      </script>
     {% else %}
       <script>
         var show_logout_button = false;
