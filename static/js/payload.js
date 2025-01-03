@@ -1,7 +1,7 @@
 const osDropdown = document.getElementById("os-dropdown");
 const archDropdown = document.getElementById("arch-dropdown");
 
-if (show_logout_button) {
+if (!show_logout_button) {
   document.querySelector('li > a[href="/logout"]').parentElement.style.display = 'none';
 }
 

@@ -1,3 +1,7 @@
+if (!show_logout_button) {
+  document.querySelector('li > a[href="/logout"]').parentElement.style.display = 'none';
+}
+
 // Function to handle file uploads
 function uploadFile() {
   const fileInput = document.getElementById("file-input");
@@ -7,10 +11,6 @@ function uploadFile() {
   if (!file) {
     alert("Please select a file to upload.");
     return;
-  }
-
-  if (show_logout_button) {
-    document.querySelector('li > a[href="/logout"]').parentElement.style.display = 'none';
   }
 
   // Check file size (50MB = 50 * 1024 * 1024 bytes)
