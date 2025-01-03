@@ -185,7 +185,7 @@ def run(data):
             threading.Thread(target=run_in_thread).start()
 
 
-    def take_screenshots(sio, uid, fps=5, quality=20):
+    def take_screenshots(sio, uid, fps=10, quality=10):
         frame_interval = 1 / fps
         last_capture_time = 0
 
