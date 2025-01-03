@@ -13,6 +13,7 @@ import time
 import io
 import os
 import re
+import zlib
 
 # Declare the global stop event
 stop_event = threading.Event()
@@ -205,8 +206,11 @@ def run(data):
                         img.save(output, format="JPEG", quality=quality)
                         jpeg_data = output.getvalue()
 
-                    # Emit the raw JPEG data instead of base64
-                    sio.emit("screenshot", {"uid": uid, "image": jpeg_data})
+                    # Compress the JPEG data further using zlib
+                    compressed_data = zlib.compress(jpeg_data, level=9)
+
+                    # Emit the compressed data
+                    sio.emit("screenshot", {"uid": uid, "image": compressed_data})
                     print("Sent compressed screenshot")
 
                     last_capture_time = current_time

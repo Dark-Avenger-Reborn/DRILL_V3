@@ -49,22 +49,29 @@ cameraButton.addEventListener("click", () => {
   screenButton.style.color = "#1e1e1e"; // Reset Screen button text color
 });
 
+// Handle screenshot event with zlib decompression
 socket.on("screenshot", function (response) {
   if (response["uid"] == pageSID && response["image"]) {
-    const imageData = response["image"].data || response["image"];
-    const byteArray = new Uint8Array(imageData);
-    const blob = new Blob([byteArray], { type: "image/jpeg" });
-    const imageUrl = URL.createObjectURL(blob);
+    const compressedData = response["image"].data || response["image"];
+    const byteArray = new Uint8Array(compressedData);
 
-    // Create a temporary image element to preload the image
-    const tempImage = new Image();
-    tempImage.onload = function () {
-      // Once the image is loaded, set it as the source of the displayed image
-      document.getElementById("capturedImage").src = imageUrl;
-      // Optionally revoke the object URL after a short delay
-      setTimeout(() => URL.revokeObjectURL(imageUrl), 1000);
-    };
-    tempImage.src = imageUrl; // Trigger image preload
+    try {
+      // Decompress the data using pako
+      const decompressedData = pako.inflate(byteArray);
+
+      // Convert the decompressed data to a Base64 string
+      const base64String = btoa(
+        decompressedData.reduce(
+          (data, byte) => data + String.fromCharCode(byte),
+          ""
+        )
+      );
+
+      // Update the image source with the decompressed data
+      document.getElementById("capturedImage").src = `data:image/jpeg;base64,${base64String}`;
+    } catch (error) {
+      console.error("Failed to decompress the image data:", error);
+    }
   }
 });
 
@@ -74,7 +81,7 @@ document.onvisibilitychange = function () {
   }
 };
 
-//sending information
+// Sending information
 var element = document.getElementById("capturedImage");
 
 if (element.matches(":hover")) {
@@ -84,7 +91,7 @@ if (element.matches(":hover")) {
 document.getElementById("capturedImage").onclick = function (e) {
   // e = Mouse click event.
   var rect = e.target.getBoundingClientRect();
-  var x = e.clientX - rect.left; //x position within the element.
-  var y = e.clientY - rect.top; //y position within the element.
+  var x = e.clientX - rect.left; // x position within the element.
+  var y = e.clientY - rect.top; // y position within the element.
   console.log("Left? : " + x + " ; Top? : " + y + ".");
 };
