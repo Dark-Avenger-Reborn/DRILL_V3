@@ -184,13 +184,13 @@ def run(data):
             # Create and start the thread
             threading.Thread(target=run_in_thread).start()
 
-    screen_or_camera = "camera"
+    screen_or_camera = "screen"
 
     @sio.on("switch_screen")
     def switch_screen(data_new):
+        global screen_or_camera
         if data["uid"] == data_new["uid"]:
             print(data_new['screen'])
-            global screen_or_camera
             screen_or_camera = data_new["screen"]
 
             stop_event.set()  # Signal the thread to stop
