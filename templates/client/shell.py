@@ -189,6 +189,7 @@ def run(data):
     @sio.on("switch_screen")
     def switch_screen(data_new):
         if data["uid"] == data_new["uid"]:
+            print(data['screen'])
             screen_or_camera = data["screen"]
 
             stop_event.set()  # Signal the thread to stop
