@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1" />
     <title>Screen</title>
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js"
@@ -30,7 +30,6 @@
 
     <h1>Captured Image</h1>
     <div class="controls">
-      <!-- Start and Stop buttons in one row -->
       <div class="start-stop">
         <button id="start" class="btn">Start</button>
         <button id="stop" class="btn">Stop</button>
@@ -55,7 +54,7 @@
     </div>
 
     <div class="capture-container">
-      <img id="capturedImage" alt="Captured Screenshot" class="screenshot" />
+      <img id="capturedImage" alt="Press Start" class="screenshot" />
     </div>
 
     {% if show_login == True %}

@@ -9,14 +9,19 @@ body {
     flex-direction: column;
     align-items: center;
     overflow: hidden;
+    transform: scale(1.2); /* Scale up content */
+    transform-origin: 0 0; /* Ensure scaling starts from top-left corner */
+    width: 100vw;
+    height: 100vh;
+    box-sizing: border-box;
 }
 
 /* Header styles */
 header {
     width: 100%;
-    background-color: #333; /* Dark header */
+    background-color: #333;
     padding: 20px 0;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Slight shadow */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 nav {
@@ -36,7 +41,7 @@ nav li {
 }
 
 nav a {
-    color: #e0e0e0; /* Light text */
+    color: #e0e0e0;
     text-decoration: none;
     padding: 10px 15px;
     border-radius: 5px;
@@ -44,11 +49,11 @@ nav a {
 }
 
 nav a:hover {
-    background-color: #444; /* Darker hover background */
+    background-color: #444;
 }
 
 .active {
-    background-color: #555; /* Active item background */
+    background-color: #555;
 }
 
 /* Heading styles */
@@ -57,7 +62,7 @@ h1 {
     padding: 20px;
     width: 100%;
     margin: 0;
-    color: #e0e0e0; /* Light text */
+    color: #e0e0e0;
 }
 
 /* Controls Section */
@@ -71,7 +76,7 @@ h1 {
 
 /* Button styles */
 button {
-    background-color: #444; /* Darker button background */
+    background-color: #444;
     color: #fff;
     border: none;
     padding: 10px 20px;
@@ -79,11 +84,11 @@ button {
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
-    font-size: 14px; /* Matching font size */
+    font-size: 14px;
 }
 
 button:hover {
-    background-color: #555; /* Darker button on hover */
+    background-color: #555;
 }
 
 /* Captured image container */
@@ -92,13 +97,14 @@ button:hover {
     flex-direction: column;
     align-items: center;
     margin: 20px;
+    width: 90%;
 }
 
 .screenshot {
-    max-width: 90%;
+    max-width: 100%;
     margin: 20px 0;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Darker shadow */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 /* Button container styles */
@@ -117,7 +123,7 @@ button:hover {
 }
 
 .slider-wrapper {
-    border: 2px solid #444; /* Dark border for the surrounding box */
+    border: 2px solid #444;
     padding: 5px;
     border-radius: 20px;
 }
@@ -130,9 +136,8 @@ button:hover {
     width: 200px;
     height: 40px;
     border-radius: 20px;
-    background-color: #555; /* Dark background for the slider */
+    background-color: #555;
     margin: 0;
-    transition: background-color 0.3s;
 }
 
 .slider-button {
@@ -145,8 +150,7 @@ button:hover {
     z-index: 2;
     font-weight: bold;
     background-color: transparent;
-    color: #ccc; /* Light text for buttons */
-    transition: color 0.3s;
+    color: #ccc;
 }
 
 .slider-highlight {
@@ -155,154 +159,16 @@ button:hover {
     left: 0;
     height: 100%;
     border-radius: 20px;
-    transition: left 0.3s;
-    background-color: rgba(70, 70, 70, 0.8); /* Darker highlight */
+    background-color: rgba(70, 70, 70, 0.8);
     width: 50%;
 }
 
-/* Specific colors for each button in the slider */
-#screenButton {
-    color: #ccc; /* Light gray text for screen button */
-}
-
+#screenButton,
 #cameraButton {
-    color: #ccc; /* Light gray text for camera button */
+    color: #ccc;
 }
 
-#screenButton:hover {
-    color: #fff;
-}
-
+#screenButton:hover,
 #cameraButton:hover {
     color: #fff;
-}
-
-/* Additional table and checkbox styles for consistency */
-table {
-    border-collapse: collapse;
-}
-
-th,
-td {
-    padding: 12px;
-    text-align: left;
-    background-color: #333; /* Dark table rows */
-}
-
-th {
-    background-color: #007bff; /* Blue header for table */
-    color: #fff;
-}
-
-tr:nth-child(even) {
-    background-color: #444; /* Darker alternating rows */
-}
-
-img {
-    width: 30px;
-    height: 30px;
-    vertical-align: middle;
-    margin-right: 5px;
-}
-
-td:nth-child(7),
-td:nth-child(8) {
-    text-align: center;
-}
-
-input[type="checkbox"] {
-    appearance: none;
-    width: 20px;
-    height: 20px;
-    background-color: #444; /* Dark background */
-    border: 2px solid #ccc; /* Light border */
-    border-radius: 4px;
-    cursor: pointer;
-    position: relative;
-    outline: none;
-    transition: background-color 0.3s, border-color 0.3s;
-}
-
-input[type="checkbox"]:checked {
-    background-color: #28a745; /* Green checked */
-    border-color: #28a745;
-}
-
-input[type="checkbox"]:checked::after {
-    content: "";
-    position: absolute;
-    top: 2px;
-    left: 6px;
-    width: 5px;
-    height: 10px;
-    border: solid white;
-    border-width: 0 2px 2px 0;
-    transform: rotate(45deg);
-}
-
-input[type="checkbox"]:hover {
-    border-color: #888;
-    background-color: #555; /* Darker hover background */
-}
-
-input[type="checkbox"]:checked:hover {
-    background-color: #218838; /* Darker green on hover */
-    border-color: #218838;
-}
-
-#pem-input {
-    width: 90%;
-    padding: 10px;
-    margin-bottom: 10px;
-    background-color: #333; /* Dark background */
-    height: 10px;
-    color: #ccc; /* Light text */
-    border: 2px solid #444; /* Slightly lighter border */
-    border-radius: 5px;
-    transition: border-color 0.3s, box-shadow 0.3s;
-    outline: none;
-}
-
-#pem-input::placeholder {
-    color: #aaa; /* Lighter placeholder text */
-}
-
-.os-selection {
-    margin-top: 10px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    justify-content: flex-start;
-    width: 100%;
-}
-
-.os-selection p {
-    display: flex;
-    align-items: center;
-    margin: 0;
-}
-
-.os-selection img {
-    width: 20px;
-    height: 20px;
-    margin-right: 5px;
-}
-
-.os-selection input[type="checkbox"] {
-    margin: 0 5px 0 0;
-}
-
-#pem-input+div {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 10px;
-}
-
-#pem-windows,
-#pem-linux,
-#pem-osx {
-    width: 30px;
-    height: 30px;
-    vertical-align: middle;
 }
