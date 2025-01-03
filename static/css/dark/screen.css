@@ -8,11 +8,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    overflow: hidden;
-    transform: scale(1.2); /* Scale up content */
-    transform-origin: 0 0; /* Ensure scaling starts from top-left corner */
-    width: 100vw;
-    height: 100vh;
+    overflow-x: hidden;
     box-sizing: border-box;
 }
 

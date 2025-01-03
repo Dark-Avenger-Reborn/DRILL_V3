@@ -3,20 +3,21 @@ body {
     font-family: "Arial", sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4; /* Lighter background */
+    background-color: #f4f4f4; /* Light background */
     color: #333; /* Dark text for contrast */
     display: flex;
     flex-direction: column;
     align-items: center;
-    overflow: hidden;
+    overflow-x: hidden;
+    box-sizing: border-box;
 }
 
 /* Header styles */
 header {
     width: 100%;
-    background-color: #fff; /* Lighter header */
+    background-color: #fff; /* Lighter background for header */
     padding: 20px 0;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Light shadow */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 nav {
@@ -69,14 +70,6 @@ h1 {
     width: 100%;
 }
 
-/* Start and Stop buttons in row */
-.start-stop {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin-bottom: 20px;
-}
-
 /* Button styles */
 button {
     background-color: #007bff; /* Blue background */
@@ -87,7 +80,7 @@ button {
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
-    font-size: 14px; /* Matching font size */
+    font-size: 14px;
 }
 
 button:hover {
@@ -100,13 +93,14 @@ button:hover {
     flex-direction: column;
     align-items: center;
     margin: 20px;
+    width: 90%;
 }
 
 .screenshot {
-    max-width: 90%;
+    max-width: 100%;
     margin: 20px 0;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Light shadow */
 }
 
 /* Button container styles */
@@ -125,9 +119,9 @@ button:hover {
 }
 
 .slider-wrapper {
-    border: 2px solid #444; /* Border color for the surrounding box */
+    border: 2px solid #ccc; /* Light border */
     padding: 5px;
-    border-radius: 20px; /* Rounded corners */
+    border-radius: 20px;
 }
 
 .slider {
@@ -138,9 +132,8 @@ button:hover {
     width: 200px;
     height: 40px;
     border-radius: 20px;
-    background-color: #333; /* Dark background for the slider */
+    background-color: #ddd; /* Light background */
     margin: 0;
-    transition: background-color 0.3s;
 }
 
 .slider-button {
@@ -153,8 +146,7 @@ button:hover {
     z-index: 2;
     font-weight: bold;
     background-color: transparent;
-    color: #ccc;
-    transition: color 0.3s;
+    color: #333; /* Dark text */
 }
 
 .slider-highlight {
@@ -163,154 +155,17 @@ button:hover {
     left: 0;
     height: 100%;
     border-radius: 20px;
-    transition: left 0.3s;
-    background-color: rgba(70, 70, 70, 0.8);
+    background-color: rgba(200, 200, 200, 0.8);
     width: 50%;
 }
 
-/* Specific colors for each button in the slider */
-#screenButton {
-    color: #ccc; /* Light gray text for screen button */
-}
-
+/* Specific buttons */
+#screenButton,
 #cameraButton {
-    color: #ccc; /* Light gray text for camera button */
+    color: #333; /* Dark text */
 }
 
-#screenButton:hover {
-    color: #fff;
-}
-
+#screenButton:hover,
 #cameraButton:hover {
-    color: #fff;
-}
-
-/* Additional table and checkbox styles for consistency */
-table {
-    border-collapse: collapse;
-}
-
-th,
-td {
-    padding: 12px;
-    text-align: left;
-    background-color: #f9f9f9; /* Lighter table rows */
-}
-
-th {
-    background-color: #007bff; /* Blue header */
-    color: #fff;
-}
-
-tr:nth-child(even) {
-    background-color: #f2f2f2; /* Lighter alternating rows */
-}
-
-img {
-    width: 30px;
-    height: 30px;
-    vertical-align: middle;
-    margin-right: 5px;
-}
-
-td:nth-child(7),
-td:nth-child(8) {
-    text-align: center;
-}
-
-input[type="checkbox"] {
-    appearance: none;
-    width: 20px;
-    height: 20px;
-    background-color: #fff; /* Light background */
-    border: 2px solid #ccc; /* Light border */
-    border-radius: 4px;
-    cursor: pointer;
-    position: relative;
-    outline: none;
-    transition: background-color 0.3s, border-color 0.3s;
-}
-
-input[type="checkbox"]:checked {
-    background-color: #28a745; /* Green checked */
-    border-color: #28a745;
-}
-
-input[type="checkbox"]:checked::after {
-    content: "";
-    position: absolute;
-    top: 2px;
-    left: 6px;
-    width: 5px;
-    height: 10px;
-    border: solid white;
-    border-width: 0 2px 2px 0;
-    transform: rotate(45deg);
-}
-
-input[type="checkbox"]:hover {
-    border-color: #888;
-    background-color: #f2f2f2; /* Light hover background */
-}
-
-input[type="checkbox"]:checked:hover {
-    background-color: #218838; /* Darker green on hover */
-    border-color: #218838;
-}
-
-#pem-input {
-    width: 90%;
-    padding: 10px;
-    margin-bottom: 10px;
-    background-color: #fff; /* White background */
-    height: 10px;
-    color: #333;
-    border: 2px solid #ccc; /* Light border */
-    border-radius: 5px;
-    transition: border-color 0.3s, box-shadow 0.3s;
-    outline: none;
-}
-
-#pem-input::placeholder {
-    color: #aaa; /* Lighter placeholder text */
-}
-
-.os-selection {
-    margin-top: 10px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    justify-content: flex-start;
-    width: 100%;
-}
-
-.os-selection p {
-    display: flex;
-    align-items: center;
-    margin: 0;
-}
-
-.os-selection img {
-    width: 20px;
-    height: 20px;
-    margin-right: 5px;
-}
-
-.os-selection input[type="checkbox"] {
-    margin: 0 5px 0 0;
-}
-
-#pem-input+div {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 10px;
-}
-
-#pem-windows,
-#pem-linux,
-#pem-osx {
-    width: 30px;
-    height: 30px;
-    vertical-align: middle;
+    color: #007bff; /* Blue color on hover */
 }
