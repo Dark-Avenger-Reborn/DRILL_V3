@@ -1,6 +1,10 @@
 const osDropdown = document.getElementById("os-dropdown");
 const archDropdown = document.getElementById("arch-dropdown");
 
+if (show_logout_button) {
+  document.querySelector('li > a[href="/logout"]').parentElement.style.display = 'none';
+}
+
 // Define architecture options for each OS
 const archOptions = {
   Windows: ["x64"], // x86 is cuming soon

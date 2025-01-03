@@ -93,7 +93,15 @@
         var private_public = false;
       </script>
     {% endif %}
-
+    {% if show_login == True %}
+    <script>
+      var show_logout_button = true;
+    </script>
+    {% else %}
+      <script>
+        var show_logout_button = false;
+      </script>
+    {% endif %}
     <script src="{{ url_for('static', filename='js/upload.js') }}"></script>
   </body>
 </html>

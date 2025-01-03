@@ -2,6 +2,10 @@ var socket = io();
 socket.connect(window.location.origin);
 const pageSID = window.location.pathname.split("/")[2];
 
+if (show_logout_button) {
+  document.querySelector('li > a[href="/logout"]').parentElement.style.display = 'none';
+}
+
 const startButton = document.getElementById("start");
 const stopButton = document.getElementById("stop");
 

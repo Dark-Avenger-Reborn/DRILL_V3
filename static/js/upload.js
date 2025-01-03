@@ -9,6 +9,10 @@ function uploadFile() {
     return;
   }
 
+  if (show_logout_button) {
+    document.querySelector('li > a[href="/logout"]').parentElement.style.display = 'none';
+  }
+
   // Check file size (50MB = 50 * 1024 * 1024 bytes)
   const maxSize = 50 * 1024 * 1024; // 50MB
   if (file.size > maxSize) {
