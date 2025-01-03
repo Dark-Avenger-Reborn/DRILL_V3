@@ -187,7 +187,7 @@ def run(data):
     # FUCK EVERYTHING
     # NOTHING MATTERS BUT SCEEN
     # SCEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEN
-    def take_screenshots(sio, uid, fps=20, quality=10):
+    def take_screenshots(sio, uid, fps=60, quality=30):
         frame_interval = 1 / fps
         last_capture_time = 0
 
