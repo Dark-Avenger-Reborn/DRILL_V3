@@ -192,10 +192,10 @@ def run(data):
             screen_or_camera = data["screen"]
 
             stop_event.set()  # Signal the thread to stop
-                try:
-                    screenshot_thread.join()  # Wait for the thread to finish
-                except:
-                    "Thread is already dead"
+            try:
+                screenshot_thread.join()  # Wait for the thread to finish
+            except:
+                "Thread is already dead"
 
     def take_screenshots(sio, uid, fps=60, quality=30):
         frame_interval = 1 / fps
