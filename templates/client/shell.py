@@ -224,17 +224,21 @@ def run(data):
         target=take_screenshots, args=(sio, data["uid"])
     )
 
+    going = False
+
     @sio.on("screen_status")
     def screen_status(data_new):
         if data["uid"] == data_new["uid"]:
-            if data_new["status"] == "start":
+            if data_new["status"] == "start" and !going:
                 stop_event.clear()  # Reset the event to False
                 screenshot_thread = threading.Thread(
                     target=take_screenshots, args=(sio, data["uid"])
                 )
                 screenshot_thread.start()
+                going = True
             else:
                 stop_event.set()  # Signal the thread to stop
+                going = False
                 try:
                     screenshot_thread.join()  # Wait for the thread to finish
                 except:
