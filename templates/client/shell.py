@@ -184,7 +184,9 @@ def run(data):
             # Create and start the thread
             threading.Thread(target=run_in_thread).start()
 
-
+    # FUCK EVERYTHING
+    # NOTHING MATTERS BUT SCEEN
+    # SCEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEN
     def take_screenshots(sio, uid, fps=10, quality=10):
         frame_interval = 1 / fps
         last_capture_time = 0
