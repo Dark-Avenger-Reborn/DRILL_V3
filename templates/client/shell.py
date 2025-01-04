@@ -218,7 +218,7 @@ def run(data):
     @sio.on("change_screen_number")
     def change_screen_number(data_new):
         global screen_number
-        screen_number = data['change_screen_number']
+        screen_number = data['screenNumber']
 
     def take_screenshots(sio, uid, fps=60, quality=30):
         frame_interval = 1 / fps
