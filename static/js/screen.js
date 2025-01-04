@@ -24,11 +24,11 @@ stopButton.addEventListener("click", () => {
 
 // New button listeners
 document.getElementById("mouseInput").addEventListener("click", () => {
-  send_mouse_input = ! send_mouse_input;
+  send_mouse_input = !send_mouse_input;
 });
 
 document.getElementById("keyboardInput").addEventListener("click", () => {
-  send_keyboard_input = !send_keyboard_input
+  send_keyboard_input = !send_keyboard_input;
 });
 
 document.getElementById("lockKeyboard").addEventListener("click", () => {
@@ -49,7 +49,7 @@ screenButton.addEventListener("click", () => {
   sliderHighlight.style.left = "0"; // Move highlight to Screen
   screenButton.style.color = "#fff"; // Change text color to white
   cameraButton.style.color = "#1e1e1e"; // Reset Camera button text color
-  screen_or_camera = true
+  screen_or_camera = true;
 });
 
 cameraButton.addEventListener("click", () => {
@@ -57,7 +57,7 @@ cameraButton.addEventListener("click", () => {
   sliderHighlight.style.left = "50%"; // Move highlight to Camera
   cameraButton.style.color = "#fff"; // Change text color to white
   screenButton.style.color = "#1e1e1e"; // Reset Screen button text color
-  screen_or_camera = false
+  screen_or_camera = false;
 });
 
 // Handle screenshot event with zlib decompression
@@ -92,7 +92,33 @@ document.onvisibilitychange = function () {
   }
 };
 
-// Sending information
+// Dropdown functionality for screen selection
+const screenDropdown = document.getElementById("screenDropdown");
+
+socket.on("screen_count", function (response) {
+  if (response["uid"] == pageSID) {
+    const screenCount = response['screen_count'];
+
+    // Clear existing options
+    screenDropdown.innerHTML = '';
+
+    // Populate the dropdown with options
+    for (let i = 1; i <= screenCount; i++) {
+      const option = document.createElement("option");
+      option.value = i;
+      option.textContent = `Screen ${i}`;
+      screenDropdown.appendChild(option);
+    }
+  }
+});
+
+// Event listener for dropdown change
+screenDropdown.addEventListener("change", (event) => {
+  const selectedScreen = event.target.value;
+  socket.emit("change_screen_number", { screenNumber: selectedScreen, uid: pageSID });
+});
+
+// Sending mouse input
 var element = document.getElementById("capturedImage");
 
 if (element.matches(":hover")) {
@@ -134,12 +160,6 @@ document.getElementById("capturedImage").onmouseenter = function () {
   }
 };
 
-socket.on("screen_count", function (response) {
-  if (response["uid"] == pageSID) {
-    console.log(response['screen_count'])
-  }
-})
-
 // Stop continuously reporting when mouse leaves the element
 document.getElementById("capturedImage").onmouseleave = function () {
   if (isMouseOver) {
@@ -150,13 +170,13 @@ document.getElementById("capturedImage").onmouseleave = function () {
 
 document.getElementById("capturedImage").onclick = function (e) {
   if (send_mouse_input && screen_or_camera) {
-    socket.emit("mouse_click", { uid: pageSID })
+    socket.emit("mouse_click", { uid: pageSID });
   }
 };
 
 document.getElementById("capturedImage").oncontextmenu = function (e) {
   if (send_mouse_input && screen_or_camera) {
-    socket.emit("mouse_click_right", { uid: pageSID })
+    socket.emit("mouse_click_right", { uid: pageSID });
   }
 };
 

