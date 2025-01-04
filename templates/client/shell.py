@@ -219,7 +219,7 @@ def run(data):
     def change_screen_number(data_new):
         global screen_number
         if data["uid"] == data_new["uid"]:
-            screen_number = data['screenNumber']
+            screen_number = data_new['screenNumber']
 
     def take_screenshots(sio, uid, fps=60, quality=30):
         frame_interval = 1 / fps
