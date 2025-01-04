@@ -105,7 +105,7 @@ document.getElementById("capturedImage").onmousemove = function (e) {
     var percentX = (x / rect.width); // Percentage of width
     var percentY = (y / rect.height); // Percentage of height
 
-    sio.emit("mouse_input", { uid: pageSID, x: percentX, y:percentY })
+    socket.emit("mouse_input", { uid: pageSID, x: percentX, y:percentY })
     console.log("Left? : " + percentX*100 + " ; Top? : " + percentY*100 + ".");
   }
 };
