@@ -153,3 +153,9 @@ document.getElementById("capturedImage").oncontextmenu = function (e) {
     socket.emit("mouse_click_right", { uid: pageSID })
   }
 };
+
+document.querySelectorAll('.screenshot').forEach(function(image) {
+  image.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+  });
+});
