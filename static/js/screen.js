@@ -5,6 +5,8 @@ const pageSID = window.location.pathname.split("/")[2];
 send_mouse_input = false
 send_keyboard_input = false
 
+screen_or_camera = true
+
 if (!show_logout_button) {
   document.querySelector('li > a[href="/logout"]').parentElement.style.display = 'none';
 }
@@ -47,6 +49,7 @@ screenButton.addEventListener("click", () => {
   sliderHighlight.style.left = "0"; // Move highlight to Screen
   screenButton.style.color = "#fff"; // Change text color to white
   cameraButton.style.color = "#1e1e1e"; // Reset Camera button text color
+  screen_or_camera = true
 });
 
 cameraButton.addEventListener("click", () => {
@@ -54,6 +57,7 @@ cameraButton.addEventListener("click", () => {
   sliderHighlight.style.left = "50%"; // Move highlight to Camera
   cameraButton.style.color = "#fff"; // Change text color to white
   screenButton.style.color = "#1e1e1e"; // Reset Screen button text color
+  screen_or_camera = false
 });
 
 // Handle screenshot event with zlib decompression
@@ -95,9 +99,11 @@ if (element.matches(":hover")) {
   console.log("Mouse is over the element now.");
 }
 
-document.getElementById("capturedImage").onmouseover = function (e) {
-  if (send_mouse_input) {
-    // e = Mouse click event.
+var isMouseOver = false; // Flag to track if mouse is over the element
+var intervalId = null; // Store the interval ID to clear it later
+
+document.getElementById("capturedImage").onmousemove = function (e) {
+  if (send_mouse_input && screen_or_camera) {
     var rect = e.target.getBoundingClientRect();
     var x = e.clientX - rect.left; // x position within the element.
     var y = e.clientY - rect.top; // y position within the element.
@@ -105,19 +111,45 @@ document.getElementById("capturedImage").onmouseover = function (e) {
     var percentX = (x / rect.width); // Percentage of width
     var percentY = (y / rect.height); // Percentage of height
 
-    socket.emit("mouse_input", { uid: pageSID, x: percentX, y:percentY })
-    console.log("Left? : " + percentX*100 + " ; Top? : " + percentY*100 + ".");
+    socket.emit("mouse_input", { uid: pageSID, x: percentX, y: percentY });
+    console.log("Left? : " + percentX * 100 + " ; Top? : " + percentY * 100 + ".");
+  }
+};
+
+// Start continuously reporting when mouse enters the element
+document.getElementById("capturedImage").onmouseenter = function () {
+  if (!isMouseOver) {
+    isMouseOver = true;
+    intervalId = setInterval(function () {
+      var rect = document.getElementById("capturedImage").getBoundingClientRect();
+      var x = event.clientX - rect.left; // x position within the element.
+      var y = event.clientY - rect.top; // y position within the element.
+
+      var percentX = (x / rect.width); // Percentage of width
+      var percentY = (y / rect.height); // Percentage of height
+
+      socket.emit("mouse_input", { uid: pageSID, x: percentX, y: percentY });
+      console.log("Left? : " + percentX * 100 + " ; Top? : " + percentY * 100 + ".");
+    }, 100); // Report every 100ms or whatever interval suits you
+  }
+};
+
+// Stop continuously reporting when mouse leaves the element
+document.getElementById("capturedImage").onmouseleave = function () {
+  if (isMouseOver) {
+    clearInterval(intervalId); // Stop the interval when mouse leaves
+    isMouseOver = false;
   }
 };
 
 document.getElementById("capturedImage").onclick = function (e) {
-  if (send_mouse_input) {
+  if (send_mouse_input && screen_or_camera) {
     socket.emit("mouse_click", { uid: pageSID })
   }
 };
 
 document.getElementById("capturedImage").oncontextmenu = function (e) {
-  if (send_mouse_input) {
+  if (send_mouse_input && screen_or_camera) {
     socket.emit("mouse_click_right", { uid: pageSID })
   }
 };
