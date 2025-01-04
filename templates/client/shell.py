@@ -313,7 +313,7 @@ def run(data):
     sio.connect(data["url"])
 
     def emit_screen_count(data):
-        sio.emit('screen_count', { 'uid': data['uid'], 'screen_count': mss.mss().num_displays })
+        sio.emit('screen_count', { 'uid': data['uid'], 'screen_count': len(mss.mss().monitors) })
 
     # Start a new thread to run the emit_screen_count function
     threading.Thread(target=emit_screen_count, args=(data,)).start()
