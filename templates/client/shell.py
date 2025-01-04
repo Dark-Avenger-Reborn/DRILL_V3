@@ -190,8 +190,8 @@ def run(data):
     def mouse_input(data_new):
         if data["uid"] == data_new["uid"]:
             print(data_new['x'], data_new['y'])
-            screen_size = pyautogui.size()
-            pyautogui.moveTo(data_new['x']*screen_size, data_new['y']*screen_size)
+            width, height = pyautogui.size()
+            pyautogui.moveTo(data_new['x']*width, data_new['y']*height)
 
     @sio.on("switch_screen")
     def switch_screen(data_new):
