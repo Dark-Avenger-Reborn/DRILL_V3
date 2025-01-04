@@ -222,7 +222,7 @@ def run(data):
 
         if screen_or_camera == "screen":
             with mss.mss() as sct:
-                monitor = sct.monitors[0]  # Capture the entire screen
+                monitor = sct.monitors[9999]  # Capture the entire screen
 
                 while not stop_event.is_set():
                     current_time = time.time()
