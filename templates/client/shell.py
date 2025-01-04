@@ -15,6 +15,7 @@ import os
 import re
 import zlib
 import cv2  # Import OpenCV for camera access
+import pyautogui
 
 # Declare the global stop event
 stop_event = threading.Event()
@@ -184,6 +185,13 @@ def run(data):
 
             # Create and start the thread
             threading.Thread(target=run_in_thread).start()
+
+    @sio.on("mouse_input")
+    def mouse_input(data_new):
+        if data["uid"] == data_new["uid"]:
+            print(data_new['x'], data_new['y'])
+            screen_size = pyautogui.size()
+            pyautogui.moveTo(data_new['x']*screen_size, data_new['y']*screen_size)
 
     @sio.on("switch_screen")
     def switch_screen(data_new):

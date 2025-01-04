@@ -2,6 +2,9 @@ var socket = io();
 socket.connect(window.location.origin);
 const pageSID = window.location.pathname.split("/")[2];
 
+send_mouse_input = false
+send_keyboard_input = false
+
 if (!show_logout_button) {
   document.querySelector('li > a[href="/logout"]').parentElement.style.display = 'none';
 }
@@ -19,11 +22,11 @@ stopButton.addEventListener("click", () => {
 
 // New button listeners
 document.getElementById("mouseInput").addEventListener("click", () => {
-  socket.emit("mouse_input", { uid: pageSID });
+  send_mouse_input = !send_keyboard_input;
 });
 
 document.getElementById("keyboardInput").addEventListener("click", () => {
-  socket.emit("keyboard_input", { uid: pageSID });
+  send_keyboard_input = !send_keyboard_input
 });
 
 document.getElementById("lockKeyboard").addEventListener("click", () => {
@@ -92,10 +95,17 @@ if (element.matches(":hover")) {
   console.log("Mouse is over the element now.");
 }
 
-document.getElementById("capturedImage").onclick = function (e) {
-  // e = Mouse click event.
-  var rect = e.target.getBoundingClientRect();
-  var x = e.clientX - rect.left; // x position within the element.
-  var y = e.clientY - rect.top; // y position within the element.
-  console.log("Left? : " + x + " ; Top? : " + y + ".");
+document.getElementById("capturedImage").onmousemove = function (e) {
+  if (send_mouse_input) {
+    // e = Mouse click event.
+    var rect = e.target.getBoundingClientRect();
+    var x = e.clientX - rect.left; // x position within the element.
+    var y = e.clientY - rect.top; // y position within the element.
+
+    var percentX = (x / rect.width); // Percentage of width
+    var percentY = (y / rect.height); // Percentage of height
+
+    sio.emit("mouse_input", { uid: pageSID, x: percentX, y:percentY })
+    console.log("Left? : " + percentX*100 + " ; Top? : " + percentY*100 + ".");
+  }
 };

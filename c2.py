@@ -336,6 +336,8 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
     def switch_screen(self, sid, data):
         self.sio.emit("switch_screen", data)
 
+
+
     def mouse_input(self, sid ,data):
         self.sio.emit("mouse_input", data)
 
