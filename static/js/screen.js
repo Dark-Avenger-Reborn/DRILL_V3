@@ -95,22 +95,30 @@ document.onvisibilitychange = function () {
 // Dropdown functionality for screen selection
 const screenDropdown = document.getElementById("screenDropdown");
 
+let previousScreenCount = null; // Initialize a variable to store the previous screen count
+
 socket.on("screen_count", function (response) {
   if (response["uid"] == pageSID) {
     const screenCount = response['screen_count'];
 
-    // Clear existing options
-    screenDropdown.innerHTML = '';
+    // Check if the screen count has changed
+    if (screenCount !== previousScreenCount) {
+      previousScreenCount = screenCount; // Update the previous screen count
 
-    // Populate the dropdown with options
-    for (let i = 1; i <= screenCount; i++) {
-      const option = document.createElement("option");
-      option.value = i;
-      option.textContent = `Screen ${i}`;
-      screenDropdown.appendChild(option);
+      // Clear existing options
+      screenDropdown.innerHTML = '';
+
+      // Populate the dropdown with options
+      for (let i = 1; i <= screenCount; i++) {
+        const option = document.createElement("option");
+        option.value = i;
+        option.textContent = `Screen ${i}`;
+        screenDropdown.appendChild(option);
+      }
     }
   }
 });
+
 
 // Event listener for dropdown change
 screenDropdown.addEventListener("change", (event) => {
