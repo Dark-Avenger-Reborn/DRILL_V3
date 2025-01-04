@@ -123,6 +123,7 @@ socket.on("screen_count", function (response) {
 // Event listener for dropdown change
 screenDropdown.addEventListener("change", (event) => {
   const selectedScreen = event.target.value;
+  alert(selectedScreen)
   socket.emit("change_screen_number", { screenNumber: selectedScreen, uid: pageSID });
 });
 
