@@ -137,6 +137,7 @@ document.getElementById("capturedImage").onmouseenter = function () {
 socket.on("screen_count", function (response) {
   if (response["uid"] == pageSID) {
     console.log(response['screen_count'])
+  }
 })
 
 // Stop continuously reporting when mouse leaves the element
