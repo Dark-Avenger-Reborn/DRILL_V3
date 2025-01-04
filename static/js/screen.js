@@ -22,7 +22,7 @@ stopButton.addEventListener("click", () => {
 
 // New button listeners
 document.getElementById("mouseInput").addEventListener("click", () => {
-  send_mouse_input = !send_keyboard_input;
+  send_mouse_input = ! send_mouse_input;
 });
 
 document.getElementById("keyboardInput").addEventListener("click", () => {
