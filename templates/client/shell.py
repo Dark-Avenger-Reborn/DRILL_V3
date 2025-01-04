@@ -193,6 +193,16 @@ def run(data):
             width, height = pyautogui.size()
             pyautogui.moveTo(data_new['x']*width, data_new['y']*height)
 
+    @sio.on("mouse_click")
+    def mouse_click(data_new):
+        if data["uid"] == data_new["uid"]:
+            pyautogui.click()
+
+    @sio.on("mouse_click_right")
+    def mouse_click(data_new):
+        if data["uid"] == data_new["uid"]:
+            pyautogui.rightClick()
+
     @sio.on("switch_screen")
     def switch_screen(data_new):
         global screen_or_camera

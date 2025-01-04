@@ -95,7 +95,7 @@ if (element.matches(":hover")) {
   console.log("Mouse is over the element now.");
 }
 
-document.getElementById("capturedImage").onmousemove = function (e) {
+document.getElementById("capturedImage").onmouseover = function (e) {
   if (send_mouse_input) {
     // e = Mouse click event.
     var rect = e.target.getBoundingClientRect();
@@ -107,5 +107,17 @@ document.getElementById("capturedImage").onmousemove = function (e) {
 
     socket.emit("mouse_input", { uid: pageSID, x: percentX, y:percentY })
     console.log("Left? : " + percentX*100 + " ; Top? : " + percentY*100 + ".");
+  }
+};
+
+document.getElementById("capturedImage").onclick = function (e) {
+  if (send_mouse_input) {
+    socket.emit("mouse_click", { uid: pageSID })
+  }
+};
+
+document.getElementById("capturedImage").oncontextmenu = function (e) {
+  if (send_mouse_input) {
+    socket.emit("mouse_click_right", { uid: pageSID })
   }
 };
