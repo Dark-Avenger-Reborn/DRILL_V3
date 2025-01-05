@@ -94,6 +94,7 @@ button:hover {
     align-items: center;
     margin: 20px;
     width: 90%;
+    user-select: none;
 }
 
 .screenshot {
