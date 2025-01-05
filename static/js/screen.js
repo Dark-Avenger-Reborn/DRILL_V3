@@ -184,6 +184,6 @@ document.getElementById("capturedImage").addEventListener("wheel", function (e) 
     socket.emit("mouse_scroll", { uid: pageSID, delta: scrollDelta });
 
     // Prevent the default scrolling behavior (if needed)
-    e.preventDefault();
   }
+  e.preventDefault();
 });
