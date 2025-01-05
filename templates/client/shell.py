@@ -207,6 +207,7 @@ def run(data):
     @sio.on("mouse_click_right")
     def mouse_click(data_new):
         if data["uid"] == data_new["uid"]:
+            print(data_new)
             if data_new['going']:
                 pyautogui.mouseDown(button='right')
             else:
