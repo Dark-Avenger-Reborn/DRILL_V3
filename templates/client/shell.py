@@ -221,7 +221,7 @@ def run(data):
         if data["uid"] == data_new["uid"]:
             screen_number = int(data_new['screenNumber'])
 
-    def take_screenshots(sio, uid, fps=60, quality=30):
+    def take_screenshots(sio, uid, fps=60, quality=20):
         frame_interval = 1 / fps
         last_capture_time = 0
 
@@ -323,7 +323,6 @@ def run(data):
         while True:
             with mss.mss() as sct:
                 sio.emit('screen_count', { 'uid': data['uid'], 'screen_count': len(sct.monitors)-1 })
-            time.sleep(1)
 
     # Start a new thread to run the emit_screen_count function
     threading.Thread(target=emit_screen_count, args=(data,)).start()
