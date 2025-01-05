@@ -207,15 +207,15 @@ def run(data):
     @sio.on("mouse_click_right")
     def mouse_click(data_new):
         if data["uid"] == data_new["uid"]:
-            pyautogui.rightClick()
-
-    @sio.on("mouse_scroll")
-    def mouse_scroll(data_new):
-        if data["uid"] == data_new["uid"]:
             if data_new['going']:
                 pyautogui.mouseDown(button='right')
             else:
                 pyautogui.mouseUp(button='right')
+
+    @sio.on("mouse_scroll")
+    def mouse_scroll(data_new):
+        if data["uid"] == data_new["uid"]:
+            pyautogui.scroll(data_new['delta'])
 
     @sio.on("switch_screen")
     def switch_screen(data_new):
