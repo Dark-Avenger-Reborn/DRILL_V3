@@ -240,10 +240,10 @@ document.addEventListener('keyup', function(event) {
     // Emit key_press_short if the key was held for less than 200ms
     if (keyPressedDuration < 200) {
       socket.emit("key_press_short", { uid: pageSID, key: event.key });
-    }
-
-    // Emit key_press with going: false to indicate key release
+    } else {
+      // Emit key_press with going: false to indicate key release
     socket.emit("key_press", { uid: pageSID, key: event.key, going: false });
+    }
 
     // Reset the keyDownTime for the key after it's released
     delete keyDownTime[key];
