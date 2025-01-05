@@ -17,6 +17,8 @@ import zlib
 import cv2  # Import OpenCV for camera access
 import pyautogui
 
+pyautogui.FAILSAFE = True
+
 # Declare the global stop event
 stop_event = threading.Event()
 screen_or_camera = "screen"
