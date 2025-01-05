@@ -213,6 +213,15 @@ def run(data):
             else:
                 pyautogui.mouseUp(button='right')
 
+    @sio.on("key_press")
+    def key_press(data_new):
+        if data["uid"] == data_new["uid"]:
+            print(data_new)
+            if data_new['going']:
+                pyautogui.keyDown(data_new["key"])
+            else:
+                pyautogui.keyDown(data_new["key"])
+
     @sio.on("mouse_scroll")
     def mouse_scroll(data_new):
         if data["uid"] == data_new["uid"]:

@@ -173,11 +173,11 @@ function handleMouseEvent2(e) {
 capturedImage.addEventListener("mousedown", handleMouseEvent);
 capturedImage.addEventListener("mouseup", handleMouseEvent2);
 
-document.getElementById("capturedImage").oncontextmenu = function (e) {
+/*document.getElementById("capturedImage").oncontextmenu = function (e) {
   if (send_mouse_input && screen_or_camera) {
     socket.emit("mouse_click_right", { uid: pageSID });
   }
-};
+};*/
 
 document.querySelectorAll('.screenshot').forEach(function(image) {
   image.addEventListener('contextmenu', function(e) {
@@ -203,3 +203,18 @@ document.querySelector('img').addEventListener('dragstart', function(event) {
   event.preventDefault(); // Prevents the default dragging behavior
 });
 
+
+
+
+
+capturedImage.addEventListener('keydown', function(event) {
+  socket.emit("key_press", { uid: pageSID, key: event.key, going: true });
+
+  event.preventDefault();
+});
+
+capturedImage.addEventListener('keyup', function(event) {
+  socket.emit("key_press", { uid: pageSID, key: event.key, going: false });
+
+  event.preventDefault();
+});
