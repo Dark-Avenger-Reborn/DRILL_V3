@@ -205,21 +205,18 @@ document.querySelector('img').addEventListener('dragstart', function(event) {
 
 
 
-capturedImage.addEventListener('keydown', function(event) {
-  console.log(send_keyboard_input)
+document.addEventListener('keydown', function(event) {
   if (send_keyboard_input && screen_or_camera) {
-    alert("g")
+    console.log('Key Down:', event.key);
     socket.emit("key_press", { uid: pageSID, key: event.key, going: true });
-
     event.preventDefault();
   }
 });
 
-capturedImage.addEventListener('keyup', function(event) {
+document.addEventListener('keyup', function(event) {
   if (send_keyboard_input && screen_or_camera) {
-    alert("f")
+    console.log('Key Up:', event.key);
     socket.emit("key_press", { uid: pageSID, key: event.key, going: false });
-
     event.preventDefault();
   }
 });
