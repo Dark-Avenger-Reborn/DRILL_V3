@@ -31,6 +31,7 @@ document.getElementById("keyboardInput").addEventListener("click", () => {
   send_keyboard_input = !send_keyboard_input;
 });
 
+/*
 document.getElementById("lockKeyboard").addEventListener("click", () => {
   socket.emit("lock_keyboard", { uid: pageSID });
 });
@@ -38,6 +39,7 @@ document.getElementById("lockKeyboard").addEventListener("click", () => {
 document.getElementById("lockMouse").addEventListener("click", () => {
   socket.emit("lock_mouse", { uid: pageSID });
 });
+*/
 
 // Slider button event listeners
 const sliderHighlight = document.getElementById("sliderHighlight");
