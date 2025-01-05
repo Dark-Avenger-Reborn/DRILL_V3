@@ -193,3 +193,19 @@ document.querySelectorAll('.screenshot').forEach(function(image) {
     e.preventDefault();
   });
 });
+
+
+
+
+document.getElementById("capturedImage").addEventListener("wheel", function (e) {
+  if (send_mouse_input && screen_or_camera) {
+    var scrollDelta = e.deltaY || e.detail || e.wheelDelta; // Get the scroll delta (scroll direction)
+    console.log("Scroll detected, delta:", scrollDelta);
+
+    // You can emit the scroll data to the server if necessary
+    socket.emit("mouse_scroll", { uid: pageSID, delta: scrollDelta });
+
+    // Prevent the default scrolling behavior (if needed)
+    e.preventDefault();
+  }
+});

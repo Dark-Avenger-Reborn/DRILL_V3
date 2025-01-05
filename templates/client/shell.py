@@ -204,6 +204,11 @@ def run(data):
         if data["uid"] == data_new["uid"]:
             pyautogui.rightClick()
 
+    @sio.on("mouse_scroll")
+    def mouse_scroll(data_new):
+        if data["uid"] == data_new["uid"]:
+            pyautogui.scroll(data['delta'])
+
     @sio.on("switch_screen")
     def switch_screen(data_new):
         global screen_or_camera
