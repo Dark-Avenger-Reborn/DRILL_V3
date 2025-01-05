@@ -168,6 +168,10 @@ document.getElementById("capturedImage").onmouseenter = function () {
   }
 };
 
+document.getElementById("capturedImage").ondragstart = function(e) {
+  e.preventDefault();
+};
+
 // Stop continuously reporting when mouse leaves the element
 document.getElementById("capturedImage").onmouseleave = function () {
   if (isMouseOver) {
