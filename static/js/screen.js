@@ -152,6 +152,7 @@ draggedElement.ondragstart = function (e) {
     startX = e.clientX;
     startY = e.clientY;
   }
+  e.preventDefault()
 };
 
 draggedElement.ondrag = function (e) {
