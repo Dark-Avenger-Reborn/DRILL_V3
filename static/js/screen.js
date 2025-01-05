@@ -139,7 +139,6 @@ document.getElementById("capturedImage").addEventListener("mousemove", function 
     var percentY = (y / rect.height); // Percentage of height
 
     socket.emit("mouse_input", { uid: pageSID, x: percentX, y: percentY });
-    console.log("Left? : " + percentX * 100 + " ; Top? : " + percentY * 100 + ".");
   }
 });
 
@@ -188,7 +187,6 @@ document.querySelectorAll('.screenshot').forEach(function(image) {
 document.getElementById("capturedImage").addEventListener("wheel", function (e) {
   if (send_mouse_input && screen_or_camera) {
     var scrollDelta = e.deltaY || e.detail || e.wheelDelta; // Get the scroll delta (scroll direction)
-    console.log("Scroll detected, delta:", scrollDelta);
 
     // You can emit the scroll data to the server if necessary
     socket.emit("mouse_scroll", { uid: pageSID, delta: scrollDelta });
@@ -208,6 +206,7 @@ document.querySelector('img').addEventListener('dragstart', function(event) {
 
 
 capturedImage.addEventListener('keydown', function(event) {
+  console.log(send_keyboard_input)
   if (send_keyboard_input && screen_or_camera) {
     alert("g")
     socket.emit("key_press", { uid: pageSID, key: event.key, going: true });
