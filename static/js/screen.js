@@ -187,3 +187,9 @@ document.getElementById("capturedImage").addEventListener("wheel", function (e) 
   }
   e.preventDefault();
 });
+
+
+document.querySelector('img').addEventListener('dragstart', function(event) {
+  event.preventDefault(); // Prevents the default dragging behavior
+});
+
