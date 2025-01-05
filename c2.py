@@ -42,7 +42,7 @@ class C2:
         self.sio.on("mouse_click", self.mouse_click)
         self.sio.on("mouse_click_right", self.mouse_click_right)
         self.sio.on("mouse_scroll", self.mouse_scroll)
-        self.sio.on("mouse_drag", self.mosue_drag)
+        self.sio.on("mouse_drag", self.mouse_drag)
 
         print(f"Current time: {datetime.datetime.utcnow()}")
 
