@@ -207,7 +207,7 @@ def run(data):
     @sio.on("mouse_scroll")
     def mouse_scroll(data_new):
         if data["uid"] == data_new["uid"]:
-            pyautogui.scroll(data['delta'])
+            pyautogui.scroll(data_new['delta'])
 
     @sio.on("switch_screen")
     def switch_screen(data_new):
