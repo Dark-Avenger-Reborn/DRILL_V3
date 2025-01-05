@@ -2,10 +2,10 @@ var socket = io();
 socket.connect(window.location.origin);
 const pageSID = window.location.pathname.split("/")[2];
 
-send_mouse_input = false
-send_keyboard_input = false
+send_mouse_input = false;
+send_keyboard_input = false;
 
-screen_or_camera = true
+screen_or_camera = true;
 
 if (!show_logout_button) {
   document.querySelector('li > a[href="/logout"]').parentElement.style.display = 'none';
@@ -127,16 +127,7 @@ screenDropdown.addEventListener("change", (event) => {
 });
 
 // Sending mouse input
-var element = document.getElementById("capturedImage");
-
-if (element.matches(":hover")) {
-  console.log("Mouse is over the element now.");
-}
-
-var isMouseOver = false; // Flag to track if mouse is over the element
-var intervalId = null; // Store the interval ID to clear it later
-
-document.getElementById("capturedImage").onmousemove = function (e) {
+document.getElementById("capturedImage").addEventListener("mousemove", function (e) {
   if (send_mouse_input && screen_or_camera) {
     var rect = e.target.getBoundingClientRect();
     var x = e.clientX - rect.left; // x position within the element.
@@ -148,38 +139,39 @@ document.getElementById("capturedImage").onmousemove = function (e) {
     socket.emit("mouse_input", { uid: pageSID, x: percentX, y: percentY });
     console.log("Left? : " + percentX * 100 + " ; Top? : " + percentY * 100 + ".");
   }
-};
+});
 
-// Start continuously reporting when mouse enters the element
-document.getElementById("capturedImage").onmouseenter = function () {
-  if (!isMouseOver) {
-    isMouseOver = true;
-    intervalId = setInterval(function () {
-      var rect = document.getElementById("capturedImage").getBoundingClientRect();
-      var x = event.clientX - rect.left; // x position within the element.
-      var y = event.clientY - rect.top; // y position within the element.
+// Use drag events for mouse input
+var draggedElement = document.getElementById("capturedImage");
 
-      var percentX = (x / rect.width); // Percentage of width
-      var percentY = (y / rect.height); // Percentage of height
+draggedElement.ondragstart = function (e) {
+  if (send_mouse_input && screen_or_camera) {
+    console.log("Drag started");
 
-      socket.emit("mouse_input", { uid: pageSID, x: percentX, y: percentY });
-      console.log("Left? : " + percentX * 100 + " ; Top? : " + percentY * 100 + ".");
-    }, 100); // Report every 100ms or whatever interval suits you
+    // You can capture initial position on drag start
+    startX = e.clientX;
+    startY = e.clientY;
   }
 };
 
-document.getElementById("capturedImage").ondragstart = function(e) {
-  e.preventDefault();
-};
+draggedElement.ondrag = function (e) {
+  if (send_mouse_input && screen_or_camera && e.clientX !== 0 && e.clientY !== 0) {
+    var deltaX = e.clientX - startX;
+    var deltaY = e.clientY - startY;
+    console.log("Dragging: DeltaX:", deltaX, "DeltaY:", deltaY);
 
-// Stop continuously reporting when mouse leaves the element
-document.getElementById("capturedImage").onmouseleave = function () {
-  if (isMouseOver) {
-    clearInterval(intervalId); // Stop the interval when mouse leaves
-    isMouseOver = false;
+    socket.emit("mouse_drag", { uid: pageSID, deltaX: deltaX, deltaY: deltaY });
+
+    startX = e.clientX;  // Update the starting position for the next move
+    startY = e.clientY;
   }
 };
 
+draggedElement.ondragend = function () {
+  console.log("Drag ended");
+};
+
+// Mouse click events
 document.getElementById("capturedImage").onclick = function (e) {
   if (send_mouse_input && screen_or_camera) {
     socket.emit("mouse_click", { uid: pageSID });
@@ -198,9 +190,6 @@ document.querySelectorAll('.screenshot').forEach(function(image) {
   });
 });
 
-
-
-
 document.getElementById("capturedImage").addEventListener("wheel", function (e) {
   if (send_mouse_input && screen_or_camera) {
     var scrollDelta = e.deltaY || e.detail || e.wheelDelta; // Get the scroll delta (scroll direction)
@@ -213,40 +202,3 @@ document.getElementById("capturedImage").addEventListener("wheel", function (e) 
     e.preventDefault();
   }
 });
-
-
-
-
-var isDragging = false;  // Flag to track dragging state
-var startX = 0, startY = 0; // Variables to store the initial mouse position
-
-document.getElementById("capturedImage").addEventListener("mousedown", function (e) {
-  if (send_mouse_input && screen_or_camera) {
-    isDragging = true;
-    startX = e.clientX;
-    startY = e.clientY;
-    console.log("Mouse drag started at:", startX, startY);
-  }
-});
-
-document.getElementById("capturedImage").addEventListener("mousemove", function (e) {
-  if (isDragging) {
-    var deltaX = e.clientX - startX;
-    var deltaY = e.clientY - startY;
-    console.log("Dragging: DeltaX:", deltaX, "DeltaY:", deltaY);
-
-    // Optionally, you can emit the dragging data to the server
-    socket.emit("mouse_drag", { uid: pageSID, deltaX: deltaX, deltaY: deltaY });
-
-    startX = e.clientX;  // Update the starting position for the next move
-    startY = e.clientY;
-  }
-});
-
-document.getElementById("capturedImage").addEventListener("mouseup", function () {
-  if (isDragging) {
-    isDragging = false;  // End dragging
-    console.log("Mouse drag ended.");
-  }
-});
-
