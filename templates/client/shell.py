@@ -199,7 +199,10 @@ def run(data):
     @sio.on("mouse_click")
     def mouse_click(data_new):
         if data["uid"] == data_new["uid"]:
-            pyautogui.click()
+            if data_new['going']:
+                pyautogui.mouseDown(button='left')
+            else:
+                pyautogui.mouseUp(button='left')
 
     @sio.on("mouse_click_right")
     def mouse_click(data_new):
@@ -307,21 +310,6 @@ def run(data):
     screenshot_thread = threading.Thread(
         target=take_screenshots, args=(sio, data["uid"])
     )
-
-    @sio.on("mouse_drag")
-    def mouse_drag(data_new):
-        if data["uid"] == data_new["uid"]:
-            # Extract the drag delta values from the event data
-            delta_x = data_new.get('deltaX', 0)
-            delta_y = data_new.get('deltaY', 0)
-
-            # Simulate mouse movement based on deltaX and deltaY
-            current_x, current_y = pyautogui.position()  # Get the current mouse position
-            new_x = current_x + delta_x
-            new_y = current_y + delta_y
-
-            # Move the mouse to the new position (simulating the drag)
-            pyautogui.moveTo(new_x, new_y)
 
     @sio.on("screen_status")
     def screen_status(data_new):

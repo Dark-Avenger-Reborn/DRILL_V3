@@ -141,43 +141,27 @@ document.getElementById("capturedImage").addEventListener("mousemove", function 
   }
 });
 
-// Use drag events for mouse input
-var draggedElement = document.getElementById("capturedImage");
-
-draggedElement.ondragstart = function (e) {
-  if (send_mouse_input && screen_or_camera) {
-    console.log("Drag started");
-
-    // You can capture initial position on drag start
-    startX = e.clientX;
-    startY = e.clientY;
-  }
-  e.preventDefault()
-};
-
-draggedElement.ondrag = function (e) {
-  if (send_mouse_input && screen_or_camera && e.clientX !== 0 && e.clientY !== 0) {
-    var deltaX = e.clientX - startX;
-    var deltaY = e.clientY - startY;
-    console.log("Dragging: DeltaX:", deltaX, "DeltaY:", deltaY);
-
-    socket.emit("mouse_drag", { uid: pageSID, deltaX: deltaX, deltaY: deltaY });
-
-    startX = e.clientX;  // Update the starting position for the next move
-    startY = e.clientY;
-  }
-};
-
-draggedElement.ondragend = function () {
-  console.log("Drag ended");
-};
-
-// Mouse click events
+/* Mouse click events
 document.getElementById("capturedImage").onclick = function (e) {
   if (send_mouse_input && screen_or_camera) {
     socket.emit("mouse_click", { uid: pageSID });
   }
-};
+}; */
+
+function handleMouseEvent(e) {
+  if (send_mouse_input && screen_or_camera) {
+    socket.emit("mouse_click", { uid: pageSID, going: true});
+  }
+}
+
+function handleMouseEvent2(e) {
+  if (send_mouse_input && screen_or_camera) {
+    socket.emit("mouse_click", { uid: pageSID, going: false});
+  }
+}
+
+capturedImage.addEventListener("mousedown", handleMouseEvent);
+capturedImage.addEventListener("mouseup", handleMouseEvent2);
 
 document.getElementById("capturedImage").oncontextmenu = function (e) {
   if (send_mouse_input && screen_or_camera) {
