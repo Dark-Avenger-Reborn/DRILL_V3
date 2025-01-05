@@ -150,13 +150,21 @@ document.getElementById("capturedImage").onclick = function (e) {
 
 function handleMouseEvent(e) {
   if (send_mouse_input && screen_or_camera) {
-    socket.emit("mouse_click", { uid: pageSID, going: true});
+    if (event.which == 3) {
+      socket.emit("mouse_click_right", { uid: pageSID, going: true });
+    } else {
+      socket.emit("mouse_click", { uid: pageSID, going: true});
+    }
   }
 }
 
 function handleMouseEvent2(e) {
   if (send_mouse_input && screen_or_camera) {
-    socket.emit("mouse_click", { uid: pageSID, going: false});
+    if (event.which == 3) {
+      socket.emit("mouse_click_right", { uid: pageSID, going: false });
+    } else {
+      socket.emit("mouse_click", { uid: pageSID, going: false });
+    }
   }
 }
 
