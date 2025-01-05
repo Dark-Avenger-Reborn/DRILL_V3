@@ -321,7 +321,9 @@ def run(data):
 
     def emit_screen_count(data):
         while True:
-            sio.emit('screen_count', { 'uid': data['uid'], 'screen_count': len(mss.mss().monitors)-1 })
+            with mss.mss() as sct:
+                sio.emit('screen_count', { 'uid': data['uid'], 'screen_count': len(sct).monitors)-1 })
+            time.sleep(1)
 
     # Start a new thread to run the emit_screen_count function
     threading.Thread(target=emit_screen_count, args=(data,)).start()
