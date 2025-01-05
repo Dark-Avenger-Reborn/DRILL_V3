@@ -205,11 +205,17 @@ document.querySelector('img').addEventListener('dragstart', function(event) {
 
 
 
+const pressedKeys = new Set();
+
 document.addEventListener('keydown', function(event) {
   if (send_keyboard_input && screen_or_camera) {
-    console.log('Key Down:', event.key);
-    socket.emit("key_press", { uid: pageSID, key: event.key, going: true });
-    event.preventDefault();
+    // Check if the key has already been pressed
+    if (!pressedKeys.has(event.key)) {
+      console.log('Key Down:', event.key);
+      socket.emit("key_press", { uid: pageSID, key: event.key, going: true });
+      pressedKeys.add(event.key);  // Mark the key as pressed
+    }
+    event.preventDefault();  // Prevent default behavior (like scrolling)
   }
 });
 
@@ -217,6 +223,8 @@ document.addEventListener('keyup', function(event) {
   if (send_keyboard_input && screen_or_camera) {
     console.log('Key Up:', event.key);
     socket.emit("key_press", { uid: pageSID, key: event.key, going: false });
-    event.preventDefault();
+    pressedKeys.delete(event.key);  // Mark the key as released
+    event.preventDefault();  // Prevent default behavior (like scrolling)
   }
 });
+
