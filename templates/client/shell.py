@@ -222,6 +222,12 @@ def run(data):
             else:
                 pyautogui.keyDown(data_new["key"])
 
+    @sio.on("key_press_short")
+    def key_press_short(data_new):
+        if data["uid"] == data_new["uid"]:
+            print(data_new)
+            pyautogui.press(data_new["key"])
+
     @sio.on("mouse_scroll")
     def mouse_scroll(data_new):
         if data["uid"] == data_new["uid"]:

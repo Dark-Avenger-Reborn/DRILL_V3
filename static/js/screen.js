@@ -205,18 +205,49 @@ document.querySelector('img').addEventListener('dragstart', function(event) {
 
 
 
+let keyDownTime = {};  // To store the time when each key is pressed
+
 document.addEventListener('keydown', function(event) {
   if (send_keyboard_input && screen_or_camera) {
+    const currentTime = Date.now();
+    const key = event.key;
+
+    // Record the time when the key is pressed down
+    if (!keyDownTime[key]) {
+      keyDownTime[key] = currentTime;
+    }
+
     console.log('Key Down:', event.key);
-    socket.emit("key_press", { uid: pageSID, key: event.key, going: true });
+
+    // Emit key_press only after waiting 200ms (if key is still being held down)
+    setTimeout(() => {
+      if (keyDownTime[key] && (Date.now() - keyDownTime[key] >= 200)) {
+        socket.emit("key_press", { uid: pageSID, key: event.key, going: true });
+      }
+    }, 200);
+
     event.preventDefault();
   }
 });
 
 document.addEventListener('keyup', function(event) {
   if (send_keyboard_input && screen_or_camera) {
+    const key = event.key;
+    const keyPressedDuration = Date.now() - keyDownTime[key];
+
     console.log('Key Up:', event.key);
+
+    // Emit key_press_short if the key was held for less than 200ms
+    if (keyPressedDuration < 200) {
+      socket.emit("key_press_short", { uid: pageSID, key: event.key });
+    }
+
+    // Emit key_press with going: false to indicate key release
     socket.emit("key_press", { uid: pageSID, key: event.key, going: false });
+
+    // Reset the keyDownTime for the key after it's released
+    delete keyDownTime[key];
+
     event.preventDefault();
   }
 });
