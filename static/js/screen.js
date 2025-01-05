@@ -209,6 +209,7 @@ document.querySelector('img').addEventListener('dragstart', function(event) {
 
 capturedImage.addEventListener('keydown', function(event) {
   if (send_keyboard_input && screen_or_camera) {
+    alert("g")
     socket.emit("key_press", { uid: pageSID, key: event.key, going: true });
 
     event.preventDefault();
@@ -217,6 +218,7 @@ capturedImage.addEventListener('keydown', function(event) {
 
 capturedImage.addEventListener('keyup', function(event) {
   if (send_keyboard_input && screen_or_camera) {
+    alert("f")
     socket.emit("key_press", { uid: pageSID, key: event.key, going: false });
 
     event.preventDefault();
