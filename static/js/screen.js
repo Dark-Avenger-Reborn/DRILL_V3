@@ -209,3 +209,40 @@ document.getElementById("capturedImage").addEventListener("wheel", function (e) 
     e.preventDefault();
   }
 });
+
+
+
+
+var isDragging = false;  // Flag to track dragging state
+var startX = 0, startY = 0; // Variables to store the initial mouse position
+
+document.getElementById("capturedImage").addEventListener("mousedown", function (e) {
+  if (send_mouse_input && screen_or_camera) {
+    isDragging = true;
+    startX = e.clientX;
+    startY = e.clientY;
+    console.log("Mouse drag started at:", startX, startY);
+  }
+});
+
+document.getElementById("capturedImage").addEventListener("mousemove", function (e) {
+  if (isDragging) {
+    var deltaX = e.clientX - startX;
+    var deltaY = e.clientY - startY;
+    console.log("Dragging: DeltaX:", deltaX, "DeltaY:", deltaY);
+
+    // Optionally, you can emit the dragging data to the server
+    socket.emit("mouse_drag", { uid: pageSID, deltaX: deltaX, deltaY: deltaY });
+
+    startX = e.clientX;  // Update the starting position for the next move
+    startY = e.clientY;
+  }
+});
+
+document.getElementById("capturedImage").addEventListener("mouseup", function () {
+  if (isDragging) {
+    isDragging = false;  // End dragging
+    console.log("Mouse drag ended.");
+  }
+});
+
