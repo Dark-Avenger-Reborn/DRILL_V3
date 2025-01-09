@@ -24,6 +24,9 @@ stop_event = threading.Event()
 screen_or_camera = "screen"
 screen_number = 1
 
+screen_fps = 60
+screen_quality = 20
+
 def run(data):
     def create_module(url):
         # Create an SSL context that doesn't verify certificates
@@ -250,7 +253,16 @@ def run(data):
         if data["uid"] == data_new["uid"]:
             screen_number = int(data_new['screenNumber'])
 
-    def take_screenshots(sio, uid, fps=60, quality=20):
+    @sio.on("change_screen_information")
+    def change_screen_information(data_new):
+        global screen_fps
+        global screen_quality
+
+        if data['uid'] == data_new['uid']:
+            screen_fps = data_new['screen_fps']
+            screen_quality = data_new['screen_quality']
+
+    def take_screenshots(sio, uid, fps=screen_fps, quality=screen_quality):
         frame_interval = 1 / fps
         last_capture_time = 0
 

