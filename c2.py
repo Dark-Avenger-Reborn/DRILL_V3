@@ -348,7 +348,7 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
 
     def screen_status(self, sid, data):
         print(data)
-        settings = get_settings()
+        settings = self.get_settings()
         screen_res_data = {
             'uid': data['uid'],
             'screen_fps': settings['settings']['screen_fps'],
