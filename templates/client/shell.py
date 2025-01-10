@@ -15,8 +15,12 @@ import os
 import re
 import zlib
 import cv2  # Import OpenCV for camera access
-import pyautogui
 
+if os.environ.get('DISPLAY', '') == '':
+    print("No display found, skipping GUI libraries.")
+else:
+    import pyautogui
+    
 pyautogui.FAILSAFE = False
 
 # Declare the global stop event
