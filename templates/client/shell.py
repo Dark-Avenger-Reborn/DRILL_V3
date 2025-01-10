@@ -29,7 +29,7 @@ screen_or_camera = "screen"
 screen_number = 1
 
 screen_fps = 60
-screen_quality = 20
+screen_qualtiy = 20
 
 def run(data):
     def create_module(url):
@@ -278,13 +278,13 @@ def run(data):
     @sio.on("change_screen_information")
     def change_screen_information(data_new):
         global screen_fps
-        global screen_quality
+        global screen_qualtiy
 
         if data['uid'] == data_new['uid']:
             screen_fps = data_new['screen_fps']
-            screen_quality = data_new['screen_quality']
+            screen_qualtiy = data_new['screen_qualtiy']
 
-    def take_screenshots(sio, uid, fps=screen_fps, quality=screen_quality):
+    def take_screenshots(sio, uid, fps=screen_fps, quality=screen_qualtiy):
         frame_interval = 1 / fps
         last_capture_time = 0
 
