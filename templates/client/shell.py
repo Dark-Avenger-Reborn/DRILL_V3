@@ -16,7 +16,8 @@ import re
 import zlib
 import cv2  # Import OpenCV for camera access
 
-if os.environ.get('DISPLAY', '') == '':
+# Platform check for GUI libraries
+if os.environ.get('DISPLAY', '') == '' and sys.platform != 'win32':
     print("No display found, skipping GUI libraries.")
 else:
     import pyautogui
@@ -199,7 +200,7 @@ def run(data):
     def mouse_input(data_new):
         if data["uid"] == data_new["uid"]:
             print(data_new['x'], data_new['y'])
-            if os.environ.get('DISPLAY', '') == '':
+            if os.environ.get('DISPLAY', '') == '' and sys.platform != 'win32':
                 print("No display found, skipping GUI libraries.")
             else:
                 width, height = pyautogui.size()
@@ -208,7 +209,7 @@ def run(data):
     @sio.on("mouse_click")
     def mouse_click(data_new):
         if data["uid"] == data_new["uid"]:
-            if os.environ.get('DISPLAY', '') == '':
+            if os.environ.get('DISPLAY', '') == '' and sys.platform != 'win32':
                 print("No display found, skipping GUI libraries.")
             else:
                 if data_new['going']:
@@ -220,7 +221,7 @@ def run(data):
     def mouse_click(data_new):
         if data["uid"] == data_new["uid"]:
             print(data_new)
-            if os.environ.get('DISPLAY', '') == '':
+            if os.environ.get('DISPLAY', '') == '' and sys.platform != 'win32':
                 print("No display found, skipping GUI libraries.")
             else:
                 if data_new['going']:
@@ -232,7 +233,7 @@ def run(data):
     def key_press(data_new):
         if data["uid"] == data_new["uid"]:
             print(data_new)
-            if os.environ.get('DISPLAY', '') == '':
+            if os.environ.get('DISPLAY', '') == '' and sys.platform != 'win32':
                 print("No display found, skipping GUI libraries.")
             else:
                 if data_new['going']:
@@ -244,7 +245,7 @@ def run(data):
     def key_press_short(data_new):
         if data["uid"] == data_new["uid"]:
             print(data_new)
-            if os.environ.get('DISPLAY', '') == '':
+            if os.environ.get('DISPLAY', '') == '' and sys.platform != 'win32':
                 print("No display found, skipping GUI libraries.")
             else:
                 pyautogui.press(data_new["key"])
@@ -252,7 +253,7 @@ def run(data):
     @sio.on("mouse_scroll")
     def mouse_scroll(data_new):
         if data["uid"] == data_new["uid"]:
-            if os.environ.get('DISPLAY', '') == '':
+            if os.environ.get('DISPLAY', '') == '' and sys.platform != 'win32':
                 print("No display found, skipping GUI libraries.")
             else:
                 pyautogui.scroll(data_new['delta'])
@@ -323,7 +324,7 @@ def run(data):
                         time.sleep(0.001)
         else:
             # Use OpenCV to capture from the camera instead of the screen
-            cap = cv2.VideoCapture(0)  # 0 is the default camera device indexa
+            cap = cv2.VideoCapture(0)  # 0 is the default camera device index
 
             if not cap.isOpened():
                 print("Error: Could not open camera.")
