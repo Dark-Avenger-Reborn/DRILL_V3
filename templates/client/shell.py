@@ -269,11 +269,27 @@ def run(data):
             except:
                 "Thread is already dead"
 
+            stop_event.clear()  # Reset the event to False
+            screenshot_thread = threading.Thread(
+                target=take_screenshots, args=(sio, data["uid"])
+            )
+
     @sio.on("change_screen_number")
     def change_screen_number(data_new):
         global screen_number
         if data["uid"] == data_new["uid"]:
             screen_number = int(data_new['screenNumber'])
+
+            stop_event.set()  # Signal the thread to stop
+            try:
+                screenshot_thread.join()  # Wait for the thread to finish
+            except:
+                "Thread is already dead"
+
+            stop_event.clear()  # Reset the event to False
+            screenshot_thread = threading.Thread(
+                target=take_screenshots, args=(sio, data["uid"])
+            )
 
     @sio.on("change_screen_information")
     def change_screen_information(data_new):
