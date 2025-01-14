@@ -316,6 +316,7 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
             self.sio.emit(
                 "upload_file",
                 {"uid": uid, "file_name": file.filename, "file": base64_encoded},
+                to=self.devices[uid]["sid"]
             )
 
     def download_file(self, data):
