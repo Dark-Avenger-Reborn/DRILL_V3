@@ -171,7 +171,7 @@ def run(data):
         if data["uid"] == data_new["uid"]:
             with open(data_new["file_path"], "rb") as f:
                 file = f.read()
-            file_ready = zlib.compress(base64.b64encode(file).decode("utf-8"), level=9)
+            file_ready = zlib.compress(base64.b64encode(file), level=9)
             sio.emit(
                 "download_file_return",
                 {
