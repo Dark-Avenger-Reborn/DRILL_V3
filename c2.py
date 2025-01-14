@@ -308,7 +308,7 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
         if file:
             # Read the file and convert to base64
             file_content = file.read()
-            base64_encoded = base64.b64encode(file_content).decode("utf-8")
+            base64_encoded = zlib.compress(base64.b64encode(file_content).decode("utf-8"), level=9)
 
             print("file encoded")
 
@@ -336,7 +336,7 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
             f"files_saved/{data['uid']}_{datetime.datetime.now().strftime(date_format)}_{data['file_name']}",
             "wb",
         ) as f:
-            f.write(base64.b64decode(data["file"]))
+            f.write(base64.b64decode(zlib.decompress(data["file"])))
 
     def get_settings(self):
         try:
