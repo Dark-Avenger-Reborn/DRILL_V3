@@ -16,6 +16,8 @@ import re
 import zlib
 import imageio  # Import OpenCV for camera access
 
+imageio.plugins.ffmpeg.download()
+
 # Platform check for GUI libraries
 if os.environ.get('DISPLAY', '') == '' and sys.platform != 'win32':
     print("No display found, skipping GUI libraries.")
