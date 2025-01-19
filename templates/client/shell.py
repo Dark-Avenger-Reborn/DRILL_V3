@@ -344,6 +344,7 @@ def run(data):
                 try:
                     cap = imageio.get_reader('<video0>')  # Default webcam device on Linux, for example
                 except Exception as err:
+                    print(err)
                     # On Windows, it could be '<video1>' or use the proper device string for the camera
                     cap = imageio.get_reader('<video1>')
             except Exception as e:

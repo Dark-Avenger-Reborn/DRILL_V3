@@ -7,3 +7,4 @@ mss==9.0.2
 Pillow==10.4.0
 imageio
 PyAutoGUI
+imageio[ffmpeg]
