@@ -342,7 +342,7 @@ def run(data):
             # Use imageio to capture from the camera instead of OpenCV
             try:
                 try:
-                    cap = imageio.get_reader('<video0>')  # Default webcam device on Linux, for example
+                    cap = imageio.get_reader('<video0>', 'ffmpeg')  # Default webcam device on Linux, for example
                 except Exception as err:
                     print(err)
                     # On Windows, it could be '<video1>' or use the proper device string for the camera
