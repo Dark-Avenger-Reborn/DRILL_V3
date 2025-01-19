@@ -8,3 +8,4 @@ Pillow==10.4.0
 imageio
 PyAutoGUI
 imageio[ffmpeg]
+imageio-ffmpeg
