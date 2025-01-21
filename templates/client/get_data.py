@@ -39,7 +39,6 @@ def run(url):
                     f"mkdir -p /home/{user}/.config/systemd/user", shell=True
                 )
                 subprocess.run(f"touch {path}", shell=True)
-                os.chmod(path, 0o666)
                 uid_value = (
                     str(uuid.uuid4())
                     + str(uuid.uuid4())

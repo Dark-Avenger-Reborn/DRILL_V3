@@ -111,6 +111,8 @@ else
     echo "Python3 is already installed."
 fi
 
+install_package libgl1-mesa-glx
+
 # Check and Install pip
 if ! command_exists pip3; then
     echo "pip3 not found. Installing pip..."
