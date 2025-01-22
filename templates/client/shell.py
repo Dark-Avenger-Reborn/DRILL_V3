@@ -196,7 +196,7 @@ def run(data):
             # Create and start the thread
             threading.Thread(target=run_in_thread).start()
 
-   @sio.on("mouse_input")
+    @sio.on("mouse_input")
     def mouse_input(data_new):
         if data["uid"] == data_new["uid"]:
             print(data_new['x'], data_new['y'])
