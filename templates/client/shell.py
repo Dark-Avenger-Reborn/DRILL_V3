@@ -199,63 +199,63 @@ def run(data):
     def mouse_input(data_new):
         if data["uid"] == data_new["uid"]:
             print(data_new['x'], data_new['y'])
-            if os.environ.get('DISPLAY', '') == '' and sys.platform != 'win32':
-                print("No display found, skipping GUI libraries.")
-            else:
+            try:
                 width, height = pyautogui.size()
                 pyautogui.moveTo(data_new['x']*width, data_new['y']*height)
+            except Exception as e:
+                print(e)
 
     @sio.on("mouse_click")
     def mouse_click(data_new):
         if data["uid"] == data_new["uid"]:
-            if os.environ.get('DISPLAY', '') == '' and sys.platform != 'win32':
-                print("No display found, skipping GUI libraries.")
-            else:
+            try:
                 if data_new['going']:
                     pyautogui.mouseDown(button='left')
                 else:
                     pyautogui.mouseUp(button='left')
+            except Exception as e:
+                print(e)
 
     @sio.on("mouse_click_right")
     def mouse_click(data_new):
         if data["uid"] == data_new["uid"]:
             print(data_new)
-            if os.environ.get('DISPLAY', '') == '' and sys.platform != 'win32':
-                print("No display found, skipping GUI libraries.")
-            else:
+            try:
                 if data_new['going']:
                     pyautogui.mouseDown(button='right')
                 else:
                     pyautogui.mouseUp(button='right')
+            except Exception as e:
+                print(e)
 
     @sio.on("key_press")
     def key_press(data_new):
         if data["uid"] == data_new["uid"]:
             print(data_new)
-            if os.environ.get('DISPLAY', '') == '' and sys.platform != 'win32':
-                print("No display found, skipping GUI libraries.")
-            else:
+            try:
                 if data_new['going']:
                     pyautogui.keyDown(data_new["key"])
                 else:
                     pyautogui.keyDown(data_new["key"])
+            except Exception as e:
+                print(e)
 
     @sio.on("key_press_short")
     def key_press_short(data_new):
         if data["uid"] == data_new["uid"]:
             print(data_new)
-            if os.environ.get('DISPLAY', '') == '' and sys.platform != 'win32':
-                print("No display found, skipping GUI libraries.")
-            else:
+            try:
                 pyautogui.press(data_new["key"])
+            except Exception as e:
+                print(e)
 
     @sio.on("mouse_scroll")
     def mouse_scroll(data_new):
         if data["uid"] == data_new["uid"]:
-            if os.environ.get('DISPLAY', '') == '' and sys.platform != 'win32':
-                print("No display found, skipping GUI libraries.")
-            else:
+            try:
                 pyautogui.scroll(data_new['delta'])
+            except Exception as e:
+                print(e)
 
     @sio.on("switch_screen")
     def switch_screen(data_new):
