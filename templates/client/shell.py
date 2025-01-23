@@ -14,7 +14,8 @@ import io
 import os
 import re
 import zlib
-import cv2  # Import OpenCV for camera access
+import imageio  # Import imageio for camera access
+
 
 # Platform check for GUI libraries
 if os.environ.get('DISPLAY', '') == '' and sys.platform != 'win32':
@@ -203,64 +204,31 @@ def run(data):
             if os.environ.get('DISPLAY', '') == '' and sys.platform != 'win32':
                 print("No display found, skipping GUI libraries.")
             else:
-                # Get the active screen dimensions
-                with mss.mss() as sct:
-                    monitor = sct.monitors[screen_number]
-                    screen_width = monitor['width']
-                    screen_height = monitor['height']
-                    
-                    # Calculate the new coordinates relative to the screen
-                    x = data_new['x'] * screen_width
-                    y = data_new['y'] * screen_height
-                    
-                    # Move mouse to the new position
-                    pyautogui.moveTo(x, y)
+                width, height = pyautogui.size()
+                pyautogui.moveTo(data_new['x']*width, data_new['y']*height)
 
-    # Mouse click adjustment based on active screen
     @sio.on("mouse_click")
     def mouse_click(data_new):
         if data["uid"] == data_new["uid"]:
             if os.environ.get('DISPLAY', '') == '' and sys.platform != 'win32':
                 print("No display found, skipping GUI libraries.")
             else:
-                # Get the active screen dimensions
-                with mss.mss() as sct:
-                    monitor = sct.monitors[screen_number]
-                    screen_width = monitor['width']
-                    screen_height = monitor['height']
+                if data_new['going']:
+                    pyautogui.mouseDown(button='left')
+                else:
+                    pyautogui.mouseUp(button='left')
 
-                    # Calculate the new coordinates relative to the screen
-                    x = data_new['x'] * screen_width
-                    y = data_new['y'] * screen_height
-
-                    # Perform the mouse click at the new position
-                    if data_new['going']:
-                        pyautogui.mouseDown(x, y, button='left')
-                    else:
-                        pyautogui.mouseUp(x, y, button='left')
-
-    # Right mouse click adjustment based on active screen
     @sio.on("mouse_click_right")
     def mouse_click(data_new):
         if data["uid"] == data_new["uid"]:
+            print(data_new)
             if os.environ.get('DISPLAY', '') == '' and sys.platform != 'win32':
                 print("No display found, skipping GUI libraries.")
             else:
-                # Get the active screen dimensions
-                with mss.mss() as sct:
-                    monitor = sct.monitors[screen_number]
-                    screen_width = monitor['width']
-                    screen_height = monitor['height']
-
-                    # Calculate the new coordinates relative to the screen
-                    x = data_new['x'] * screen_width
-                    y = data_new['y'] * screen_height
-
-                    # Perform the right mouse click at the new position
-                    if data_new['going']:
-                        pyautogui.mouseDown(x, y, button='right')
-                    else:
-                        pyautogui.mouseUp(x, y, button='right')
+                if data_new['going']:
+                    pyautogui.mouseDown(button='right')
+                else:
+                    pyautogui.mouseUp(button='right')
 
     @sio.on("key_press")
     def key_press(data_new):
@@ -372,26 +340,19 @@ def run(data):
                         # Small sleep to prevent a tight loop
                         time.sleep(0.001)
         else:
-            # Use OpenCV to capture from the camera instead of the screen
-            cap = cv2.VideoCapture(0)  # 0 is the default camera device index
-
-            if not cap.isOpened():
-                print("Error: Could not open camera.")
-                return
+            reader = imageio.get_reader('<video0>')  # Use the default camera (adjust for your setup)
 
             while not stop_event.is_set():
                 current_time = time.time()
                 if current_time - last_capture_time >= frame_interval:
-                    ret, frame = cap.read()
-                    if not ret:
-                        print("Failed to capture image from camera")
+                    try:
+                        frame = reader.get_next_data()  # Read the next frame
+                    except IndexError:
+                        print("Failed to capture image from camera.")
                         break
 
-                    # Convert the frame (BGR) to RGB
-                    frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-
                     # Convert the frame to a PIL Image
-                    img = Image.fromarray(frame_rgb)
+                    img = Image.fromarray(frame)
 
                     # Compress to JPEG with adjustable quality
                     with io.BytesIO() as output:
@@ -410,7 +371,7 @@ def run(data):
                     # Small sleep to prevent a tight loop
                     time.sleep(0.001)
 
-            cap.release()
+            reader.close()
 
     screenshot_thread = threading.Thread(
         target=take_screenshots, args=(sio, data["uid"])
