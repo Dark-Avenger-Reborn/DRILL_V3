@@ -16,13 +16,11 @@ import re
 import zlib
 import imageio  # Import imageio for camera access
 
-
-# Platform check for GUI libraries
-if os.environ.get('DISPLAY', '') == '' and sys.platform != 'win32':
-    print("No display found, skipping GUI libraries.")
-else:
+try:
     import pyautogui
     pyautogui.FAILSAFE = False
+except Exception as e:
+    print(e)
 
 # Declare the global stop event
 stop_event = threading.Event()
@@ -340,7 +338,7 @@ def run(data):
                         # Small sleep to prevent a tight loop
                         time.sleep(0.001)
         else:
-            reader = imageio.get_reader('<video0>')  # Use the default camera (adjust for your setup)
+            reader = imageio.get_reader()  # Use the default camera (adjust for your setup)
 
             while not stop_event.is_set():
                 current_time = time.time()
