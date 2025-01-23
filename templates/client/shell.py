@@ -57,7 +57,7 @@ def run(data):
     elif system == "Windows":
         shellScript = "powershell"
     else:
-        shellScript = "bash"
+        shellScript = "sh"
 
     class InteractiveShell:
         def __init__(self):
