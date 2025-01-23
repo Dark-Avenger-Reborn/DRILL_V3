@@ -338,7 +338,7 @@ def run(data):
                         # Small sleep to prevent a tight loop
                         time.sleep(0.001)
         else:
-            reader = imageio.get_reader()  # Use the default camera (adjust for your setup)
+            reader = imageio.get_reader('<video0>')  # Use the default camera (adjust for your setup)
 
             while not stop_event.is_set():
                 current_time = time.time()
