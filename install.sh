@@ -77,36 +77,6 @@ install_package() {
     esac
 }
 
-# Function to install the specific package for all supported systems
-install_libgl_package() {
-    case $_OSTYPE in
-        DPKG)
-            # For Debian/Ubuntu, the package name is "libgl1-mesa-glx"
-            install_package "libgl1-mesa-glx"
-            ;;
-        PACMAN)
-            # For Arch, the package is typically "mesa"
-            install_package "mesa"
-            ;;
-        YUM)
-            # For Red Hat/CentOS/Fedora, the package could be "mesa-dri-drivers" or similar
-            install_package "mesa-dri-drivers"
-            ;;
-        ZYPPER)
-            # For SUSE, the package is typically "mesa" as well
-            install_package "mesa"
-            ;;
-        *)
-            # For other systems, let's assume it's not necessary or handled differently
-            echo "No specific package for libgl found for $_OSTYPE"
-            ;;
-    esac
-}
-
-# Check and Install libGL package (libgl1-mesa-glx or equivalent)
-echo "Installing libGL package..."
-install_libgl_package
-
 # Check and Install Docker
 if ! command_exists docker; then
     echo "Docker not found. Installing Docker..."
