@@ -225,19 +225,11 @@ def run(data):
             else:
                 # Get the active screen dimensions
                 with mss.mss() as sct:
-                    monitor = sct.monitors[screen_number]
-                    screen_width = monitor['width']
-                    screen_height = monitor['height']
-
-                    # Calculate the new coordinates relative to the screen
-                    x = data_new['x'] * screen_width
-                    y = data_new['y'] * screen_height
-
                     # Perform the mouse click at the new position
                     if data_new['going']:
-                        pyautogui.mouseDown(x, y, button='left')
+                        pyautogui.mouseDown(button='left')
                     else:
-                        pyautogui.mouseUp(x, y, button='left')
+                        pyautogui.mouseUp(button='left')
 
     # Right mouse click adjustment based on active screen
     @sio.on("mouse_click_right")
@@ -248,19 +240,11 @@ def run(data):
             else:
                 # Get the active screen dimensions
                 with mss.mss() as sct:
-                    monitor = sct.monitors[screen_number]
-                    screen_width = monitor['width']
-                    screen_height = monitor['height']
-
-                    # Calculate the new coordinates relative to the screen
-                    x = data_new['x'] * screen_width
-                    y = data_new['y'] * screen_height
-
                     # Perform the right mouse click at the new position
                     if data_new['going']:
-                        pyautogui.mouseDown(x, y, button='right')
+                        pyautogui.mouseDown(button='right')
                     else:
-                        pyautogui.mouseUp(x, y, button='right')
+                        pyautogui.mouseUp(button='right')
 
     @sio.on("key_press")
     def key_press(data_new):
