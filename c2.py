@@ -351,8 +351,8 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
         settings = self.get_settings()
         screen_res_data = {
             'uid': data['uid'],
-            'screen_fps': settings['settings']['screen_fps'],
-            'screen_qualtiy': settings['settings']['screen_qualtiy']
+            'screen_fps': settings['settings']['screen_sharing']['screen_fps'],
+            'screen_qualtiy': settings['settings']['screen_sharing']['screen_qualtiy']
         }
         self.sio.emit("change_screen_information", screen_res_data)
         self.sio.emit("screen_status", data)

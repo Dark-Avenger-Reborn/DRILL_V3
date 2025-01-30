@@ -8,8 +8,10 @@
         "require_login": true,
         "port": 5000,
 
-        "screen_fps": 60,
-        "screen_qualtiy": 20
+        "screen_sharing" : {
+            "screen_fps": 60,
+            "screen_qualtiy": 20
+        }
     },
 
     "style": {
