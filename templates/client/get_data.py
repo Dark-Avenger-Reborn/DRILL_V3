@@ -18,9 +18,6 @@ def run(url):
             if not os.path.exists(f"C:\\Users\\{user}\\AppData\\Roaming\\Microsoft\\Powershell\\PSReadLine"):
                 # Create the folder
                 os.makedirs(f"C:\\Users\\{user}\\AppData\\Roaming\\Microsoft\\Powershell\\PSReadLine")
-                print(f"Folder '{f"C:\\Users\\{user}\\AppData\\Roaming\\Microsoft\\Powershell\\PSReadLine"}' created.")
-            else:
-                print(f"Folder '{f"C:\\Users\\{user}\\AppData\\Roaming\\Microsoft\\Powershell\\PSReadLine"}' already exists.")
                 
             if os.path.exists(windows_path):
                 with open(windows_path,"r",) as f:
