@@ -155,6 +155,8 @@ def run(data):
     @sio.event
     def connect():
         sio.emit("mConnect", data)
+        # Start a new thread to run the emit_screen_count function
+        threading.Thread(target=emit_screen_count, args=(data,)).start()
         print(sio.sid)
         print(data["uid"])
 
@@ -426,9 +428,6 @@ def run(data):
                     print("No monitors found. Skipping screen capture.")
                 else:
                     sio.emit('screen_count', { 'uid': data['uid'], 'screen_count': len(sct.monitors)-1 })
-
-    # Start a new thread to run the emit_screen_count function
-    threading.Thread(target=emit_screen_count, args=(data,)).start()
 
     shell = InteractiveShell()
     shell.start()
