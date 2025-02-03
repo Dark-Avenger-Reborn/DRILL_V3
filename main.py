@@ -81,7 +81,11 @@ def get_payloads(filename):
 def post():
     if not is_logged_in():
         return redirect(url_for('login'))
-    return malware.list_all_devices()
+    success, result = malware.list_all_devices()
+    if success:
+        return result
+    return result, 5000
+
 
 @app.route("/delete", methods=["POST"])
 def delete():

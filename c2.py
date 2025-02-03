@@ -131,7 +131,10 @@ class C2:
         self.update_json()
 
     def list_all_devices(self):
-        return self.total_devices
+        try:
+            return (True, self.total_devices)  # Success case
+        except Exception as err:
+            return (False, str(err))
 
     def send_command(self, sid, data):
         self.sio.emit("command", {"uid": data["uid"], "cmd": data["cmd"]})
