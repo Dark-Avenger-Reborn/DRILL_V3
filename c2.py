@@ -129,7 +129,7 @@ class C2:
             if device_id in self.devices:
                 self.devices.pop(device_id)
                 return (True, "")
-        except Exception as err
+        except Exception as err:
             return (False, err)
 
         self.update_json()
