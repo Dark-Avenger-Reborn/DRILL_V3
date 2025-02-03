@@ -84,7 +84,7 @@ def post():
     success, result = malware.list_all_devices()
     if success:
         return result
-    return result, 5000
+    return result, 500
 
 
 @app.route("/delete", methods=["POST"])
@@ -92,8 +92,10 @@ def delete():
     if not is_logged_in():
         return redirect(url_for('login'))
     data = request.get_json()
-    malware.delete_device(data["device_id"])
-    return ""
+    success, result = malware.delete_device(data["device_id"])
+    if success:
+        return result
+    return result, 500
 
 @app.route("/ctrl", methods=["POST"])
 def ctrl():

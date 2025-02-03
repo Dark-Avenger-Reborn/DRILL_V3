@@ -150,10 +150,12 @@ document.addEventListener("click", (event) => {
     })
       .then((response) => {
         console.log("Response from server:", response);
+        showPopupAlert("Successfully deleted client", 'success')
         // Handle the response here (e.g., update the UI)
       })
       .catch((error) => {
         console.error("Error sending delete request:", error);
+        showPopupAlert("An error occurred : "+error, 'error')
       });
   } else if (event.target.id === "screen") {
     const rowId = event.target.dataset.rowId;

@@ -124,9 +124,13 @@ class C2:
         return self.devices
 
     def delete_device(self, device_id):
-        self.total_devices.pop(device_id)
-        if device_id in self.devices:
-            self.devices.pop(device_id)
+        try:
+            self.total_devices.pop(device_id)
+            if device_id in self.devices:
+                self.devices.pop(device_id)
+                return (True, "")
+        except Exception as err
+            return (False, err)
 
         self.update_json()
 
