@@ -155,3 +155,38 @@ td:nth-child(3),
 td:nth-child(4) {
     text-align: center;
 }
+
+#popup-alert {
+    position: fixed;
+    top: 50px;  /* Adjusted top position */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    width: 300px;
+    text-align: center;
+    display: none; /* Hidden by default */
+    z-index: 1000; /* Ensure it stays on top */
+}
+  #popup-alert.success {
+    background-color: #28a745;
+}
+  #popup-alert.error {
+    background-color: #dc3545;
+}
+  #popup-alert button {
+    background-color: #444;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    margin-top: 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+  #popup-alert button:hover {
+    background-color: #555;
+}

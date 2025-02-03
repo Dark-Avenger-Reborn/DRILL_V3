@@ -257,3 +257,45 @@ img {
     outline: none;
     border-color: #007bff; /* Blue border on hover/focus */
 }
+
+#popup-alert {
+    position: fixed;
+    top: 50px;  /* Adjusted top position */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #fff;  /* Lighter background */
+    color: #333;  /* Dark text for contrast */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Light shadow */
+    width: 300px;
+    text-align: center;
+    display: none; /* Hidden by default */
+    z-index: 1000; /* Ensure it stays on top */
+}
+
+#popup-alert.success {
+    background-color: #d4edda;  /* Light green background for success */
+    color: #155724;  /* Dark green text */
+}
+
+#popup-alert.error {
+    background-color: #f8d7da;  /* Light red background for error */
+    color: #721c24;  /* Dark red text */
+}
+
+#popup-alert button {
+    background-color: #007bff;  /* Blue background to match light theme buttons */
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    margin-top: 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-size: 16px;
+}
+
+#popup-alert button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
