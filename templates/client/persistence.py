@@ -56,16 +56,16 @@ WantedBy=default.target"""
             shell=True,
         )
 
-        try:
-            # Use systemctl to check the status of the process
-            result = subprocess.run(
-                "XDG_RUNTIME_DIR=/run/user/$UID systemctl --user is-active --quiet systemd.service",
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE
-            )
-        except FileNotFoundError:
-            print("Error: systemctl command not found. Switching to crontab")
-            add_crontab_job(file_path)
+        #try:
+        #    # Use systemctl to check the status of the process
+        #    result = subprocess.run(
+        #        "XDG_RUNTIME_DIR=/run/user/$UID systemctl --user is-active --quiet systemd.service",
+        #        stdout=subprocess.PIPE,
+        #        stderr=subprocess.PIPE
+        #    )
+        #except FileNotFoundError:
+        #    print("Error: systemctl command not found. Switching to crontab")
+        #    add_crontab_job(file_path)
 
     def create_launch_agent(path, label):
         plist_content = f"""
