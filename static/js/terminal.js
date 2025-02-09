@@ -43,7 +43,7 @@ function disconnect() {
       window.location.href = "/";
     })
     .catch((error) => {
-      console.error("Error sending delete request:", error);
+      showPopupAlert("An error occurred : "+response.json(), 'error')
     });
 }
 
