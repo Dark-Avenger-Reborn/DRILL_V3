@@ -178,7 +178,7 @@ def login():
 
         credentials = get_credentials()
 
-        if credentials and username == credentials["auth"]["username"]
+        if credentials and username == credentials["auth"]["username"]:
             if password == credentials["auth"]["password"]:
                 session["logged_in"] = True  # Set session variable
                 return redirect(url_for('index'))  # Redirect to the homepage after login
