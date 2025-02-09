@@ -119,8 +119,8 @@ class C2:
         print(f"Device disconnected with sid {sid}")
         for device in self.devices:
             if sid == self.devices[device]["sid"]:
-                self.devices.pop(device)
                 data = self.devices[device]
+                self.devices.pop(device)
                 data['last_online'] = datetime.datetime.utcnow()
                 self.total_devices.update({data["uid"]: data})
                 self.update_json()
