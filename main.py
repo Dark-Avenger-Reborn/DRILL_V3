@@ -178,11 +178,14 @@ def login():
 
         credentials = get_credentials()
 
-        if credentials and username == credentials["auth"]["username"] and password == credentials["auth"]["password"]:
-            session["logged_in"] = True  # Set session variable
-            return redirect(url_for('index'))  # Redirect to the homepage after login
+        if credentials and username == credentials["auth"]["username"]
+            if password == credentials["auth"]["password"]:
+                session["logged_in"] = True  # Set session variable
+                return redirect(url_for('index'))  # Redirect to the homepage after login
+            else:
+                return render_template("login.html", style=get_credentials()["style"]["light_mode"], error_message="Password is incorrect")
         else:
-            return "Invalid credentials, try again.", 401  # Handle failed login
+            return render_template("login.html", style=get_credentials()["style"]["light_mode"], error_message="User not found")
 
     # If GET request, show login form
     if not get_credentials()["settings"]["require_login"]:
