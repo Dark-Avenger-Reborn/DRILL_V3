@@ -70,11 +70,15 @@ async function updateDevices() {
         // Add a row to the table
         const row = document.createElement("tr");
         if (private_public) {ip_state = clientData.private_ip} else {ip_state = clientData.public_ip}
+        image_url = 'https://upload.wikimedia.org/wikipedia/commons/1/1b/Microsoft_Fluent_UI_%E2%80%93_ic_fluent_wifi_off_24_regular.svg'
+        if (clientData.status == "Online") {
+          image_url = 'https://upload.wikimedia.org/wikipedia/commons/4/4d/Microsoft_Fluent_UI_%E2%80%93_ic_fluent_wifi_1_24_filled.svg'
+        }
         row.innerHTML = `
                   <td><input type="checkbox" class="row-select" data-row-id="${clientId}"></td>
                   <td>${clientData.username}</td>
                   <td>${clientData.geolocation.address}</td>
-                  <td>${clientData.status}</td>
+                  <td>${clientData.status}<img src='`+image_url+`' alt='Online/Offline Logo'</td>
                   <td><img src="${osLogo}" type="os" alt="${osType}">${osType}</td>
                   <td>${ip_state}</td>
                   <td><img src='https://upload.wikimedia.org/wikipedia/commons/6/6f/Octicons-terminal.svg' id='connect' alt="Connect icon" class='terminal-icon' data-row-id="${clientId}"></td>
