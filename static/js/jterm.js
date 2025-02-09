@@ -12,6 +12,7 @@ $(function () {
       //prompt: '>',
       completion: false,
       ansi: true,
+      background: color,
     }
   );
 

@@ -67,7 +67,7 @@ def terminal(path):
 def term(path):
     if not is_logged_in():
         return redirect(url_for('login'))
-    return render_template("jterm.html")
+    return render_template("jterm.html", style=get_credentials()["style"]["light_mode"])
 
 @app.route("/client/<path:filename>")
 def client(filename):

@@ -13,6 +13,11 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/jquery.terminal/css/jquery.terminal.min.css"
     />
+    {% if style == True %}
+      <script>var color = "white";</script>
+    {% else %}
+      <script>var color = "black";</script>
+    {% endif %}
   </head>
   <body>
     <template id="greetings">
