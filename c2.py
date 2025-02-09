@@ -121,7 +121,7 @@ class C2:
             if sid == self.devices[device]["sid"]:
                 data = self.devices[device]
                 self.devices.pop(device)
-                data['last_online'] = datetime.datetime.utcnow()
+                data['last_online'] = datetime.datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")
                 self.total_devices.update({data["uid"]: data})
                 self.update_json()
                 break

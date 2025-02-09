@@ -15,6 +15,27 @@ if (!show_logout_button) {
   document.querySelector('li > a[href="/logout"]').parentElement.style.display = 'none';
 }
 
+function parseAndFormatTime(dateString) {
+  // Parse the dateString in the given format "%Y-%m-%d-%H-%M-%S"
+  const dateParts = dateString.split("-");
+
+  // Extract individual components
+  const year = dateParts[0];
+  const month = parseInt(dateParts[1], 10) - 1; // JavaScript months are 0-based
+  const day = dateParts[2];
+  const hour = dateParts[3];
+  const minute = dateParts[4];
+  const second = dateParts[5];
+
+  // Create a new Date object as UTC
+  const date = new Date(Date.UTC(year, month, day, hour, minute, second));
+
+  // Convert the UTC date to local time
+  const formattedTime = date.toLocaleString(); // Automatically converts to local time
+
+  return formattedTime;
+}
+
 old_data = {};
 // Function to update the table and map with new data
 async function updateDevices() {
@@ -79,7 +100,7 @@ async function updateDevices() {
                   <td>${clientData.username}</td>
                   <td>${clientData.geolocation.address}</td>
                   <td>${clientData.status}&nbsp; <img src='`+image_url+`' alt='Online/Offline Logo'</td>
-                  <td>${clientData.last_online}</td>
+                  <td>${parseAndFormatTime(clientData.last_online)}</td>
                   <td><img src="${osLogo}" type="os" alt="${osType}">${osType}</td>
                   <td>${ip_state}</td>
                   <td><img src='https://upload.wikimedia.org/wikipedia/commons/6/6f/Octicons-terminal.svg' id='connect' alt="Connect icon" class='terminal-icon' data-row-id="${clientId}"></td>
