@@ -125,7 +125,7 @@ function downloadFile() {
   })
     .then((response) => {
       console.log("Response from server:", response);
-      showPopupAlert("Payload Generating On Server");
+      showPopupAlert("Payload Generating On Server", "success");
     })
     .catch((error) => {
       console.error("Error sending delete request:", error);
