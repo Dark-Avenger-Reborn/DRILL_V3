@@ -117,9 +117,12 @@ def payload1():
 def download1():
     if not is_logged_in():
         return redirect(url_for('login'))
-    data = request.get_json()
-    threading.Thread(target=malware.generate, args=(data,)).start()
-    return ""
+    try:
+        data = request.get_json()
+        threading.Thread(target=malware.generate, args=(data,)).start()
+        return jsonify({"message": result}), 200
+    except Exception as error:
+        return jsonify({"message": str(error)}), 500
 
 @app.route("/list_payloads", methods=["POST"])
 def list_payloads():

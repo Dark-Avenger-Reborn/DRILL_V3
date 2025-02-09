@@ -112,8 +112,6 @@ function downloadFile() {
   const os = document.getElementById("os-dropdown").value;
   const arch = document.getElementById("arch-dropdown").value;
 
-  alert("Download started this may take a minute");
-
   fetch("/download", {
     method: "POST",
     headers: {
@@ -127,10 +125,11 @@ function downloadFile() {
   })
     .then((response) => {
       console.log("Response from server:", response);
-      createDownload();
+      showPopupAlert("Payload Generating On Server");
     })
     .catch((error) => {
       console.error("Error sending delete request:", error);
+      showPopupAlert("An error occurred : "+response.json(), 'error')
     });
 }
 
