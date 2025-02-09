@@ -223,6 +223,7 @@ async function updateDevices() {
                     <td>${clientData.username}</td>
                     <td>${clientData.geolocation.address}</td>
                     <td>${clientData.status}&nbsp; <img src='`+image_url+`' alt='Online/Offline Logo'</td>
+                    <td>${clientData.last_online}</td>
                     <td><img src="${osLogo}" alt="${osType} logo">${osType}</td>
                     <td>${ip_state}</td>
                 `;
