@@ -297,6 +297,11 @@ function updateArchDropdown() {
     pem_linux.style.display = "block";
     pem_osx.style.display = "block";
   }
+  if (selected_input === "disconect") {
+    pem_windows.style.display = "block";
+    pem_linux.style.display = "block";
+    pem_osx.style.display = "block";
+  }
 }
 
 // Initial update of architecture dropdown

