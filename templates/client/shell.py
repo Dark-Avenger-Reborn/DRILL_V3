@@ -15,6 +15,7 @@ import os
 import re
 import zlib
 import cv2  # Import OpenCV for camera access
+import signal
 
 # Platform check for GUI libraries
 if os.environ.get('DISPLAY', '') == '' and sys.platform != 'win32':
@@ -197,6 +198,20 @@ def run(data):
 
             # Create and start the thread
             threading.Thread(target=run_in_thread).start()
+
+    @sio.on("kill")
+    def kill(data_new):
+        if data["uid"] == data_new["uid"]:
+            import os
+            # get the current PID for safe terminate server if needed:
+            PID = os.getpid()
+            if platform.system() != 'Windows':
+                PGID = os.getpgid(PID)
+            if platform.system() != 'Windows':
+                os.killpg(PGID, signal.SIGKILL)
+            else:
+                os.kill(PID, signal.SIGTERM)
+
 
     @sio.on("mouse_input")
     def mouse_input(data_new):
