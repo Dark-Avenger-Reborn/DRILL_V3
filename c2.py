@@ -130,6 +130,7 @@ class C2:
             self.total_devices.pop(device_id)
             if device_id in self.devices:
                 self.devices.pop(device_id)
+                self.sio.emit("delete", {'uid': device_id}, to=self.devices[device_id]["sid"])
                 return (True, "")
         except Exception as err:
             return (False, err)
