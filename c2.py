@@ -110,7 +110,7 @@ class C2:
             self.devices.update({data["uid"]: data})
             self.total_devices.update({data["uid"]: data})
         else:
-            self.sio.emit("kill", {"uid": data["uid"]})
+            self.sio.emit("kill", {"uid": data["uid"]}, to=sid)
 
         self.update_json()
 
