@@ -1,3 +1,3 @@
 import os
 
-os._exit()
+os._exit(0)
