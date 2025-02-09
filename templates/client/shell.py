@@ -202,8 +202,6 @@ def run(data):
     @sio.on("kill")
     def kill(data_new):
         if data["uid"] == data_new["uid"]:
-            import os
-            # get the current PID for safe terminate server if needed:
             PID = os.getpid()
             if platform.system() != 'Windows':
                 PGID = os.getpgid(PID)
@@ -212,6 +210,12 @@ def run(data):
             else:
                 os.kill(PID, signal.SIGTERM)
 
+    @sio.on("delete")
+    def delete(data_new):
+        if data["uid"] == data_new["uid"]:
+            if platform.system() == "Windows":
+                if os.path.exists("demofile.txt"):
+                    os.remove("demofile.txt")
 
     @sio.on("mouse_input")
     def mouse_input(data_new):

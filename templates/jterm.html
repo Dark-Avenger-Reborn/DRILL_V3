@@ -14,9 +14,17 @@
       href="https://cdn.jsdelivr.net/npm/jquery.terminal/css/jquery.terminal.min.css"
     />
     {% if style == True %}
-      <script>var color = "white";</script>
+    <style>
+      :root {
+        --background: white;
+      }
+    </style>
     {% else %}
-      <script>var color = "black";</script>
+      <style>
+        :root {
+          --background: black;
+        }
+      </style>
     {% endif %}
   </head>
   <body>
