@@ -107,6 +107,7 @@ class C2:
 
         if data["uid"] not in self.devices:
             data["sid"] = sid
+            data['last_online'] = "now"
             self.devices.update({data["uid"]: data})
             self.total_devices.update({data["uid"]: data})
         else:
@@ -119,6 +120,7 @@ class C2:
         for device in self.devices:
             if sid == self.devices[device]["sid"]:
                 self.devices.pop(device)
+                self.total_devices.update(device['last_online']: datetime.datetime.utcnow())
                 break
         self.update_json()
 
