@@ -142,6 +142,7 @@ class C2:
             return (False, err)
 
     def list_all_devices(self):
+        self.update_json()
         try:
             return (True, self.total_devices)  # Success case
         except Exception as err:
