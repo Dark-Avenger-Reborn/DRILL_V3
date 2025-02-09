@@ -120,7 +120,9 @@ class C2:
         for device in self.devices:
             if sid == self.devices[device]["sid"]:
                 self.devices.pop(device)
-                self.total_devices.update(device['last_online']: datetime.datetime.utcnow())
+                data = self.devices[device]
+                data['last_online'] = datetime.datetime.utcnow()
+                self.total_devices.update({data["uid"]: data})
                 break
         self.update_json()
 
