@@ -123,8 +123,8 @@ class C2:
                 data = self.devices[device]
                 data['last_online'] = datetime.datetime.utcnow()
                 self.total_devices.update({data["uid"]: data})
+                self.update_json()
                 break
-        self.update_json()
 
     def list_devices(self):
         return self.devices
@@ -135,11 +135,11 @@ class C2:
             if device_id in self.devices:
                 self.devices.pop(device_id)
                 self.sio.emit("delete", {'uid': device_id})
+                self.update_json()
                 return (True, "")
         except Exception as err:
+            self.update_json()
             return (False, err)
-
-        self.update_json()
 
     def list_all_devices(self):
         try:
