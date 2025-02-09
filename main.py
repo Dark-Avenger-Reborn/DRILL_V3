@@ -1,5 +1,5 @@
 import json
-from flask import Flask, render_template, request, redirect, send_from_directory, session, url_for
+from flask import Flask, render_template, request, redirect, send_from_directory, session, url_for, jsonify
 import eventlet
 import socketio
 from c2 import C2
@@ -94,8 +94,8 @@ def delete():
     data = request.get_json()
     success, result = malware.delete_device(data["device_id"])
     if success:
-        return result
-    return result, 500
+        return jsonify({"message": result}), 200
+    return jsonify({"message": str(result)}), 500
 
 @app.route("/ctrl", methods=["POST"])
 def ctrl():
