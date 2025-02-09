@@ -95,7 +95,7 @@ async function updateDevices() {
         if (clientData.status == "Online") {
           image_url = 'https://upload.wikimedia.org/wikipedia/commons/4/4d/Microsoft_Fluent_UI_%E2%80%93_ic_fluent_wifi_1_24_filled.svg'
         }
-        time = "now"
+        time = "Now"
         if (clientData.last_online != "now") {
           time = parseAndFormatTime(clientData.last_online)
         }
