@@ -5,15 +5,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Terminal</title>
-
-    <!-- Load socket.io -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.js"></script>
-
-    <!-- Load xterm.js -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xterm/css/xterm.css" />
-    <script src="https://cdn.jsdelivr.net/npm/xterm/lib/xterm.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/xterm-addon-fit/lib/xterm-addon-fit.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/jquery"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery.terminal/js/jquery.terminal.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery.terminal/js/unix_formatting.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/jquery.terminal/css/jquery.terminal.min.css"
+    />
     {% if style == True %}
     <style>
       :root {
@@ -22,16 +21,25 @@
       }
     </style>
     {% else %}
-    <style>
-      :root {
-        --background: black;
-      }
-    </style>
+      <style>
+        :root {
+          --background: black;
+        }
+      </style>
     {% endif %}
   </head>
-
-  <body style="background: var(--background); color: var(--color);">
-    <div id="terminal"></div>
+  <body>
+    <template id="greetings">
+      _________                                     __             .___
+      \_   ___ \  ____   ____   ____   ____   _____/  |_  ____   __| _/
+      /    \  \/ /  _ \ /    \ /    \_/ __ \_/ ___\   __\/ __ \ / __ | 
+      \     \___(  <_> )   |  \   |  \  ___/\  \___|  | \  ___// /_/ | 
+       \______  /\____/|___|  /___|  /\___  >\___  >__|  \___  >____ | 
+              \/            \/     \/     \/     \/          \/     \/ 
+  
+      ----------------------------------------------------------------------
+  
+    </template>
 
     <script src="{{ url_for('static', filename='js/jterm.js') }}"></script>
   </body>
