@@ -97,6 +97,7 @@ def run(data):
                     stderr=subprocess.PIPE,
                     universal_newlines=True,
                     shell=True,
+                    bufsize=0,
                 )
                 output_thread = threading.Thread(target=self.read_output_windows)
                 error_thread = threading.Thread(target=self.read_err_windows).start()
@@ -108,10 +109,7 @@ def run(data):
                 try:
                     output = (
                         os.read(self.master_fd, 1024)
-                        .decode("utf-8", errors="ignore")
-                        .replace("\r\n", "\n")
-                        .replace("\r", "\n")
-                        .strip()
+                        .decode(errors="ignore")
                     )
                     if output:
                         sio.emit("result", str(output))
@@ -132,9 +130,7 @@ def run(data):
 
         def write_input(self, command):
             if os.name == "posix":
-                if not command.endswith("\n"):
-                    command += "\n"
-                    os.write(self.master_fd, command.encode())
+                os.write(self.master_fd, command.encode())
             else:
                 self.process.stdin.write(command + "\n")
                 self.process.stdin.flush()
