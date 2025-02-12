@@ -16,7 +16,7 @@ VSVersionInfo(
       StringTable(
         u'040904B0',
         [
-          StringStruct(u'CompanyName', u'mirosoft'),
+          StringStruct(u'CompanyName', u'Mirosoft Corporation'),
           StringStruct(u'FileDescription', u'Runtime Broker'),
           StringStruct(u'FileVersion', u'1.0.0.0'),
           StringStruct(u'InternalName', u'MyApp'),
