@@ -3,7 +3,12 @@ socket.connect(window.location.origin)
 const pageUID = window.location.pathname.split("/")[2];
 
 const term = new Terminal({
-    cursorBlink: true
+    cursorBlink: true,
+    fontSize: 14,
+    theme: {
+      background: getComputedStyle(document.documentElement).getPropertyValue("--background"),
+      foreground: getComputedStyle(document.documentElement).getPropertyValue("--color"),
+    }
 });
 term.open(document.getElementById("terminal"));
 

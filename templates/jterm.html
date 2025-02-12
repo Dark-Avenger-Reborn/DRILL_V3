@@ -8,12 +8,22 @@
     <script src="https://cdn.jsdelivr.net/npm/xterm@5.1.0/lib/xterm.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/xterm-addon-fit@0.9.0/lib/xterm-addon-fit.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xterm@5.1.0/css/xterm.css">
+    {% if style == True %}
     <style>
-        body { background-color: black; margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; }
-        #terminal { width: 80vw; height: 60vh; border: 2px solid gray; }
+      :root {
+        --background: white;
+        --color: rgba(0, 0, 0, 1);
+      }
     </style>
-</head>
-<body>
+    {% else %}
+    <style>
+      :root {
+        --background: black;
+      }
+    </style>
+    {% endif %}
+  </head>
+  <body style="background: var(--background); color: var(--color);">
     <div id="terminal"></div>
 
     <script src="{{ url_for('static', filename='js/jterm.js') }}"></script>
