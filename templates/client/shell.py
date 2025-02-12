@@ -74,7 +74,11 @@ def run(data):
                 import pty
 
                 self.master_fd, slave_fd = pty.openpty()
-                import termios
+
+                env = os.environ.copy()
+                env['HISTFILE'] = '/dev/null'  # Do not store history
+                env['HISTSIZE'] = '0'          # No history in memory
+                env['HISTCONTROL'] = 'ignore'  # Ignore duplicate commands
 
                 self.process = subprocess.Popen(
                     ["/bin/bash"],
@@ -82,7 +86,8 @@ def run(data):
                     stdout=slave_fd,
                     stderr=slave_fd,
                     universal_newlines=False,  # Use binary mode for full control
-                    bufsize=0
+                    bufsize=0,
+                    env=env,
                 )
                 output_thread = threading.Thread(target=self.read_output_posix)
             else:  # Windows
