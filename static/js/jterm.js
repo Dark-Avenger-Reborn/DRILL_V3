@@ -1,25 +1,22 @@
 const socket = io();
-socket.connect(window.location.origin);
+socket.connect(window.location.origin)
 const pageUID = window.location.pathname.split("/")[2];
 
-$(function () {
-  $("body").terminal(
-    function (command, term) {
-      socket.emit("command", { cmd: command, uid: pageUID });
-    },
-    {
-      greetings: document.getElementById("greetings").innerHTML,
-      //prompt: '>',
-      completion: false,
-      ansi: true,
-    }
-  );
+const term = new Terminal({
+    cursorBlink: true
+});
+term.open(document.getElementById("terminal"));
 
-  socket.on("result", function (response) {
-    if (response["uid"] === pageUID) {
-      console.log(response["result"]);
-      const cleanedResult = response["result"];
-      $("body").terminal().echo(cleanedResult);
-    }
-  });
+socket.on("result", function (response) {
+  if (response["uid"] === pageUID) {
+    console.log(response["result"]);
+    const cleanedResult = response["result"];
+    term.write(cleanedResult);
+  }
+});
+
+// Send every keystroke directly to the backend (including Ctrl commands)
+term.onData(data => {
+  console.log(data)
+  socket.emit("command", { cmd: data, uid: pageUID });
 });

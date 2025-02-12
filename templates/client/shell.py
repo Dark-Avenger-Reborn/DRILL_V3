@@ -76,16 +76,13 @@ def run(data):
                 self.master_fd, slave_fd = pty.openpty()
                 import termios
 
-                attrs = termios.tcgetattr(slave_fd)
-                attrs[3] = attrs[3] & ~termios.ECHO  # Disable ECHO flag
-                termios.tcsetattr(slave_fd, termios.TCSANOW, attrs)
                 self.process = subprocess.Popen(
-                    [shellScript],
+                    ["/bin/bash"],
                     stdin=slave_fd,
                     stdout=slave_fd,
                     stderr=slave_fd,
-                    universal_newlines=True,
-                    close_fds=True,
+                    universal_newlines=False,  # Use binary mode for full control
+                    bufsize=0
                 )
                 output_thread = threading.Thread(target=self.read_output_posix)
             else:  # Windows
@@ -108,13 +105,10 @@ def run(data):
                 try:
                     output = (
                         os.read(self.master_fd, 1024)
-                        .decode("utf-8", errors="ignore")
-                        .replace("\r\n", "\n")
-                        .replace("\r", "\n")
-                        .strip()
+                        .decode(errors="ignore")
                     )
                     if output:
-                        sio.emit("result", str(output))
+                        sio.emit("result", output)
                 except OSError:
                     break
 
@@ -132,9 +126,7 @@ def run(data):
 
         def write_input(self, command):
             if os.name == "posix":
-                if not command.endswith("\n"):
-                    command += "\n"
-                    os.write(self.master_fd, command.encode())
+                os.write(self.master_fd, command.encode())
             else:
                 self.process.stdin.write(command + "\n")
                 self.process.stdin.flush()

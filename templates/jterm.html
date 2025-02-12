@@ -1,45 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Terminal</title>
-    <script src="https://cdn.jsdelivr.net/npm/jquery"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery.terminal/js/jquery.terminal.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery.terminal/js/unix_formatting.js"></script>
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/jquery.terminal/css/jquery.terminal.min.css"
-    />
-    {% if style == True %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Terminal</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.2/socket.io.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xterm@5.1.0/lib/xterm.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xterm-addon-fit@0.9.0/lib/xterm-addon-fit.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xterm@5.1.0/css/xterm.css">
     <style>
-      :root {
-        --background: white;
-        --color: rgba(0, 0, 0, 1);
-      }
+        body { background-color: black; margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        #terminal { width: 80vw; height: 60vh; border: 2px solid gray; }
     </style>
-    {% else %}
-      <style>
-        :root {
-          --background: black;
-        }
-      </style>
-    {% endif %}
-  </head>
-  <body>
-    <template id="greetings">
-      _________                                     __             .___
-      \_   ___ \  ____   ____   ____   ____   _____/  |_  ____   __| _/
-      /    \  \/ /  _ \ /    \ /    \_/ __ \_/ ___\   __\/ __ \ / __ | 
-      \     \___(  <_> )   |  \   |  \  ___/\  \___|  | \  ___// /_/ | 
-       \______  /\____/|___|  /___|  /\___  >\___  >__|  \___  >____ | 
-              \/            \/     \/     \/     \/          \/     \/ 
-  
-      ----------------------------------------------------------------------
-  
-    </template>
+</head>
+<body>
+    <div id="terminal"></div>
 
     <script src="{{ url_for('static', filename='js/jterm.js') }}"></script>
   </body>
