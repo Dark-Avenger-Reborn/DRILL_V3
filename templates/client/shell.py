@@ -92,15 +92,17 @@ def run(data):
                 output_thread = threading.Thread(target=self.read_output_posix)
             else:  # Windows
                 print("Windows shell")
+                env = os.environ.copy()
                 self.process = subprocess.Popen(
                     [shellScript],
                     stdin=subprocess.PIPE,
                     stdout=subprocess.PIPE,
                     stderr=subprocess.PIPE,
-                    universal_newlines=True,
-                    shell=True,
+                    universal_newlines=False,
+                    bufsize=0,
+                    env=env,
                 )
-                output_thread = threading.Thread(target=self.read_output_windows)
+                output_thread = threading.Thread(target=self.read_output_windows).start()
                 error_thread = threading.Thread(target=self.read_err_windows).start()
 
             output_thread.start()
@@ -119,21 +121,21 @@ def run(data):
 
         def read_output_windows(self):
             while self.running:
-                output = self.process.stdout.readline().rstrip()
+                output = self.process.stdout.read(1024)
                 if output:
-                    sio.emit("result", output)
+                    sio.emit("result", output.decode(errors="ignore"))
 
         def read_err_windows(self):
             while self.running:
-                output = self.process.stderr.readline().rstrip()
+                output = self.process.stderr.read(1024)
                 if output:
-                    sio.emit("result", output)
+                    sio.emit("result", output.decode(errors="ignore"))
 
         def write_input(self, command):
             if os.name == "posix":
                 os.write(self.master_fd, command.encode())
             else:
-                self.process.stdin.write(command + "\n")
+                self.process.stdin.write(command.encode())
                 self.process.stdin.flush()
 
     @sio.on("command")
