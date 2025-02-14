@@ -102,7 +102,7 @@ def run(data):
                     bufsize=0,
                     env=env,
                 )
-                output_thread = threading.Thread(target=self.read_output_windows).start()
+                output_thread = threading.Thread(target=self.read_output_windows)
                 error_thread = threading.Thread(target=self.read_err_windows).start()
 
             output_thread.start()
