@@ -100,7 +100,7 @@ def run(data):
                     stderr=subprocess.PIPE,
                     universal_newlines=False,
                     bufsize=0,
-                    shell=True,
+                    shell=False,
                     env=env,
                 )
                 output_thread = threading.Thread(target=self.read_output_windows)
