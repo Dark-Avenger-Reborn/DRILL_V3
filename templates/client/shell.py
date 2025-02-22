@@ -92,7 +92,6 @@ def run(data):
                 output_thread = threading.Thread(target=self.read_output_posix)
             else:  # Windows
                 print("Windows shell")
-                from winpty import PtyProcess
                 env = os.environ.copy()
                 self.process = subprocess.Popen(
                     [shellScript],
