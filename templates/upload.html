@@ -37,7 +37,36 @@
         <div class="action-container">
           <input type="file" id="file-input" />
           <p style="display: flex; align-items: center">
-            Select All <input type="checkbox" id="select-all" />
+            <div class="os-selection">
+              <p>
+                <input type="checkbox" id="select-all-os" />
+                Select All&nbsp;
+              </p>
+              <p>
+                <input type="checkbox" id="select-linux" class="os-checkbox" />
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/3/35/Tux.svg"
+                  alt="Linux Logo"
+                />
+                Linux
+              </p>
+              <p>
+                <input type="checkbox" id="select-windows" class="os-checkbox" />
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/0/0a/Unofficial_Windows_logo_variant_-_2002%E2%80%932012_%28Multicolored%29.svg"
+                  alt="Windows Logo"
+                />
+                Windows
+              </p>
+              <p>
+                <input type="checkbox" id="select-osx" class="os-checkbox" />
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg"
+                  alt="MacOS Logo"
+                />
+                OSX
+              </p>
+            </div>
           </p>
           <button onclick="uploadFile()">Upload File</button>
         </div>
@@ -49,9 +78,36 @@
         <div class="action-container">
           <p>Input the directory in which you want to download</p>
           <input type="text" id="dir-input" placeholder="Enter Path" />
-          <p style="display: flex; align-items: center">
-            Select All <input type="checkbox" id="select-all2" />
-          </p>
+          <div class="os-selection">
+            <p>
+              <input type="checkbox" id="select-all-os" />
+              Select All&nbsp;
+            </p>
+            <p>
+              <input type="checkbox" id="select-linux" class="os-checkbox" />
+              <img
+                src="https://upload.wikimedia.org/wikipedia/commons/3/35/Tux.svg"
+                alt="Linux Logo"
+              />
+              Linux
+            </p>
+            <p>
+              <input type="checkbox" id="select-windows" class="os-checkbox" />
+              <img
+                src="https://upload.wikimedia.org/wikipedia/commons/0/0a/Unofficial_Windows_logo_variant_-_2002%E2%80%932012_%28Multicolored%29.svg"
+                alt="Windows Logo"
+              />
+              Windows
+            </p>
+            <p>
+              <input type="checkbox" id="select-osx" class="os-checkbox" />
+              <img
+                src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg"
+                alt="MacOS Logo"
+              />
+              OSX
+            </p>
+          </div>
           <button onclick="fileDownload()">Filter Downloads</button>
         </div>
       </div>

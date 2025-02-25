@@ -299,3 +299,28 @@ img {
 #popup-alert button:hover {
     background-color: #0056b3; /* Darker blue on hover */
 }
+
+.os-selection {
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: flex-start;
+    width: 100%;
+}
+
+.os-selection p {
+    display: flex;
+    align-items: center;
+    margin: 0;
+}
+
+.os-selection img {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+}
+
+.os-selection input[type="checkbox"] {
+    margin: 0 5px 0 0;
+}

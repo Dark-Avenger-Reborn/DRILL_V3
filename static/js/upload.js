@@ -228,7 +228,7 @@ async function updateDevices() {
                     <td>${clientData.geolocation.address}</td>
                     <td>${clientData.status}&nbsp; <img src='`+image_url+`' alt='Online/Offline Logo'</td>
                     <td>${time}</td>
-                    <td><img src="${osLogo}" alt="${osType} logo">${osType}</td>
+                    <td><img src="${osLogo}" type="os" alt="${osType}">${osType}</td>
                     <td>${ip_state}</td>
                 `;
         tableBody.appendChild(row);
@@ -244,19 +244,67 @@ updateDevices();
 
 setInterval(updateDevices, 1000);
 
-// Event listener for "Select All" checkbox
-document.getElementById("select-all").addEventListener("change", function () {
+document
+  .getElementById("select-all-os")
+  .addEventListener("change", function () {
+    const isChecked = this.checked;
+    document.querySelectorAll(".row-select").forEach((checkbox) => {
+      checkbox.checked = isChecked;
+    });
+  });
+
+document.getElementById("select-osx").addEventListener("change", function () {
   const isChecked = this.checked;
   document.querySelectorAll(".row-select").forEach((checkbox) => {
-    checkbox.checked = isChecked;
+    const rowId = checkbox.dataset.rowId;
+    const row = document
+      .querySelector(`[data-row-id="${rowId}"]`)
+      .closest("tr");
+    console.log(row.children);
+    const osType = row.querySelector("td:nth-child(6)").innerText.trim(); // Get OS type from the table row
+
+    // Check if the OS matches the selected ones
+    if (osType.includes("Darwin")) {
+      checkbox.checked = isChecked;
+    }
   });
 });
-document.getElementById("select-all2").addEventListener("change", function () {
+
+document.getElementById("select-linux").addEventListener("change", function () {
   const isChecked = this.checked;
   document.querySelectorAll(".row-select").forEach((checkbox) => {
-    checkbox.checked = isChecked;
+    const rowId = checkbox.dataset.rowId;
+    const row = document
+      .querySelector(`[data-row-id="${rowId}"]`)
+      .closest("tr");
+    console.log(row.children);
+    const osType = row.querySelector("td:nth-child(6)").innerText.trim(); // Get OS type from the table row
+    console.log(osType)
+    // Check if the OS matches the selected ones
+    if (osType.includes("Linux")) {
+      checkbox.checked = isChecked;
+    }
   });
 });
+
+document
+  .getElementById("select-windows")
+  .addEventListener("change", function () {
+    const isChecked = this.checked;
+    document.querySelectorAll(".row-select").forEach((checkbox) => {
+      const rowId = checkbox.dataset.rowId;
+      const row = document
+        .querySelector(`[data-row-id="${rowId}"]`)
+        .closest("tr");
+      console.log(row.children);
+      const osType = row.querySelector("td:nth-child(6)").innerText.trim(); // Get OS type from the table row
+
+      // Check if the OS matches the selected ones
+      if (osType.includes("Windows")) {
+        checkbox.checked = isChecked;
+      }
+    });
+  });
 
 
 function showPopupAlert(message, type) {

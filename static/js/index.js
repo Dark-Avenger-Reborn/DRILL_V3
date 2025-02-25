@@ -211,7 +211,7 @@ document.getElementById("select-osx").addEventListener("change", function () {
       .querySelector(`[data-row-id="${rowId}"]`)
       .closest("tr");
     console.log(row.children);
-    const osType = row.querySelector("td:nth-child(5)").innerText.trim(); // Get OS type from the table row
+    const osType = row.querySelector("td:nth-child(6)").innerText.trim(); // Get OS type from the table row
 
     // Check if the OS matches the selected ones
     if (osType.includes("Darwin")) {
@@ -228,7 +228,7 @@ document.getElementById("select-linux").addEventListener("change", function () {
       .querySelector(`[data-row-id="${rowId}"]`)
       .closest("tr");
     console.log(row.children);
-    const osType = row.querySelector("td:nth-child(5)").innerText.trim(); // Get OS type from the table row
+    const osType = row.querySelector("td:nth-child(6)").innerText.trim(); // Get OS type from the table row
 
     // Check if the OS matches the selected ones
     if (osType.includes("Linux")) {
@@ -247,7 +247,7 @@ document
         .querySelector(`[data-row-id="${rowId}"]`)
         .closest("tr");
       console.log(row.children);
-      const osType = row.querySelector("td:nth-child(5)").innerText.trim(); // Get OS type from the table row
+      const osType = row.querySelector("td:nth-child(6)").innerText.trim(); // Get OS type from the table row
 
       // Check if the OS matches the selected ones
       if (osType.includes("Windows")) {
