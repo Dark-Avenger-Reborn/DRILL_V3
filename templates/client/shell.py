@@ -92,19 +92,9 @@ def run(data):
                 output_thread = threading.Thread(target=self.read_output_posix)
             else:  # Windows
                 print("Windows shell")
-                env = os.environ.copy()
-                self.process = subprocess.Popen(
-                    [shellScript],
-                    stdin=subprocess.PIPE,
-                    stdout=subprocess.PIPE,
-                    stderr=subprocess.PIPE,
-                    universal_newlines=False,
-                    bufsize=0,
-                    shell=True,
-                    env=env,
-                )
+                from winpty import PtyProcess
+                self.process = PtyProcess.spawn('powershell')
                 output_thread = threading.Thread(target=self.read_output_windows)
-                error_thread = threading.Thread(target=self.read_err_windows).start()
 
             output_thread.start()
 
@@ -121,23 +111,18 @@ def run(data):
                     break
 
         def read_output_windows(self):
-            while self.running:
-                output = self.process.stdout.read(1024)
-                if output:
-                    sio.emit("result", output.decode(errors="ignore"))
+            while self.process.isalive():
+                sio.emit("result", self.process.read())
 
         def read_err_windows(self):
             while self.running:
-                output = self.process.stderr.read(1024)
-                if output:
-                    sio.emit("result", output.decode(errors="ignore"))
+                sio.emit("result", process.read())
 
         def write_input(self, command):
             if os.name == "posix":
                 os.write(self.master_fd, command.encode())
             else:
-                self.process.stdin.write(command.encode())
-                self.process.stdin.flush()
+                self.process.write(command)
 
     @sio.on("command")
     def command(data_new):
