@@ -20,6 +20,7 @@ startButton.addEventListener("click", () => {
 
 stopButton.addEventListener("click", () => {
   socket.emit("screen_status", { status: "stop", uid: pageSID });
+  document.getElementById("capturedImage").src = ``;
 });
 
 // New button listeners
