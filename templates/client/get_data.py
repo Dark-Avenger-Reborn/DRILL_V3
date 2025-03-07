@@ -18,6 +18,7 @@ def run(url):
             if os.path.exists(windows_path):
                 with open(windows_path,"r",) as f:
                     return f.read().strip()
+                    f.close()
             else:
                 uid_value = (
                     str(uuid.uuid4())
@@ -27,6 +28,7 @@ def run(url):
                 )
                 with open(windows_path, "w") as f:
                     f.write(uid_value)
+                    f.close()
                 return uid_value
 
         if platform.system() == "Linux":
@@ -39,6 +41,7 @@ def run(url):
             if os.path.exists(path):
                 with open(path, "r") as f:
                     return f.read().strip()
+                    f.close()
             else:
                 uid_value = (
                     str(uuid.uuid4())
@@ -48,6 +51,7 @@ def run(url):
                 )
                 with open(path, "w") as f:
                     f.write(uid_value)
+                    f.close()
                 return uid_value
 
         if platform.system() == "Darwin":
@@ -55,6 +59,7 @@ def run(url):
             if os.path.exists(f"./uid.txt"):
                 with open(f"./uid.txt", "r") as f:
                     return f.read().strip()
+                    f.close()
             else:
                 uid_value = (
                     str(uuid.uuid4())
@@ -64,6 +69,7 @@ def run(url):
                 )
                 with open(f"./uid.txt", "w") as f:
                     f.write(uid_value)
+                    f.close()
                 return uid_value
 
     def get_ip():

