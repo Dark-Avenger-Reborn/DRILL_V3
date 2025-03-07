@@ -392,7 +392,7 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
         try:
             with open("config.json", "r") as file:
                 credentials = json.load(file)
-                f.close()
+                file.close()
             return credentials
         except FileNotFoundError:
             return None
