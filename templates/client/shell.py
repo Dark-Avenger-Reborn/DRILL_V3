@@ -191,12 +191,13 @@ def run(data):
     def kill(data_new):
         if data["uid"] == data_new["uid"]:
             PID = os.getpid()
-            if platform.system() != 'Windows':
-                PGID = os.getpgid(PID)
-            if platform.system() != 'Windows':
-                os.killpg(PGID, signal.SIGKILL)
-            else:
+            if platform.system() == 'Windows':
+                # For Windows, just kill the current process
                 os.kill(PID, signal.SIGTERM)
+            else:
+                # For Unix-based systems, kill the entire process group
+                PGID = os.getpgid(PID)
+                os.killpg(PGID, signal.SIGKILL)
 
     @sio.on("delete")
     def delete(data_new):
