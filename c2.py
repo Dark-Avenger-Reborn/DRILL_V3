@@ -19,12 +19,20 @@ class C2:
         self.sio = sio
         self.devices = {}
         self.total_devices = {}
-        with open("clients.json", "r") as f:
-            self.total_devices = json.load(f)
-            f.close()
-        with open("current_time.txt", "r") as f:
-            self.last_time = f.read()
-            f.close()
+        try:
+            with open("clients.json", "r") as f:
+                self.total_devices = json.load(f)
+                f.close()
+        except:
+            with open("clients.json", "w") as f:
+                f.write(self.total_devices)
+                f.close()
+        try:
+            with open("current_time.txt", "r") as f:
+                self.last_time = f.read()
+                f.close()
+        except:
+            self.last_time = "Unknown"
         for device in self.total_devices:
             self.total_devices[device]["status"] = "Offline"
             if (self.total_devices[device]["last_online"] == "now"):
@@ -134,7 +142,7 @@ class C2:
                 self.update_json()
                 break
 
-    def log_time(self)
+    def log_time(self):
         while True:
             with open("current_time.txt", "w") as file:
                 current_time = time.strftime("%Y-%m-%d-%H-%M-%S")
