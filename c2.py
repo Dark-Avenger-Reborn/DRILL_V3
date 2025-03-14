@@ -38,7 +38,7 @@ class C2:
             if (self.total_devices[device]["last_online"] == "now"):
                 self.total_devices[device]["last_online"] == self.last_time
 
-        threading.Thread(target=self.log_time, daemon=True)\
+        threading.Thread(target=self.log_time, daemon=True)
         
         self.sio.on("mConnect", self.on_connect)
         self.sio.on("disconnect", self.on_disconect)
