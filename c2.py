@@ -64,6 +64,8 @@ class C2:
 
         print(f"Current time: {datetime.datetime.utcnow()}")
 
+        self.update_json()
+
     def get_client_ip(self, environ):
         header_priority = [
             "HTTP_X_FORWARDED_FOR",
