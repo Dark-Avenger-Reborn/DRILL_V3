@@ -339,7 +339,6 @@ input[type="checkbox"]:checked:hover {
 th input {
     width: 90%;
     padding: 10px;
-    margin-bottom: 10px;
     background-color: #444;
     height: 10px;
     color: #fff;
