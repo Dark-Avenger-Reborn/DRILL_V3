@@ -330,3 +330,45 @@ document.getElementById('popup-ok-btn').addEventListener('click', function () {
   const popup = document.getElementById('popup-alert');
   popup.style.display = 'none';
 });
+
+// Function to filter rows based on search input
+function filterRows() {
+  const deviceIdFilter = document.getElementById('device-id-search').value.toLowerCase();
+  const locationFilter = document.getElementById('location-search').value.toLowerCase();
+  const statusFilter = document.getElementById('status-search').value.toLowerCase();
+  const lastOnlineFilter = document.getElementById('last-online-search').value.toLowerCase();
+  const osFilter = document.getElementById('os-search').value.toLowerCase();
+  const ipAddressFilter = document.getElementById('ip-address-search').value.toLowerCase();
+
+  const tableRows = document.querySelectorAll('#device-table tr');
+  tableRows.forEach((row) => {
+    const deviceId = row.cells[1].textContent.toLowerCase();
+    const location = row.cells[2].textContent.toLowerCase();
+    const status = row.cells[3].textContent.toLowerCase();
+    const lastOnline = row.cells[4].textContent.toLowerCase();
+    const os = row.cells[5].textContent.toLowerCase();
+    const ipAddress = row.cells[6].textContent.toLowerCase();
+
+    // Check if the row matches the search filters
+    if (
+      deviceId.includes(deviceIdFilter) &&
+      location.includes(locationFilter) &&
+      status.includes(statusFilter) &&
+      lastOnline.includes(lastOnlineFilter) &&
+      os.includes(osFilter) &&
+      ipAddress.includes(ipAddressFilter)
+    ) {
+      row.style.display = ''; // Show the row
+    } else {
+      row.style.display = 'none'; // Hide the row
+    }
+  });
+}
+
+// Add event listeners to the search input fields
+document.getElementById('device-id-search').addEventListener('input', filterRows);
+document.getElementById('location-search').addEventListener('input', filterRows);
+document.getElementById('status-search').addEventListener('input', filterRows);
+document.getElementById('last-online-search').addEventListener('input', filterRows);
+document.getElementById('os-search').addEventListener('input', filterRows);
+document.getElementById('ip-address-search').addEventListener('input', filterRows);

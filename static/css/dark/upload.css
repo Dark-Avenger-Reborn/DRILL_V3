@@ -318,3 +318,30 @@ img {
 .os-selection input[type="checkbox"] {
     margin: 0 5px 0 0;
 }
+
+th input {
+    width: 90%;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #444;
+    height: 10px;
+    color: #fff;
+    border: 2px solid #666;
+    border-radius: 5px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    outline: none;
+}
+
+th input::placeholder {
+    color: #999; /* Light placeholder text */
+}
+
+th input:focus {
+    outline: none;
+    background-color: #444; /* Slightly lighter background on focus */
+    border: 1px solid #555; /* Border color on focus */
+}
+
+th input:focus::placeholder {
+    color: #fff; /* White placeholder text when focused */
+}
