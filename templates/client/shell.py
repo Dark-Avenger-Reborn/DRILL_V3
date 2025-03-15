@@ -56,11 +56,12 @@ def run(data):
     system = platform.system()
 
     class InteractiveShell:
-        def __init__(self, key):
+        def __init__(self, key, uid):
             self.process = None
             self.master_fd = None  # Master file descriptor for PTY on Unix systems
             self.running = False
             self.key = key
+            self.uid = uid
 
         def start(self):
             self.running = True
@@ -101,13 +102,13 @@ def run(data):
                         .decode(errors="ignore")
                     )
                     if output:
-                        sio.emit("result", {"key": self.key, "output": output})
+                        sio.emit("result", {"key": self.key, "output": output, 'uid':self.uid})
                 except OSError:
                     break
 
         def read_output_windows(self):
             while self.process.isalive():
-                sio.emit("result", {"key": self.key, "output": self.process.read()})
+                sio.emit("result", {"key": self.key, "output": self.process.read(), 'uid':self.uid})
 
         def write_input(self, command):
             if os.name == "posix":
@@ -118,8 +119,9 @@ def run(data):
     @sio.on("command")
     def command(data_new):
         key = data_new["key"]
+        print(key)
         if key not in shells:
-            shells[key] = InteractiveShell(key)
+            shells[key] = InteractiveShell(key, data['uid'])
             shells[key].start()
         
         shell = shells[key]
