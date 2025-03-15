@@ -36,7 +36,7 @@ class C2:
         for device in self.total_devices:
             self.total_devices[device]["status"] = "Offline"
             if (self.total_devices[device]["last_online"] == "now"):
-                self.total_devices[device]["last_online"] == self.last_time
+                self.total_devices[device]["last_online"] = self.last_time
 
         threading.Thread(target=self.log_time, daemon=True).start()
         
