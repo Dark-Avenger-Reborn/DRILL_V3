@@ -176,7 +176,7 @@ class C2:
             return (False, str(err))
 
     def send_command(self, sid, data):
-        self.sio.emit("command", {"uid": data["uid"], "cmd": data["cmd"]})
+        self.sio.emit("command", data)
 
     def get_result(self, sid, data):
         for device in self.devices:
