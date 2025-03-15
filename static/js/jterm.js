@@ -50,9 +50,9 @@ const term = new Terminal({
 term.open(document.getElementById("terminal"));
 
 socket.on("result", function (response) {
-  if (response["uid"] === pageUID && response['key'] === userKey) {
+  if (response["result"]["uid"] === pageUID && response["result"]['key'] === userKey) {
     console.log(response["result"]);
-    const cleanedResult = response["result"];
+    const cleanedResult = response["result"]["result"];
     term.write(cleanedResult);
   }
 });
