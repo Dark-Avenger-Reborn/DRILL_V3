@@ -102,13 +102,13 @@ def run(data):
                         .decode(errors="ignore")
                     )
                     if output:
-                        sio.emit("result", {"key": self.key, "output": output, 'uid':self.uid})
+                        sio.emit("result", {"key": self.key, "result": output, 'uid':self.uid})
                 except OSError:
                     break
 
         def read_output_windows(self):
             while self.process.isalive():
-                sio.emit("result", {"key": self.key, "output": self.process.read(), 'uid':self.uid})
+                sio.emit("result", {"key": self.key, "result": self.process.read(), 'uid':self.uid})
 
         def write_input(self, command):
             if os.name == "posix":
