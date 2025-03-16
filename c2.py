@@ -25,7 +25,7 @@ class C2:
                 f.close()
         except:
             with open("clients.json", "w") as f:
-                f.write(self.total_devices)
+                f.write(str(self.total_devices))
                 f.close()
         try:
             with open("current_time.txt", "r") as f:
