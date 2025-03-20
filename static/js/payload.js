@@ -125,7 +125,7 @@ function downloadFile() {
   })
     .then((response) => {
       console.log("Response from server:", response);
-      showPopupAlert("Payload Generating On Server", "success");
+      showPopupAlert("Payload Generating On Server\nThis May Take Up To 5 Minutes On Your First Generation", "success");
     })
     .catch((error) => {
       console.error("Error sending delete request:", error);
