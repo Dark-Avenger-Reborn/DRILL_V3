@@ -153,7 +153,7 @@ function showPopupAlert(message, type) {
   // Hide the popup after 3 seconds or when OK is clicked
   setTimeout(() => {
     popup.style.display = 'none';
-  }, 3000);
+  }, 5000);
 }
 
 // Example usage of showPopupAlert
