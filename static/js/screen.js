@@ -6,6 +6,7 @@ send_mouse_input = false;
 send_keyboard_input = false;
 
 screen_or_camera = true;
+josh_allen = false;
 
 if (!show_logout_button) {
   document.querySelector('li > a[href="/logout"]').parentElement.style.display = 'none';
@@ -16,11 +17,13 @@ const stopButton = document.getElementById("stop");
 
 startButton.addEventListener("click", () => {
   socket.emit("screen_status", { status: "start", uid: pageSID });
+  josh_allen = true;
 });
 
 stopButton.addEventListener("click", () => {
   socket.emit("screen_status", { status: "stop", uid: pageSID });
   document.getElementById("capturedImage").src = ``;
+  josh_allen = false;
 });
 
 // New button listeners
@@ -65,7 +68,7 @@ cameraButton.addEventListener("click", () => {
 
 // Handle screenshot event with zlib decompression
 socket.on("screenshot", function (response) {
-  if (response["uid"] == pageSID && response["image"]) {
+  if (response["uid"] == pageSID && response["image"] && josh_allen) {
     const compressedData = response["image"].data || response["image"];
     const byteArray = new Uint8Array(compressedData);
 
