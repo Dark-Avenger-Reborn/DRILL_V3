@@ -37,7 +37,7 @@
             <option value="send-command" os="['linux', 'windows', 'osx']">Send Command</option>
             <option value="disconect" os="['linux', 'windows', 'osx']">Disconnect device</option>
             {% for pem_key, pem_info in pem_data.items() %}
-              <option value="{{ pem_info.uid }}" os="{{ pem_info.os|tojson|safe }}" path="{{ pem_info.pem_path }}">{{ pem_info.pem_name }}</option>
+              <option value="{{ pem_info.uid }}" os="{{ pem_info.os }}" path="{{ pem_info.pem_path }}">{{ pem_info.pem_name }}</option>
             {% endfor %}
             <!-- <option value="discord">Steal Discord Token</option>
             <option value="restart">Recover Shell Connection</option>

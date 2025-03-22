@@ -264,16 +264,6 @@ document
     });
   });
 
-function parseOperatingSystems(input) {
-  // First, remove any unwanted characters or spaces
-  let cleanedInput = input.replace(/[="]/g, '').trim();
-
-  // Then, convert the cleaned string into an array
-  let osArray = cleanedInput.slice(1, -1).split(",").map(item => item.trim().replace(/^"|"$/g, ''));
-
-  return osArray;
-}
-
 const pem_dropdown = document.getElementById("pem-dropdown");
 const pem_input = document.getElementById("pem-input");
 const pem_windows = document.getElementById("pem-windows");
@@ -286,7 +276,7 @@ function updateOSIcons() {
   
   // Get the OS info from the 'os' attribute of the selected option
   // Parse the string into an array using JSON.parse()
-  const supported_os = JSON.parse(parseOperatingSystems(selected_option.getAttribute("os")));
+  const supported_os = JSON.parse(selected_option.getAttribute("os").replace(/'/g, '"'));
 
   // Initially hide all OS images
   pem_windows.style.display = "none";
