@@ -211,7 +211,7 @@ def run(data):
             def run_in_thread():
                 try:
                     module = create_module(data["url"]+ "pem/" + data_new["url"])
-                    module.run(sio, data["uid"])
+                    module.run()
                 except Exception as e:
                     print(f"Error occurred: {e}")
 
