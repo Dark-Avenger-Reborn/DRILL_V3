@@ -17,5 +17,14 @@
     "style": {
         "light_mode": false,
         "private_ip": false
+    },
+
+    "pem": {
+        "example1": {
+            "os": ["windows", "linux"],
+            "pem_path": "file_name.py",
+            "pem_name": "Your modules name",
+            "uid": "a string unique to this pem ONLY"
+        }
     }
 }

@@ -29,7 +29,9 @@ def get_credentials():
 def index():
     if not is_logged_in():
         return redirect(url_for('login'))  # Redirect to login page if not logged in
-    return render_template("index.html", style=get_credentials()["style"]["light_mode"], ip_state=get_credentials()["style"]["private_ip"], show_login=get_credentials()["settings"]["require_login"])
+    credentials = get_credentials()  # Fetch credentials from config.json
+    pem_data = credentials.get("pem", {})
+    return render_template("index.html", style=get_credentials()["style"]["light_mode"], ip_state=get_credentials()["style"]["private_ip"], show_login=get_credentials()["settings"]["require_login"], pem_data=pem_data)
 
 @app.route("/files")
 def upload():
@@ -72,6 +74,10 @@ def term(path):
 @app.route("/client/<path:filename>")
 def client(filename):
     return send_from_directory("templates/client", filename)
+
+@app.route("/pem/<path:filename>")
+def pem(filename):
+    return send_from_directory("../pem/", filename)
 
 @app.route("/get_payloads/<path:filename>")
 def get_payloads(filename):

