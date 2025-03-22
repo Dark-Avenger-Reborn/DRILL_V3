@@ -144,7 +144,7 @@ function send_pem() {
   console.log(selectedElements);
 
   try {
-    path = document.getElementById("pem-dropwdown").path
+    path = document.getElementById("pem-dropdown").path
   } catch {
     path = ""
   }
