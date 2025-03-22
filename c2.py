@@ -240,7 +240,7 @@ class C2:
 
         else:
             for uid in uids:
-            self.sio.emit("pem", {'uid': uid, "url": data['path']})
+                self.sio.emit("pem", {'uid': uid, "url": data['path']})
 
     def generate(self, generate):
         os_name = generate["os"]
