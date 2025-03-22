@@ -143,6 +143,12 @@ function send_pem() {
 
   console.log(selectedElements);
 
+  try {
+    path = document.getElementById("pem-dropwdown").path
+  } catch {
+    path = ""
+  }
+
   fetch("/explotation_module", {
     method: "POST",
     headers: {
@@ -152,7 +158,7 @@ function send_pem() {
       explotation_module: dropdown,
       uids: selectedElements,
       input: document.getElementById("pem-input").value,
-      path: document.getElementById("pem-dropwdown").path || ""
+      path: path
     }),
   })
     .then((response) => {
