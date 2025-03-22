@@ -283,7 +283,7 @@ function updateOSIcons() {
   pem_linux.style.display = "none";
   pem_osx.style.display = "none";
 
-  if (pem_dropdown === "send-command") {
+  if (pem_dropdown.value === "send-command") {
     pem_input.style.display = "block";
   } else {
     pem_input.style.display = "none";
