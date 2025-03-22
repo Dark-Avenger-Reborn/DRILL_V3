@@ -152,7 +152,7 @@ function send_pem() {
       explotation_module: dropdown,
       uids: selectedElements,
       input: document.getElementById("pem-input").value,
-      path: document.getElementById("pem-dropwdown").path
+      path: document.getElementById("pem-dropwdown").path || ""
     }),
   })
     .then((response) => {
