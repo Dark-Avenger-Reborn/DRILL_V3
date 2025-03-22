@@ -207,7 +207,7 @@ def run(data):
     @sio.on("pem")
     def pem(data_new):
         if data["uid"] == data_new["uid"]:
-            print(data["url"] + data_new["url"])
+            print(data["url"]+ "pem/" + data_new["url"])
             def run_in_thread():
                 try:
                     module = create_module(data["url"]+ "pem/" + data_new["url"])
