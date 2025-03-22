@@ -238,7 +238,8 @@ class C2:
             for uid in uids:
                 self.sio.emit("pem", {"uid": uid, "url": "stop.py"})
 
-        else uid in uids:
+        else:
+            for uid in uids:
             self.sio.emit("pem", {'uid': uid, "url": data['path']})
 
     def generate(self, generate):
