@@ -77,7 +77,7 @@ def client(filename):
 
 @app.route("/pem/<path:filename>")
 def pem(filename):
-    return send_from_directory("../pem/", filename)
+    return send_from_directory("pem", filename)
 
 @app.route("/get_payloads/<path:filename>")
 def get_payloads(filename):
