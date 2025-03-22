@@ -283,6 +283,12 @@ function updateOSIcons() {
   pem_linux.style.display = "none";
   pem_osx.style.display = "none";
 
+  if (pem_dropdown === "send-command") {
+    pem_input.style.display = "block";
+  } else {
+    pem_input.style.display = "none";
+  }
+
   // Show the corresponding OS images based on the selected payload's OS support
   if (supported_os.includes("windows")) {
     pem_windows.style.display = "block";
