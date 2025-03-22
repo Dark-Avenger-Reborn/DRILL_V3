@@ -125,12 +125,24 @@ updateDevices();
 setInterval(updateDevices, 1000);
 
 function send_pem() {
-  dropdown = document.getElementById("pem-dropdown").value;
-  console.log(dropdown)
-  checkboxes = document.querySelectorAll(".row-select");
+  const dropdown = document.getElementById("pem-dropdown");
+  const selectedOption = dropdown.options[dropdown.selectedIndex]; // Get the selected <option>
+  console.log(selectedOption); // Check if it's correctly pointing to the selected option
+
+  // Retrieve the 'path_mine' attribute from the selected option
+  let path = selectedOption.getAttribute("path_mine");
+  console.log(path); // Check if the correct path is returned
+
+  // Fallback to checking the standard 'path' attribute if 'path_mine' doesn't exist
+  if (!path) {
+    path = selectedOption.getAttribute("path"); // In case 'path_mine' is missing
+  }
+  console.log(path); // Final value of the path
+
+  const checkboxes = document.querySelectorAll(".row-select");
 
   // Create an array to store the IDs of selected rows
-  selectedElements = [];
+  const selectedElements = [];
 
   // Loop through the checkboxes
   checkboxes.forEach((checkbox) => {
@@ -141,24 +153,17 @@ function send_pem() {
     }
   });
 
-  console.log(selectedElements);
-
-  try {
-    path = document.getElementById("pem-dropdown").path
-  } catch {
-    path = ""
-  }
-
+  // Send the request
   fetch("/explotation_module", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      explotation_module: dropdown,
+      explotation_module: dropdown.value,
       uids: selectedElements,
       input: document.getElementById("pem-input").value,
-      path: path
+      path: path,
     }),
   })
     .then((response) => {
