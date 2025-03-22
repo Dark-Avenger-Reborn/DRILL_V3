@@ -130,9 +130,7 @@ function send_pem() {
   console.log(selectedOption); // Check if it's correctly pointing to the selected option
 
   // Fallback to checking the standard 'path' attribute if 'path_mine' doesn't exist
-  if (!path) {
-    path = selectedOption.getAttribute("path"); // In case 'path_mine' is missing
-  }
+  path = selectedOption.getAttribute("path");
   console.log(path); // Final value of the path
 
   const checkboxes = document.querySelectorAll(".row-select");
