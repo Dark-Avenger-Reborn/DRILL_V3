@@ -129,10 +129,6 @@ function send_pem() {
   const selectedOption = dropdown.options[dropdown.selectedIndex]; // Get the selected <option>
   console.log(selectedOption); // Check if it's correctly pointing to the selected option
 
-  // Retrieve the 'path_mine' attribute from the selected option
-  let path = selectedOption.getAttribute("path_mine");
-  console.log(path); // Check if the correct path is returned
-
   // Fallback to checking the standard 'path' attribute if 'path_mine' doesn't exist
   if (!path) {
     path = selectedOption.getAttribute("path"); // In case 'path_mine' is missing
