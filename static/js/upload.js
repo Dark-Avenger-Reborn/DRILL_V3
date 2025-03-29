@@ -46,10 +46,10 @@ function uploadFile() {
     body: formData, // Send formData instead of JSON
   })
     .then((response) => {
-      if (response.ok) {
-        alert("File Uploaded successfully!");
+      if (response.status != 200) {
+        showPopupAlert("An error occurred : "+response.result, 'error')
       } else {
-        alert("Failed to upload the file.");
+        showPopupAlert(response.result, "success")
       }
       console.log("Response from server:", response);
     })
@@ -91,6 +91,11 @@ function fileDownload() {
   })
     .then((response) => {
       console.log("Response from server:", response);
+      if (response.status != 200) {
+        showPopupAlert("An error occurred : "+response.result, 'error')
+      } else {
+        showPopupAlert(response.result, "success")
+      }
     })
     .catch((error) => {
       console.error("Error sending delete request:", error);
@@ -143,6 +148,10 @@ old_data_files = [];
 
 async function updateFileList() {
   const response = await fetch("/list_files", { method: "POST" });
+  if (response.status != 200) {
+    showPopupAlert("An error occurred : "+response.result, 'error')
+    throw new Error(response.result)
+  }
   files = await response.text();
 
   files = files.replace(/'/g, '"');
@@ -181,6 +190,10 @@ old_data = {};
 async function updateDevices() {
   try {
     const response = await fetch("/devices", { method: "POST" });
+    if (response.status != 200) {
+      showPopupAlert("An error occurred : "+response.result, 'error')
+      throw new Error(response.result)
+    }
     const data = await response.json();
 
     if (!deepEqual(data, old_data)) {

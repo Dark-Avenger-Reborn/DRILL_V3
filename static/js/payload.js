@@ -66,10 +66,11 @@ function createDownload() {
     method: "POST",
   })
     .then((response) => {
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
+      if (response.status != 200) {
+        showPopupAlert("An error occurred : "+response.result, 'error')
+        throw new Error(response.result);
       }
-      return response.text(); // This returns a promise
+      return response.result; // This returns a promise
     })
     .then((text) => {
       text = text.replace(/'/g, '"');
@@ -125,7 +126,11 @@ function downloadFile() {
   })
     .then((response) => {
       console.log("Response from server:", response);
-      showPopupAlert("Payload Generating On Server\nThis May Take Up To 5 Minutes On Your First Generation", "success");
+      if (response.status != 200) {
+        showPopupAlert("An error occurred : "+response.result, 'error')
+      } else {
+        showPopupAlert(response.result, "success")
+      }
     })
     .catch((error) => {
       console.error("Error sending delete request:", error);

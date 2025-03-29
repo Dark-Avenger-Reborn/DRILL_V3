@@ -47,7 +47,11 @@ function ctrl() {
     }),
   })
     .then((response) => {
-      console.log("Response from server:", response);
+      if (response.status != 200) {
+        showPopupAlert("An error occurred : "+response.result, 'error')
+      } else {
+        showPopupAlert(response.result, "success")
+      }
     })
     .catch((error) => {
       console.error("Error sending delete request:", error);
@@ -67,6 +71,9 @@ function disconnect() {
   })
     .then((response) => {
       console.log("Response from server:", response);
+      if (response.status != 200) {
+        showPopupAlert("An error occurred : "+response.result, 'error')
+      }
       window.location.href = "/";
     })
     .catch((error) => {
