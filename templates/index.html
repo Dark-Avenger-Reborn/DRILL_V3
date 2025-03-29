@@ -35,18 +35,9 @@
         <div class="payload-container">
           <select id="pem-dropdown">
             <option value="send-command" os="['linux', 'windows', 'osx']">Send Command</option>
-            <option value="disconect" os="['linux', 'windows', 'osx']">Disconnect device</option>
             {% for pem_key, pem_info in pem_data.items() %}
               <option value="{{ pem_info.uid }}" os="{{ pem_info.os }}" path="{{ pem_info.pem_path }}">{{ pem_info.pem_name }}</option>
             {% endfor %}
-            <!-- <option value="discord">Steal Discord Token</option>
-            <option value="restart">Recover Shell Connection</option>
-            <option value="bsod">Blue Screen of Death</option>
-            <option value="wifi-password">Steal wifi passwords</option>
-            <option value="steal-password">Steal Browser Passwords</option>
-                <option value="steal-cookie">Get Browser Cookies</option>
-                <option value="screen-shot">Take Screen Shot</option>
-                <option value="uac-bypass">UAC Bypass</option> -->
           </select>
           <input style="display: none" id="pem-input" />
           Supported OS
