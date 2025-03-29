@@ -4,6 +4,7 @@ import socketio
 from c2 import C2
 import os
 import threading
+import json
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)  # Secret key for session management
