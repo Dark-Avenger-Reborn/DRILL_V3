@@ -46,8 +46,8 @@ function ctrl() {
       key: userKey,
     }),
   })
-    .then((response) => {
-      const data = response.json();
+    .then(async (response) => {
+      const data = await response.json();
       if (response.status != 200) {
         showPopupAlert("An error occurred : "+data.result, 'error')
       } else {
@@ -70,9 +70,9 @@ function disconnect() {
       device_id: window.location.pathname.split("/")[2],
     }),
   })
-    .then((response) => {
+    .then(async (response) => {
       console.log("Response from server:", response);
-      const data = response.json();
+      const data = await response.json();
       if (response.status != 200) {
         showPopupAlert("An error occurred : "+data.result, 'error')
       }

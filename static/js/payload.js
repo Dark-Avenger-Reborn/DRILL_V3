@@ -65,8 +65,8 @@ function createDownload() {
   fetch("/list_payloads", {
     method: "POST",
   })
-    .then((response) => {
-      const data = response.json()
+    .then(async (response) => {
+      const data = await response.json()
       if (response.status != 200) {
         showPopupAlert("An error occurred : "+data.result, 'error')
         throw new Error(data.result);
@@ -125,9 +125,9 @@ function downloadFile() {
       ip: window.location.origin + "/",
     }),
   })
-    .then((response) => {
+    .then(async (response) => {
       console.log("Response from server:", response);
-      const data = response.json()
+      const data = await response.json()
       if (response.status != 200) {
         showPopupAlert("An error occurred : "+data.result, 'error')
       } else {
@@ -136,7 +136,7 @@ function downloadFile() {
     })
     .catch((error) => {
       console.error("Error sending delete request:", error);
-      showPopupAlert("An error occurred : "+response.json(), 'error')
+      showPopupAlert("An error occurred : "+error, 'error')
     });
 }
 

@@ -45,8 +45,8 @@ function uploadFile() {
     method: "POST",
     body: formData, // Send formData instead of JSON
   })
-    .then((response) => {
-      const data = response.json()
+    .then(async (response) => {
+      const data = await response.json()
       if (response.status != 200) {
         showPopupAlert("An error occurred : "+data.result, 'error')
       } else {
@@ -90,9 +90,9 @@ function fileDownload() {
       uids: selectedElements,
     }),
   })
-    .then((response) => {
+    .then(async (response) => {
       console.log("Response from server:", response);
-      const data = response.json();
+      const data = await response.json();
       if (response.status != 200) {
         showPopupAlert("An error occurred : "+data.result, 'error')
       } else {
@@ -150,7 +150,7 @@ old_data_files = [];
 
 async function updateFileList() {
   const response = await fetch("/list_files", { method: "POST" });
-  const data = response.json()
+  const data = await response.json()
   if (response.status != 200) {
     showPopupAlert("An error occurred : "+data.result, 'error')
     throw new Error(data.result)
@@ -195,8 +195,8 @@ async function updateDevices() {
     const response = await fetch("/devices", { method: "POST" });
     const data2 = await response.json();
     if (response.status != 200) {
-      showPopupAlert("An error occurred : "+data.result, 'error')
-      throw new Error(data.result)
+      showPopupAlert("An error occurred : "+data2.result, 'error')
+      throw new Error(data2.result)
     }
 
     const data = data2.result
