@@ -46,10 +46,11 @@ function uploadFile() {
     body: formData, // Send formData instead of JSON
   })
     .then((response) => {
+      const data = response.json()
       if (response.status != 200) {
-        showPopupAlert("An error occurred : "+response.json().result, 'error')
+        showPopupAlert("An error occurred : "+data.result, 'error')
       } else {
-        showPopupAlert(response.json().result, "success")
+        showPopupAlert(data.result, "success")
       }
       console.log("Response from server:", response);
     })
@@ -91,10 +92,11 @@ function fileDownload() {
   })
     .then((response) => {
       console.log("Response from server:", response);
+      const data = response.json();
       if (response.status != 200) {
-        showPopupAlert("An error occurred : "+response.json().result, 'error')
+        showPopupAlert("An error occurred : "+data.result, 'error')
       } else {
-        showPopupAlert(response.json().result, "success")
+        showPopupAlert(data.result, "success")
       }
     })
     .catch((error) => {
@@ -148,11 +150,12 @@ old_data_files = [];
 
 async function updateFileList() {
   const response = await fetch("/list_files", { method: "POST" });
+  const data = response.json()
   if (response.status != 200) {
-    showPopupAlert("An error occurred : "+response.json().result, 'error')
-    throw new Error(response.json().result)
+    showPopupAlert("An error occurred : "+data.result, 'error')
+    throw new Error(data.result)
   }
-  files = await response.text();
+  files = await data.response.text();
 
   files = files.replace(/'/g, '"');
   files = JSON.parse(files);
@@ -190,11 +193,13 @@ old_data = {};
 async function updateDevices() {
   try {
     const response = await fetch("/devices", { method: "POST" });
+    const data2 = await response.json();
     if (response.status != 200) {
-      showPopupAlert("An error occurred : "+response.json().result, 'error')
-      throw new Error(response.json().result)
+      showPopupAlert("An error occurred : "+data.result, 'error')
+      throw new Error(data.result)
     }
-    const data = await response.json();
+
+    const data = data2.result
 
     if (!deepEqual(data, old_data)) {
       old_data = data;

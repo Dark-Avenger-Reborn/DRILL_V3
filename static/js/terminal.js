@@ -47,10 +47,11 @@ function ctrl() {
     }),
   })
     .then((response) => {
+      const data = response.json();
       if (response.status != 200) {
-        showPopupAlert("An error occurred : "+response.json().result, 'error')
+        showPopupAlert("An error occurred : "+data.result, 'error')
       } else {
-        showPopupAlert(response.json().result, "success")
+        showPopupAlert(data.result, "success")
       }
     })
     .catch((error) => {
@@ -71,13 +72,14 @@ function disconnect() {
   })
     .then((response) => {
       console.log("Response from server:", response);
+      const data = response.json();
       if (response.status != 200) {
-        showPopupAlert("An error occurred : "+response.json().result, 'error')
+        showPopupAlert("An error occurred : "+data.result, 'error')
       }
       window.location.href = "/";
     })
     .catch((error) => {
-      showPopupAlert("An error occurred : "+response.json().json(), 'error')
+      showPopupAlert("An error occurred : "+error, 'error')
     });
 }
 
