@@ -161,8 +161,8 @@ function send_pem() {
       path: path,
     }),
   })
-    .then((response) => {
-      const data = response.json();
+    .then(async (response) => {
+      const data = await response.json();
       if (response.status != 200) {
         showPopupAlert("An error occurred : "+data.result, 'error')
       } else {
@@ -191,8 +191,8 @@ document.addEventListener("click", (event) => {
       },
       body: JSON.stringify({ device_id: rowId }),
     })
-      .then((response) => {
-        const data = response.json();
+      .then(async (response) => {
+        const data = await response.json();
         if (response.status != 200) {
           showPopupAlert("An error occurred : "+data.result, 'error')
         } else {
