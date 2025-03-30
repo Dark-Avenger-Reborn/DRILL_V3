@@ -152,13 +152,10 @@ async function updateFileList() {
   const response = await fetch("/list_files", { method: "POST" });
   const data = await response.json()
   if (response.status != 200) {
-    showPopupAlert("An error occurred : "+data.result, 'error')
-    throw new Error(data.result)
+    showPopupAlert("An error occurred : "+data, 'error')
+    throw new Error(data)
   }
-  files = await data.response.text();
-
-  files = files.replace(/'/g, '"');
-  files = JSON.parse(files);
+  files = data;
 
   if (!deepEqual(old_data_files, files)) {
     old_data_files = files;
