@@ -191,7 +191,7 @@ def list_files():
     try:
         return jsonify(result=os.listdir("files_saved")), 200
     except:
-        return jsonify(result=[]), 500
+        return jsonify(result=[]), 200
 
 # Route for logging in
 @app.route("/login", methods=["GET", "POST"])
