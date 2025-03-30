@@ -41,12 +41,12 @@ old_data = {};
 async function updateDevices() {
   try {
     const response = await fetch("/devices", { method: "POST" });
-    const data = await response.json();
+    const data2 = await response.json();
     if (response.status != 200) {
-      console.log(data)
-      showPopupAlert("An error occurred : "+data.result, 'error')
+      console.log(data2)
+      showPopupAlert("An error occurred : "+data2.result, 'error')
     }
-
+    const data = data2.result
     if (!deepEqual(data, old_data)) {
       old_data = data;
 
