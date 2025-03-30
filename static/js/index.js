@@ -43,7 +43,7 @@ async function updateDevices() {
     const response = await fetch("/devices", { method: "POST" });
     const data = await response.json();
     if (response.status != 200) {
-      console.log(response)
+      console.log(data)
       showPopupAlert("An error occurred : "+data.result, 'error')
     }
 
