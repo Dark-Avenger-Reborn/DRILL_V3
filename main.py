@@ -143,7 +143,7 @@ def list_payloads():
     try:
         return jsonify(result=os.listdir("payloads")), 200
     except:
-        return jsonify(result=[]), 500
+        return jsonify(result=[]), 200
 
 @app.route("/explotation_module", methods=["POST"])
 def send_explotation_module():
