@@ -41,11 +41,12 @@ old_data = {};
 async function updateDevices() {
   try {
     const response = await fetch("/devices", { method: "POST" });
+    const data1 = await response.json();
+    const data = data1.response
     if (response.status != 200) {
       console.log(response)
-      showPopupAlert("An error occurred : "+response.result, 'error')
+      showPopupAlert("An error occurred : "+data1.result, 'error')
     }
-    const data = response.result;
 
     if (!deepEqual(data, old_data)) {
       old_data = data;
@@ -162,10 +163,12 @@ function send_pem() {
     }),
   })
     .then((response) => {
+      const data1 = response.json();
+      const data = data1.response
       if (response.status != 200) {
-        showPopupAlert("An error occurred : "+response.result, 'error')
+        showPopupAlert("An error occurred : "+data.result, 'error')
       } else {
-        showPopupAlert(response.result, "success")
+        showPopupAlert(data.result, "success")
       }
       updateDevices();
     })
@@ -191,10 +194,12 @@ document.addEventListener("click", (event) => {
       body: JSON.stringify({ device_id: rowId }),
     })
       .then((response) => {
+        const data1 = response.json();
+        const data = data1.response
         if (response.status != 200) {
-          showPopupAlert("An error occurred : "+response.result, 'error')
+          showPopupAlert("An error occurred : "+data.result, 'error')
         } else {
-          showPopupAlert(response.result, "success")
+          showPopupAlert(data.result, "success")
         }
       })
       .catch((error) => {
