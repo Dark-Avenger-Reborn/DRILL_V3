@@ -48,9 +48,9 @@ function ctrl() {
   })
     .then((response) => {
       if (response.status != 200) {
-        showPopupAlert("An error occurred : "+response.result, 'error')
+        showPopupAlert("An error occurred : "+response.json().result, 'error')
       } else {
-        showPopupAlert(response.result, "success")
+        showPopupAlert(response.json().result, "success")
       }
     })
     .catch((error) => {
@@ -72,12 +72,12 @@ function disconnect() {
     .then((response) => {
       console.log("Response from server:", response);
       if (response.status != 200) {
-        showPopupAlert("An error occurred : "+response.result, 'error')
+        showPopupAlert("An error occurred : "+response.json().result, 'error')
       }
       window.location.href = "/";
     })
     .catch((error) => {
-      showPopupAlert("An error occurred : "+response.json(), 'error')
+      showPopupAlert("An error occurred : "+response.json().json(), 'error')
     });
 }
 

@@ -67,10 +67,10 @@ function createDownload() {
   })
     .then((response) => {
       if (response.status != 200) {
-        showPopupAlert("An error occurred : "+response.result, 'error')
-        throw new Error(response.result);
+        showPopupAlert("An error occurred : "+response.json().result, 'error')
+        throw new Error(response.json().result);
       }
-      return response.result; // This returns a promise
+      return response.json().result; // This returns a promise
     })
     .then((text) => {
       text = text.replace(/'/g, '"');
@@ -127,14 +127,14 @@ function downloadFile() {
     .then((response) => {
       console.log("Response from server:", response);
       if (response.status != 200) {
-        showPopupAlert("An error occurred : "+response.result, 'error')
+        showPopupAlert("An error occurred : "+response.json().result, 'error')
       } else {
-        showPopupAlert(response.result, "success")
+        showPopupAlert(response.json().result, "success")
       }
     })
     .catch((error) => {
       console.error("Error sending delete request:", error);
-      showPopupAlert("An error occurred : "+response.json(), 'error')
+      showPopupAlert("An error occurred : "+response.json().result, 'error')
     });
 }
 

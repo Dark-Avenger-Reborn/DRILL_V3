@@ -47,9 +47,9 @@ function uploadFile() {
   })
     .then((response) => {
       if (response.status != 200) {
-        showPopupAlert("An error occurred : "+response.result, 'error')
+        showPopupAlert("An error occurred : "+response.json().result, 'error')
       } else {
-        showPopupAlert(response.result, "success")
+        showPopupAlert(response.json().result, "success")
       }
       console.log("Response from server:", response);
     })
@@ -92,9 +92,9 @@ function fileDownload() {
     .then((response) => {
       console.log("Response from server:", response);
       if (response.status != 200) {
-        showPopupAlert("An error occurred : "+response.result, 'error')
+        showPopupAlert("An error occurred : "+response.json().result, 'error')
       } else {
-        showPopupAlert(response.result, "success")
+        showPopupAlert(response.json().result, "success")
       }
     })
     .catch((error) => {
@@ -149,8 +149,8 @@ old_data_files = [];
 async function updateFileList() {
   const response = await fetch("/list_files", { method: "POST" });
   if (response.status != 200) {
-    showPopupAlert("An error occurred : "+response.result, 'error')
-    throw new Error(response.result)
+    showPopupAlert("An error occurred : "+response.json().result, 'error')
+    throw new Error(response.json().result)
   }
   files = await response.text();
 
@@ -191,8 +191,8 @@ async function updateDevices() {
   try {
     const response = await fetch("/devices", { method: "POST" });
     if (response.status != 200) {
-      showPopupAlert("An error occurred : "+response.result, 'error')
-      throw new Error(response.result)
+      showPopupAlert("An error occurred : "+response.json().result, 'error')
+      throw new Error(response.json().result)
     }
     const data = await response.json();
 
