@@ -73,10 +73,7 @@ function createDownload() {
       }
       return data.result; // This returns a promise
     })
-    .then((text) => {
-      text = text.replace(/'/g, '"');
-      directory = JSON.parse(text);
-
+    .then((directory) => {
       if (!deepEqual(directory, old_data)) {
         old_data = directory;
 
