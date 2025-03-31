@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // Correct way to initialize FitAddon
-  const fitaddon = new FitAddon();
+  const fitaddon = new FitAddon.FitAddon();
   term.loadAddon(fitaddon);
 
   // Open the terminal in its container
