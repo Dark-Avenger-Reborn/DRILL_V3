@@ -259,52 +259,63 @@ updateDevices();
 
 setInterval(updateDevices, 1000);
 
-document
-  .getElementsByClassName("select-all-os")
-  .addEventListener("change", function () {
+// For select-all-os
+const selectAllOsElements = document.getElementsByClassName("select-all-os");
+Array.from(selectAllOsElements).forEach(element => {
+  element.addEventListener("change", function () {
     const isChecked = this.checked;
     document.querySelectorAll(".row-select").forEach((checkbox) => {
       checkbox.checked = isChecked;
     });
   });
+});
 
-document.getElementsByClassName("select-osx").addEventListener("change", function () {
-  const isChecked = this.checked;
-  document.querySelectorAll(".row-select").forEach((checkbox) => {
-    const rowId = checkbox.dataset.rowId;
-    const row = document
-      .querySelector(`[data-row-id="${rowId}"]`)
-      .closest("tr");
-    console.log(row.children);
-    const osType = row.querySelector("td:nth-child(6)").innerText.trim(); // Get OS type from the table row
+// For select-osx
+const selectOsxElements = document.getElementsByClassName("select-osx");
+Array.from(selectOsxElements).forEach(element => {
+  element.addEventListener("change", function () {
+    const isChecked = this.checked;
+    document.querySelectorAll(".row-select").forEach((checkbox) => {
+      const rowId = checkbox.dataset.rowId;
+      const row = document
+        .querySelector(`[data-row-id="${rowId}"]`)
+        .closest("tr");
+      console.log(row.children);
+      const osType = row.querySelector("td:nth-child(6)").innerText.trim(); // Get OS type from the table row
 
-    // Check if the OS matches the selected ones
-    if (osType.includes("Darwin")) {
-      checkbox.checked = isChecked;
-    }
+      // Check if the OS matches the selected ones
+      if (osType.includes("Darwin")) {
+        checkbox.checked = isChecked;
+      }
+    });
   });
 });
 
-document.getElementsByClassName("select-linux").addEventListener("change", function () {
-  const isChecked = this.checked;
-  document.querySelectorAll(".row-select").forEach((checkbox) => {
-    const rowId = checkbox.dataset.rowId;
-    const row = document
-      .querySelector(`[data-row-id="${rowId}"]`)
-      .closest("tr");
-    console.log(row.children);
-    const osType = row.querySelector("td:nth-child(6)").innerText.trim(); // Get OS type from the table row
-    console.log(osType)
-    // Check if the OS matches the selected ones
-    if (osType.includes("Linux")) {
-      checkbox.checked = isChecked;
-    }
+// For select-linux
+const selectLinuxElements = document.getElementsByClassName("select-linux");
+Array.from(selectLinuxElements).forEach(element => {
+  element.addEventListener("change", function () {
+    const isChecked = this.checked;
+    document.querySelectorAll(".row-select").forEach((checkbox) => {
+      const rowId = checkbox.dataset.rowId;
+      const row = document
+        .querySelector(`[data-row-id="${rowId}"]`)
+        .closest("tr");
+      console.log(row.children);
+      const osType = row.querySelector("td:nth-child(6)").innerText.trim(); // Get OS type from the table row
+      console.log(osType)
+      // Check if the OS matches the selected ones
+      if (osType.includes("Linux")) {
+        checkbox.checked = isChecked;
+      }
+    });
   });
 });
 
-document
-  .getElementsByClassName("select-windows")
-  .addEventListener("change", function () {
+// For select-windows
+const selectWindowsElements = document.getElementsByClassName("select-windows");
+Array.from(selectWindowsElements).forEach(element => {
+  element.addEventListener("change", function () {
     const isChecked = this.checked;
     document.querySelectorAll(".row-select").forEach((checkbox) => {
       const rowId = checkbox.dataset.rowId;
@@ -320,6 +331,8 @@ document
       }
     });
   });
+});
+
 
 
 function showPopupAlert(message, type) {
