@@ -260,7 +260,7 @@ updateDevices();
 setInterval(updateDevices, 1000);
 
 document
-  .getElementById("select-all-os")
+  .getElementsByClassName("select-all-os")
   .addEventListener("change", function () {
     const isChecked = this.checked;
     document.querySelectorAll(".row-select").forEach((checkbox) => {
@@ -268,7 +268,7 @@ document
     });
   });
 
-document.getElementById("select-osx").addEventListener("change", function () {
+document.getElementsByClassName("select-osx").addEventListener("change", function () {
   const isChecked = this.checked;
   document.querySelectorAll(".row-select").forEach((checkbox) => {
     const rowId = checkbox.dataset.rowId;
@@ -285,7 +285,7 @@ document.getElementById("select-osx").addEventListener("change", function () {
   });
 });
 
-document.getElementById("select-linux").addEventListener("change", function () {
+document.getElementsByClassName("select-linux").addEventListener("change", function () {
   const isChecked = this.checked;
   document.querySelectorAll(".row-select").forEach((checkbox) => {
     const rowId = checkbox.dataset.rowId;
@@ -303,7 +303,7 @@ document.getElementById("select-linux").addEventListener("change", function () {
 });
 
 document
-  .getElementById("select-windows")
+  .getElementsByClassName("select-windows")
   .addEventListener("change", function () {
     const isChecked = this.checked;
     document.querySelectorAll(".row-select").forEach((checkbox) => {
