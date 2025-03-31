@@ -1,9 +1,4 @@
 document.addEventListener("DOMContentLoaded", function () {
-  if (!window.FitAddon) {
-    console.error("FitAddon is not loaded. Make sure the script is included correctly.");
-    return;
-  }
-
   // Initialize xterm.js
   const term = new Terminal({
     cursorBlink: true,
@@ -15,19 +10,19 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // Correct way to initialize FitAddon
-  const fitAddon = new FitAddon.FitAddon();
-  term.loadAddon(fitAddon);
+  const fitaddon = new FitAddon();
+  term.loadAddon(fitaddon);
 
   // Open the terminal in its container
   const terminalContainer = document.getElementById("terminal");
   term.open(terminalContainer);
 
   // Fit the terminal to the container
-  fitAddon.fit();
+  fitaddon.fit();
 
   // Ensure the terminal resizes when the window resizes
   window.addEventListener("resize", () => {
-    fitAddon.fit();
+    fitaddon.fit();
   });
 
   // WebSocket connection
