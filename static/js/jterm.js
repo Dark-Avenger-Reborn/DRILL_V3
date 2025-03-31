@@ -1,17 +1,19 @@
+// Initialize socket connection
 const socket = io();
-socket.connect(window.location.origin)
+socket.connect(window.location.origin);
 const pageUID = window.location.pathname.split("/")[2];
 
+// Function to generate a random key
 function generateRandomKey(length) {
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+[]{}|;:,.<>?';
   let result = '';
-  const charactersLength = characters.length;
   for (let i = 0; i < length; i++) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    result += characters.charAt(Math.floor(Math.random() * characters.length));
   }
   return result;
 }
 
+// Function to retrieve a cookie by name
 function getCookie(name) {
   const value = `; ${document.cookie}`;
   const parts = value.split(`; ${name}=`);
@@ -19,6 +21,7 @@ function getCookie(name) {
   return null;
 }
 
+// Function to set a cookie
 function setCookie(name, value, days = 1) {
   const d = new Date();
   d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
@@ -38,27 +41,45 @@ if (!userKey) {
   console.log('Existing key:', userKey);
 }
 
-
-const term = new Terminal({
+// Ensure xterm.js and the FitAddon are loaded
+document.addEventListener("DOMContentLoaded", function () {
+  const term = new Terminal({
     cursorBlink: true,
     fontSize: 14,
     theme: {
       background: getComputedStyle(document.documentElement).getPropertyValue("--background"),
       foreground: getComputedStyle(document.documentElement).getPropertyValue("--color"),
     }
-});
-term.open(document.getElementById("terminal"));
+  });
 
-socket.on("result", function (response) {
-  if (response["result"]["uid"] === pageUID && response["result"]['key'] === userKey) {
-    console.log(response["result"]);
-    const cleanedResult = response["result"]["result"];
-    term.write(cleanedResult);
-  }
-});
+  // Initialize the fit addon
+  const fitAddon = new window.FitAddon.FitAddon();
+  term.loadAddon(fitAddon);
 
-// Send every keystroke directly to the backend (including Ctrl commands)
-term.onData(data => {
-  console.log(data)
-  socket.emit("command", { cmd: data, uid: pageUID, key: userKey });
+  // Open the terminal
+  const terminalContainer = document.getElementById("terminal");
+  term.open(terminalContainer);
+
+  // Fit the terminal to the container
+  fitAddon.fit();
+
+  // Resize terminal when window resizes
+  window.addEventListener("resize", () => {
+    fitAddon.fit();
+  });
+
+  // Listen for data from the server and write it to the terminal
+  socket.on("result", function (response) {
+    if (response["result"]["uid"] === pageUID && response["result"]['key'] === userKey) {
+      console.log(response["result"]);
+      const cleanedResult = response["result"]["result"];
+      term.write(cleanedResult);
+    }
+  });
+
+  // Send every keystroke directly to the backend (including Ctrl commands)
+  term.onData(data => {
+    console.log(data);
+    socket.emit("command", { cmd: data, uid: pageUID, key: userKey });
+  });
 });
