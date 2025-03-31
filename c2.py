@@ -154,11 +154,13 @@ class C2:
         return self.devices
 
     def delete_device(self, device_id):
-        self.total_devices.pop(device_id)
         if device_id in self.devices:
+            self.total_devices.pop(device_id)
             self.devices.pop(device_id)
             self.sio.emit("delete", {'uid': device_id})
             self.update_json()
+        else:
+            raise Exception("Device is not connected")
 
     def list_all_devices(self):
         self.update_json()
