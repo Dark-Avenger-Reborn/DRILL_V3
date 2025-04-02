@@ -399,6 +399,7 @@ def run(data):
         last_capture_time = 0
 
         print(screen_or_camera)
+        print(screen_fps, screen_qualtiy)
 
         if screen_or_camera == "screen":
             with mss.mss() as sct:
