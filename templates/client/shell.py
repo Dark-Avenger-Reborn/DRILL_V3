@@ -382,7 +382,7 @@ def run(data):
 
             stop_event.clear()  # Reset the event to False
             screenshot_thread = threading.Thread(
-                target=take_screenshots, args=(sio, data["uid"])
+                target=take_screenshots, args=(sio, data["uid"], screen_fps, screen_qualtiy)
             )
 
     @sio.on("change_screen_information")
