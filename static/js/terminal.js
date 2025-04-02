@@ -48,7 +48,7 @@ function ctrl() {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      device_id: window.location.pathname.split("/")[2],
+      uid: window.location.pathname.split("/")[2],
       key: userKey,
     }),
   })

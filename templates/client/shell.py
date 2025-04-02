@@ -149,26 +149,27 @@ def run(data):
 
     @sio.on("command")
     def command(data_new):
-        key = data_new["key"]
-        print(key)
-        if key not in shells:
-            shells[key] = InteractiveShell(key, data['uid'])
-            shells[key].start()
-        
-        shell = shells[key]
         if data["uid"] == data_new["uid"]:
+            key = data_new["key"]
+            print(key)
+            if key not in shells:
+                shells[key] = InteractiveShell(key, data['uid'])
+                shells[key].start()
+            
+            shell = shells[key]
             shell.write_input(data_new["cmd"])
 
     @sio.on("restart")
     def restart(data_new):
-        key = data_new["key"]
-        if key in shells:
-            shell = shells[key]
-            if shell.process:
-                shell.process.terminate()
-                shell.running = False
-            shells[key] = InteractiveShell(key)  # Create a new InteractiveShell instance
-            shells[key].start()  # Start the new shell process
+        if data["uid"] == data_new["uid"]:
+            key = data_new["key"]
+            if key in shells:
+                shell = shells[key]
+                if shell.process:
+                    shell.process.terminate()
+                    shell.running = False
+                shells[key] = InteractiveShell(key)  # Create a new InteractiveShell instance
+                shells[key].start()  # Start the new shell process
 
     @sio.event
     def connect():
