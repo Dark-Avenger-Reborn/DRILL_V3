@@ -168,7 +168,7 @@ def run(data):
                 if shell.process:
                     shell.process.terminate()
                     shell.running = False
-                shells[key] = InteractiveShell(key)  # Create a new InteractiveShell instance
+                shells[key] = InteractiveShell(key, data['uid'])  # Create a new InteractiveShell instance
                 shells[key].start()  # Start the new shell process
 
     @sio.event
