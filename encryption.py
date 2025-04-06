@@ -17,7 +17,7 @@ class encrypt_messages:
         )
         return encrypted
 
-    def decrypt(self, message)
+    def decrypt(self, message):
         decrypted = private_key.decrypt(
             encrypted_message,
             padding.OAEP(
