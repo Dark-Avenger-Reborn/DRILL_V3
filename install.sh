@@ -130,6 +130,6 @@ fi
 
 # Install Python Packages
 echo "Installing required Python packages..."
-pip3 install "python-socketio[Server]" flask eventlet geocoder
+pip3 install "python-socketio[Server]" flask eventlet geocoder cryptography
 
 echo "Script execution completed."
