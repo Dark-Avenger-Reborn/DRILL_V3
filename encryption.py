@@ -44,7 +44,7 @@ class encrypt_messages:
     def write_file(self, file_name, text):
         try:
             with open(f"./encryption/{file_name}", "w") as file:
-                file.writelines(text)
+                file.writelines(str(text))
                 file.close()
         except:
             raise Exception("File could not be written to")
