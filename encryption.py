@@ -60,7 +60,7 @@ class encrypt_messages:
                 format=serialization.PrivateFormat.TraditionalOpenSSL,
                 encryption_algorithm=serialization.NoEncryption()
             )
-            write_file("private_key.pem", private_pem)
+            self.write_file("private_key.pem", private_pem)
             return private_key
 
     def receive_public_key(self):
@@ -73,5 +73,5 @@ class encrypt_messages:
                 encoding=serialization.Encoding.PEM,
                 format=serialization.PublicFormat.SubjectPublicKeyInfo
             )
-            write_file("public_key.pem", public_pem)
+            self.write_file("public_key.pem", public_pem)
             return public_key
