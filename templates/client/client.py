@@ -6,8 +6,6 @@ import ssl
 import sys
 
 from cryptography.hazmat.primitives import serialization
-from cryptography.hazmat.primitives.asymmetric import padding
-from cryptography.hazmat.primitives import hashes
 
 def get_public_key(url):
     context = ssl._create_unverified_context()
