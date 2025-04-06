@@ -1,9 +1,12 @@
 from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.hazmat.primitives import serialization
+import os
 
 class encrypt_messages:
     def __init__(self):
         #this order matters very much
+        os.makedirs("encryption", exist_ok=True)
+
         self.private_key = self.receive_private_key()
         self.public_key = self.receive_public_key()
 
