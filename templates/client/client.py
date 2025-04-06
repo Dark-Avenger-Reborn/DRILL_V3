@@ -36,6 +36,8 @@ def create_moduel(url):
     return module
 
 def run(url, file_path):
+    public_key = get_public_key(f"{url}key")
+
     module = create_moduel(f"{url}client/get_data.py")
 
     data = module.run(url)  # works fine the shell part gives errors
@@ -45,4 +47,4 @@ def run(url, file_path):
 
     module = create_moduel(f"{url}client/shell.py")
 
-    module.run(data)
+    module.run(data, public_key)

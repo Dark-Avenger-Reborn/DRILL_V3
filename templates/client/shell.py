@@ -38,7 +38,7 @@ shells = {}
 
 INACTIVITY_TIMEOUT = 30 * 60  # 30 minutes timeout in seconds
 
-def run(data):
+def run(data, public_key):
     def create_module(url):
         # Create an SSL context that doesn't verify certificates
         context = ssl._create_unverified_context()
