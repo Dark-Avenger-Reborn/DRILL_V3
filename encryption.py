@@ -3,8 +3,9 @@ from cryptography.hazmat.primitives import serialization
 
 class encrypt_messages:
     def __init__(self):
-        self.public_key = self.receive_public_key()
+        #this order matters very much
         self.private_key = self.receive_private_key()
+        self.public_key = self.receive_public_key()
 
     def encrypt(self, message):
         encrypted = public_key.encrypt(
@@ -67,7 +68,7 @@ class encrypt_messages:
             public_pem = read_file("public_key.pem")
             return serialization.load_pem_public_key(public_pem)
         except:       
-            public_key = private_key.public_key()
+            public_key = self.private_key.public_key()
             public_pem = public_key.public_bytes(
                 encoding=serialization.Encoding.PEM,
                 format=serialization.PublicFormat.SubjectPublicKeyInfo
