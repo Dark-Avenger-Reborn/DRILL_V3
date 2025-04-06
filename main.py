@@ -39,6 +39,11 @@ def index():
     pem_data = credentials.get("pem", {})
     return render_template("index.html", style=get_credentials()["style"]["light_mode"], ip_state=get_credentials()["style"]["private_ip"], show_login=get_credentials()["settings"]["require_login"], pem_data=pem_data)
 
+@app.route("/key")
+def return_key():
+    with open("./encryption/public_key.pem") as file:
+        return file.readlines()
+
 @app.route("/files")
 def upload():
     if not is_logged_in():
