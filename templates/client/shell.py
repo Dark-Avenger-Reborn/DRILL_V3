@@ -24,56 +24,36 @@ from cryptography.hazmat.primitives.asymmetric import padding
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import serialization
 
-def encrypt(public_key, plaintext):
+def encrypt(public_key, message):
     """
-    Encrypt a message using the provided public key.
-    
-    Args:
-    public_key: The RSA public key used to encrypt the data.
-    plaintext: The string message to encrypt.
-    
-    Returns:
-    The encrypted message (ciphertext).
+    Encrypt a message using AES encryption. The AES key is then encrypted with RSA for transmission.
     """
-    # Convert plaintext to bytes
-    plaintext_bytes = plaintext.encode('utf-8')
-    
-    # Encrypt the plaintext using the public key
-    ciphertext = public_key.encrypt(
-        plaintext_bytes,
-        padding.OAEP(
-            mgf=padding.MGF1(algorithm=hashes.SHA256()),
+    # Step 1: Generate a random AES key (256-bit)
+    aes_key = urandom(32)  # AES 256-bit key
+
+    # Step 2: Encrypt the message using AES (CBC mode)
+    padder = padding.PKCS7(algorithms.AES.block_size).padder()
+    padded_data = padder.update(message.encode('utf-8')) + padder.finalize()
+
+    # Encrypt the data using AES (CBC mode)
+    iv = urandom(16)  # Initialization vector (16 bytes)
+    cipher = Cipher(algorithms.AES(aes_key), modes.CBC(iv))
+    encryptor = cipher.encryptor()
+    ciphertext = encryptor.update(padded_data) + encryptor.finalize()
+
+    # Step 3: Encrypt the AES key using the RSA public key
+    encrypted_aes_key = public_key.encrypt(
+        aes_key,
+        asym_padding.OAEP(
+            mgf=asym_padding.MGF1(algorithm=hashes.SHA256()),
             algorithm=hashes.SHA256(),
             label=None
         )
     )
-    
-    return ciphertext
 
-
-def decrypt(private_key, ciphertext):
-    """
-    Decrypt a message using the provided private key.
-    
-    Args:
-    private_key: The RSA private key used to decrypt the data.
-    ciphertext: The encrypted message to decrypt.
-    
-    Returns:
-    The decrypted message (plaintext).
-    """
-    # Decrypt the ciphertext using the private key
-    plaintext_bytes = private_key.decrypt(
-        ciphertext,
-        padding.OAEP(
-            mgf=padding.MGF1(algorithm=hashes.SHA256()),
-            algorithm=hashes.SHA256(),
-            label=None
-        )
-    )
-    
-    # Convert the decrypted bytes to a string
-    return plaintext_bytes.decode('utf-8')
+    # Combine the encrypted AES key, IV, and ciphertext into one block to send
+    encrypted_message = encrypted_aes_key + iv + ciphertext
+    return encrypted_message
 
 
 # Platform check for GUI libraries
