@@ -267,6 +267,7 @@ Pillow==10.4.0
 numpy=="""+requ_numpy+"""
 PyAutoGUI
 opencv-python-headless
+pyopenssl
 cryptography""")
             f.close()
 
