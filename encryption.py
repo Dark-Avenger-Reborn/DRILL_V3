@@ -11,7 +11,7 @@ class encrypt_messages:
         self.public_key = self.receive_public_key()
 
     def encrypt(self, message):
-        encrypted = public_key.encrypt(
+        encrypted = self.public_key.encrypt(
             message.encode('utf-8'),
             padding.OAEP(
                 mgf=padding.MGF1(algorithm=hashes.SHA256()),
@@ -22,7 +22,7 @@ class encrypt_messages:
         return encrypted
 
     def decrypt(self, message):
-        decrypted = private_key.decrypt(
+        decrypted = self.private_key.decrypt(
             encrypted_message,
             padding.OAEP(
                 mgf=padding.MGF1(algorithm=hashes.SHA256()),
