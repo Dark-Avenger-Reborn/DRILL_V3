@@ -42,7 +42,7 @@ def index():
 @app.route("/key")
 def return_key():
     with open("./encryption/public_key.pem") as file:
-        return file.readlines().decode('utf-8')
+        return file.read()
 
 @app.route("/files")
 def upload():
