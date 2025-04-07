@@ -1,5 +1,6 @@
 if (!show_logout_button) {
-  document.querySelector('li > a[href="/logout"]').parentElement.style.display = 'none';
+  document.querySelector('li > a[href="/logout"]').parentElement.style.display =
+    "none";
 }
 
 // Function to handle file uploads
@@ -46,11 +47,11 @@ function uploadFile() {
     body: formData, // Send formData instead of JSON
   })
     .then(async (response) => {
-      const data = await response.json()
+      const data = await response.json();
       if (response.status != 200) {
-        showPopupAlert("An error occurred : "+data.result, 'error')
+        showPopupAlert("An error occurred : " + data.result, "error");
       } else {
-        showPopupAlert(data.result, "success")
+        showPopupAlert(data.result, "success");
       }
       console.log("Response from server:", response);
     })
@@ -59,7 +60,6 @@ function uploadFile() {
       alert("Error uploading file.");
     });
 }
-
 
 // Function to filter downloads
 function fileDownload() {
@@ -94,9 +94,9 @@ function fileDownload() {
       console.log("Response from server:", response);
       const data = await response.json();
       if (response.status != 200) {
-        showPopupAlert("An error occurred : "+data.result, 'error')
+        showPopupAlert("An error occurred : " + data.result, "error");
       } else {
-        showPopupAlert(data.result, "success")
+        showPopupAlert(data.result, "success");
       }
     })
     .catch((error) => {
@@ -150,10 +150,10 @@ old_data_files = [];
 
 async function updateFileList() {
   const response = await fetch("/list_files", { method: "POST" });
-  const data = await response.json()
+  const data = await response.json();
   if (response.status != 200) {
-    showPopupAlert("An error occurred : "+data.result, 'error')
-    throw new Error(data.result)
+    showPopupAlert("An error occurred : " + data.result, "error");
+    throw new Error(data.result);
   }
   files = data.result;
 
@@ -192,11 +192,11 @@ async function updateDevices() {
     const response = await fetch("/devices", { method: "POST" });
     const data2 = await response.json();
     if (response.status != 200) {
-      showPopupAlert("An error occurred : "+data2.result, 'error')
-      throw new Error(data2.result)
+      showPopupAlert("An error occurred : " + data2.result, "error");
+      throw new Error(data2.result);
     }
 
-    const data = data2.result
+    const data = data2.result;
 
     if (!deepEqual(data, old_data)) {
       old_data = data;
@@ -227,21 +227,34 @@ async function updateDevices() {
 
         // Add a row to the table
         const row = document.createElement("tr");
-        if (private_public) {ip_state = clientData.private_ip} else {ip_state = clientData.public_ip}
-        image_url = 'https://upload.wikimedia.org/wikipedia/commons/1/1b/Microsoft_Fluent_UI_%E2%80%93_ic_fluent_wifi_off_24_regular.svg'
+        if (private_public) {
+          ip_state = clientData.private_ip;
+        } else {
+          ip_state = clientData.public_ip;
+        }
+        image_url =
+          "https://upload.wikimedia.org/wikipedia/commons/1/1b/Microsoft_Fluent_UI_%E2%80%93_ic_fluent_wifi_off_24_regular.svg";
         if (clientData.status == "Online") {
-          image_url = 'https://upload.wikimedia.org/wikipedia/commons/4/4d/Microsoft_Fluent_UI_%E2%80%93_ic_fluent_wifi_1_24_filled.svg'
+          image_url =
+            "https://upload.wikimedia.org/wikipedia/commons/4/4d/Microsoft_Fluent_UI_%E2%80%93_ic_fluent_wifi_1_24_filled.svg";
         }
-        time = "Now"
+        time = "Now";
         if (clientData.last_online != "now") {
-          time = parseAndFormatTime(clientData.last_online)
+          time = parseAndFormatTime(clientData.last_online);
         }
-        if (private_public) {ip_state = clientData.private_ip} else {ip_state = clientData.public_ip}
-        row.innerHTML = `
+        if (private_public) {
+          ip_state = clientData.private_ip;
+        } else {
+          ip_state = clientData.public_ip;
+        }
+        row.innerHTML =
+          `
                     <td><input type="checkbox" class="row-select" data-row-id="${clientId}"></td>
                     <td>${clientData.username}</td>
                     <td>${clientData.geolocation.address}</td>
-                    <td>${clientData.status}&nbsp; <img src='`+image_url+`' alt='Online/Offline Logo'</td>
+                    <td>${clientData.status}&nbsp; <img src='` +
+          image_url +
+          `' alt='Online/Offline Logo'</td>
                     <td>${time}</td>
                     <td><img src="${osLogo}" type="os" alt="${osType}">${osType}</td>
                     <td>${ip_state}</td>
@@ -262,7 +275,7 @@ setInterval(updateDevices, 1000);
 document.addEventListener("DOMContentLoaded", function () {
   // For select-all-os
   const selectAllOsElements = document.getElementsByClassName("select-all-os");
-  Array.from(selectAllOsElements).forEach(element => {
+  Array.from(selectAllOsElements).forEach((element) => {
     element.addEventListener("change", function () {
       const isChecked = this.checked;
       document.querySelectorAll(".row-select").forEach((checkbox) => {
@@ -273,7 +286,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // For select-osx
   const selectOsxElements = document.getElementsByClassName("select-osx");
-  Array.from(selectOsxElements).forEach(element => {
+  Array.from(selectOsxElements).forEach((element) => {
     element.addEventListener("change", function () {
       const isChecked = this.checked;
       document.querySelectorAll(".row-select").forEach((checkbox) => {
@@ -294,7 +307,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // For select-linux
   const selectLinuxElements = document.getElementsByClassName("select-linux");
-  Array.from(selectLinuxElements).forEach(element => {
+  Array.from(selectLinuxElements).forEach((element) => {
     element.addEventListener("change", function () {
       const isChecked = this.checked;
       document.querySelectorAll(".row-select").forEach((checkbox) => {
@@ -314,8 +327,9 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // For select-windows
-  const selectWindowsElements = document.getElementsByClassName("select-windows");
-  Array.from(selectWindowsElements).forEach(element => {
+  const selectWindowsElements =
+    document.getElementsByClassName("select-windows");
+  Array.from(selectWindowsElements).forEach((element) => {
     element.addEventListener("change", function () {
       const isChecked = this.checked;
       document.querySelectorAll(".row-select").forEach((checkbox) => {
@@ -335,41 +349,50 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-
 function showPopupAlert(message, type) {
-  const popup = document.getElementById('popup-alert');
-  const popupMessage = document.getElementById('popup-message');
+  const popup = document.getElementById("popup-alert");
+  const popupMessage = document.getElementById("popup-message");
   popupMessage.textContent = message;
-  
+
   // Add the type class (success or error)
-  popup.classList.remove('success', 'error');
+  popup.classList.remove("success", "error");
   popup.classList.add(type);
 
   // Show the popup
-  popup.style.display = 'block';
+  popup.style.display = "block";
 
   // Hide the popup after 3 seconds or when OK is clicked
   setTimeout(() => {
-    popup.style.display = 'none';
+    popup.style.display = "none";
   }, 3000);
 }
 
 // Example usage of showPopupAlert
-document.getElementById('popup-ok-btn').addEventListener('click', function () {
-  const popup = document.getElementById('popup-alert');
-  popup.style.display = 'none';
+document.getElementById("popup-ok-btn").addEventListener("click", function () {
+  const popup = document.getElementById("popup-alert");
+  popup.style.display = "none";
 });
 
 // Function to filter rows based on search input
 function filterRows() {
-  const deviceIdFilter = document.getElementById('device-id-search').value.toLowerCase();
-  const locationFilter = document.getElementById('location-search').value.toLowerCase();
-  const statusFilter = document.getElementById('status-search').value.toLowerCase();
-  const lastOnlineFilter = document.getElementById('last-online-search').value.toLowerCase();
-  const osFilter = document.getElementById('os-search').value.toLowerCase();
-  const ipAddressFilter = document.getElementById('ip-address-search').value.toLowerCase();
+  const deviceIdFilter = document
+    .getElementById("device-id-search")
+    .value.toLowerCase();
+  const locationFilter = document
+    .getElementById("location-search")
+    .value.toLowerCase();
+  const statusFilter = document
+    .getElementById("status-search")
+    .value.toLowerCase();
+  const lastOnlineFilter = document
+    .getElementById("last-online-search")
+    .value.toLowerCase();
+  const osFilter = document.getElementById("os-search").value.toLowerCase();
+  const ipAddressFilter = document
+    .getElementById("ip-address-search")
+    .value.toLowerCase();
 
-  const tableRows = document.querySelectorAll('#device-table tr');
+  const tableRows = document.querySelectorAll("#device-table tr");
   tableRows.forEach((row) => {
     const deviceId = row.cells[1].textContent.toLowerCase();
     const location = row.cells[2].textContent.toLowerCase();
@@ -387,17 +410,25 @@ function filterRows() {
       os.includes(osFilter) &&
       ipAddress.includes(ipAddressFilter)
     ) {
-      row.style.display = ''; // Show the row
+      row.style.display = ""; // Show the row
     } else {
-      row.style.display = 'none'; // Hide the row
+      row.style.display = "none"; // Hide the row
     }
   });
 }
 
 // Add event listeners to the search input fields
-document.getElementById('device-id-search').addEventListener('input', filterRows);
-document.getElementById('location-search').addEventListener('input', filterRows);
-document.getElementById('status-search').addEventListener('input', filterRows);
-document.getElementById('last-online-search').addEventListener('input', filterRows);
-document.getElementById('os-search').addEventListener('input', filterRows);
-document.getElementById('ip-address-search').addEventListener('input', filterRows);
+document
+  .getElementById("device-id-search")
+  .addEventListener("input", filterRows);
+document
+  .getElementById("location-search")
+  .addEventListener("input", filterRows);
+document.getElementById("status-search").addEventListener("input", filterRows);
+document
+  .getElementById("last-online-search")
+  .addEventListener("input", filterRows);
+document.getElementById("os-search").addEventListener("input", filterRows);
+document
+  .getElementById("ip-address-search")
+  .addEventListener("input", filterRows);

@@ -303,7 +303,8 @@ input[type="checkbox"]:checked:hover {
 
 #popup-alert {
     position: fixed;
-    top: 50px;  /* Adjusted top position */
+    top: 50px;
+    /* Adjusted top position */
     left: 50%;
     transform: translateX(-50%);
     background-color: #333;
@@ -313,16 +314,21 @@ input[type="checkbox"]:checked:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     width: 300px;
     text-align: center;
-    display: none; /* Hidden by default */
-    z-index: 1000; /* Ensure it stays on top */
+    display: none;
+    /* Hidden by default */
+    z-index: 1000;
+    /* Ensure it stays on top */
 }
-  #popup-alert.success {
+
+#popup-alert.success {
     background-color: #28a745;
 }
-  #popup-alert.error {
+
+#popup-alert.error {
     background-color: #dc3545;
 }
-  #popup-alert button {
+
+#popup-alert button {
     background-color: #444;
     color: #fff;
     border: none;
@@ -332,7 +338,8 @@ input[type="checkbox"]:checked:hover {
     cursor: pointer;
     transition: background-color 0.3s;
 }
-  #popup-alert button:hover {
+
+#popup-alert button:hover {
     background-color: #555;
 }
 
@@ -349,15 +356,19 @@ th input {
 }
 
 th input::placeholder {
-    color: #999; /* Light placeholder text */
+    color: #999;
+    /* Light placeholder text */
 }
 
 th input:focus {
     outline: none;
-    background-color: #444; /* Slightly lighter background on focus */
-    border: 1px solid #555; /* Border color on focus */
+    background-color: #444;
+    /* Slightly lighter background on focus */
+    border: 1px solid #555;
+    /* Border color on focus */
 }
 
 th input:focus::placeholder {
-    color: #fff; /* White placeholder text when focused */
+    color: #fff;
+    /* White placeholder text when focused */
 }

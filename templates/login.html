@@ -5,18 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login</title>
     {% if style == True %}
-      <link rel="stylesheet" href="{{ url_for('static', filename='css/light/login.css') }}">
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/light/login.css') }}"
+    />
     {% else %}
-      <link rel="stylesheet" href="{{ url_for('static', filename='css/dark/login.css') }}">
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/dark/login.css') }}"
+    />
     {% endif %}
   </head>
   <body>
     <h2>Login</h2>
 
     {% if error_message %}
-      <div class="error-message">
-        {{ error_message }}
-      </div>
+    <div class="error-message">{{ error_message }}</div>
     {% endif %}
 
     <form method="POST">

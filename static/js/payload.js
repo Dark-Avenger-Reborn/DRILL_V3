@@ -2,7 +2,8 @@ const osDropdown = document.getElementById("os-dropdown");
 const archDropdown = document.getElementById("arch-dropdown");
 
 if (!show_logout_button) {
-  document.querySelector('li > a[href="/logout"]').parentElement.style.display = 'none';
+  document.querySelector('li > a[href="/logout"]').parentElement.style.display =
+    "none";
 }
 
 // Define architecture options for each OS
@@ -66,9 +67,9 @@ function createDownload() {
     method: "POST",
   })
     .then(async (response) => {
-      const data = await response.json()
+      const data = await response.json();
       if (response.status != 200) {
-        showPopupAlert("An error occurred : "+data.result, 'error')
+        showPopupAlert("An error occurred : " + data.result, "error");
         throw new Error(data.result);
       }
       return data.result; // This returns a promise
@@ -124,16 +125,16 @@ function downloadFile() {
   })
     .then(async (response) => {
       console.log("Response from server:", response);
-      const data = await response.json()
+      const data = await response.json();
       if (response.status != 200) {
-        showPopupAlert("An error occurred : "+data.result, 'error')
+        showPopupAlert("An error occurred : " + data.result, "error");
       } else {
-        showPopupAlert(data.result, "success")
+        showPopupAlert(data.result, "success");
       }
     })
     .catch((error) => {
       console.error("Error sending delete request:", error);
-      showPopupAlert("An error occurred : "+error, 'error')
+      showPopupAlert("An error occurred : " + error, "error");
     });
 }
 
@@ -141,27 +142,26 @@ function download(file) {
   window.location.href = "/get_payloads/" + file;
 }
 
-
 function showPopupAlert(message, type) {
-  const popup = document.getElementById('popup-alert');
-  const popupMessage = document.getElementById('popup-message');
+  const popup = document.getElementById("popup-alert");
+  const popupMessage = document.getElementById("popup-message");
   popupMessage.textContent = message;
-  
+
   // Add the type class (success or error)
-  popup.classList.remove('success', 'error');
+  popup.classList.remove("success", "error");
   popup.classList.add(type);
 
   // Show the popup
-  popup.style.display = 'block';
+  popup.style.display = "block";
 
   // Hide the popup after 3 seconds or when OK is clicked
   setTimeout(() => {
-    popup.style.display = 'none';
+    popup.style.display = "none";
   }, 5000);
 }
 
 // Example usage of showPopupAlert
-document.getElementById('popup-ok-btn').addEventListener('click', function () {
-  const popup = document.getElementById('popup-alert');
-  popup.style.display = 'none';
+document.getElementById("popup-ok-btn").addEventListener("click", function () {
+  const popup = document.getElementById("popup-alert");
+  popup.style.display = "none";
 });

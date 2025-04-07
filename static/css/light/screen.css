@@ -3,8 +3,10 @@ body {
     font-family: "Arial", sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4; /* Light background */
-    color: #333; /* Dark text for contrast */
+    background-color: #f4f4f4;
+    /* Light background */
+    color: #333;
+    /* Dark text for contrast */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -15,7 +17,8 @@ body {
 /* Header styles */
 header {
     width: 100%;
-    background-color: #fff; /* Lighter background for header */
+    background-color: #fff;
+    /* Lighter background for header */
     padding: 20px 0;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -37,7 +40,8 @@ nav li {
 }
 
 nav a {
-    color: #333; /* Dark text */
+    color: #333;
+    /* Dark text */
     text-decoration: none;
     padding: 10px 15px;
     border-radius: 5px;
@@ -45,11 +49,13 @@ nav a {
 }
 
 nav a:hover {
-    background-color: #ddd; /* Light hover background */
+    background-color: #ddd;
+    /* Light hover background */
 }
 
 .active {
-    background-color: #ccc; /* Slightly darker active item */
+    background-color: #ccc;
+    /* Slightly darker active item */
 }
 
 /* Heading styles */
@@ -72,7 +78,8 @@ h1 {
 
 /* Button styles */
 button {
-    background-color: #007bff; /* Blue background */
+    background-color: #007bff;
+    /* Blue background */
     color: #fff;
     border: none;
     padding: 10px 20px;
@@ -84,7 +91,8 @@ button {
 }
 
 button:hover {
-    background-color: #0056b3; /* Darker blue on hover */
+    background-color: #0056b3;
+    /* Darker blue on hover */
 }
 
 /* Captured image container */
@@ -101,7 +109,8 @@ button:hover {
     max-width: 100%;
     margin: 20px 0;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Light shadow */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* Light shadow */
     user-select: none;
 }
 
@@ -121,7 +130,8 @@ button:hover {
 }
 
 .slider-wrapper {
-    border: 2px solid #ccc; /* Light border */
+    border: 2px solid #ccc;
+    /* Light border */
     padding: 5px;
     border-radius: 20px;
 }
@@ -134,7 +144,8 @@ button:hover {
     width: 200px;
     height: 40px;
     border-radius: 20px;
-    background-color: #ddd; /* Light background */
+    background-color: #ddd;
+    /* Light background */
     margin: 0;
 }
 
@@ -148,7 +159,8 @@ button:hover {
     z-index: 2;
     font-weight: bold;
     background-color: transparent;
-    color: #333; /* Dark text */
+    color: #333;
+    /* Dark text */
 }
 
 .slider-highlight {
@@ -164,42 +176,55 @@ button:hover {
 /* Specific buttons */
 #screenButton,
 #cameraButton {
-    color: #333; /* Dark text */
+    color: #333;
+    /* Dark text */
 }
 
 #screenButton:hover,
 #cameraButton:hover {
-    color: #007bff; /* Blue color on hover */
+    color: #007bff;
+    /* Blue color on hover */
 }
 
 #popup-alert {
     position: fixed;
-    top: 50px;  /* Adjusted top position */
+    top: 50px;
+    /* Adjusted top position */
     left: 50%;
     transform: translateX(-50%);
-    background-color: #fff;  /* Lighter background */
-    color: #333;  /* Dark text for contrast */
+    background-color: #fff;
+    /* Lighter background */
+    color: #333;
+    /* Dark text for contrast */
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Light shadow */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* Light shadow */
     width: 300px;
     text-align: center;
-    display: none; /* Hidden by default */
-    z-index: 1000; /* Ensure it stays on top */
+    display: none;
+    /* Hidden by default */
+    z-index: 1000;
+    /* Ensure it stays on top */
 }
 
 #popup-alert.success {
-    background-color: #d4edda;  /* Light green background for success */
-    color: #155724;  /* Dark green text */
+    background-color: #d4edda;
+    /* Light green background for success */
+    color: #155724;
+    /* Dark green text */
 }
 
 #popup-alert.error {
-    background-color: #f8d7da;  /* Light red background for error */
-    color: #721c24;  /* Dark red text */
+    background-color: #f8d7da;
+    /* Light red background for error */
+    color: #721c24;
+    /* Dark red text */
 }
 
 #popup-alert button {
-    background-color: #007bff;  /* Blue background to match light theme buttons */
+    background-color: #007bff;
+    /* Blue background to match light theme buttons */
     color: #fff;
     border: none;
     padding: 10px 20px;
@@ -211,5 +236,6 @@ button:hover {
 }
 
 #popup-alert button:hover {
-    background-color: #0056b3; /* Darker blue on hover */
+    background-color: #0056b3;
+    /* Darker blue on hover */
 }

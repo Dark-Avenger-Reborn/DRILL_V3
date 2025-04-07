@@ -6,9 +6,15 @@
     <title>Device Dashboard</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     {% if style == True %}
-      <link rel="stylesheet" href="{{ url_for('static', filename='css/light/index.css') }}">
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/light/index.css') }}"
+    />
     {% else %}
-      <link rel="stylesheet" href="{{ url_for('static', filename='css/dark/index.css') }}">
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/dark/index.css') }}"
+    />
     {% endif %}
   </head>
   <body>
@@ -34,9 +40,17 @@
       <div id="panel">
         <div class="payload-container">
           <select id="pem-dropdown">
-            <option value="send-command" os="['linux', 'windows', 'osx']">Send Command</option>
+            <option value="send-command" os="['linux', 'windows', 'osx']">
+              Send Command
+            </option>
             {% for pem_key, pem_info in pem_data.items() %}
-              <option value="{{ pem_info.uid }}" os="{{ pem_info.os }}" path="{{ pem_info.pem_path }}">{{ pem_info.pem_name }}</option>
+            <option
+              value="{{ pem_info.uid }}"
+              os="{{ pem_info.os }}"
+              path="{{ pem_info.pem_path }}"
+            >
+              {{ pem_info.pem_name }}
+            </option>
             {% endfor %}
           </select>
           <input style="display: none" id="pem-input" />
@@ -102,12 +116,34 @@
         <thead>
           <tr>
             <th>Checked</th>
-            <th><input type="text" id="device-id-search" placeholder="Device ID"></th>
-            <th><input type="text" id="location-search" placeholder="Location"></th>
-            <th><input type="text" id="status-search" placeholder="Status"></th>
-            <th><input type="text" id="last-online-search" placeholder="Last Online"></th>
-            <th><input type="text" id="os-search" placeholder="OS"></th>
-            <th><input type="text" id="ip-address-search" placeholder="IP Address"></th>
+            <th>
+              <input
+                type="text"
+                id="device-id-search"
+                placeholder="Device ID"
+              />
+            </th>
+            <th>
+              <input type="text" id="location-search" placeholder="Location" />
+            </th>
+            <th>
+              <input type="text" id="status-search" placeholder="Status" />
+            </th>
+            <th>
+              <input
+                type="text"
+                id="last-online-search"
+                placeholder="Last Online"
+              />
+            </th>
+            <th><input type="text" id="os-search" placeholder="OS" /></th>
+            <th>
+              <input
+                type="text"
+                id="ip-address-search"
+                placeholder="IP Address"
+              />
+            </th>
             <th>Connect</th>
             <th>Screen/Camera Viewer</th>
             <th>Delete</th>
@@ -117,7 +153,7 @@
           <!-- Device rows will be added here -->
         </tbody>
       </table>
-    </div>    
+    </div>
 
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     {% if show_login == True %}
@@ -125,18 +161,17 @@
       var show_logout_button = true;
     </script>
     {% else %}
-      <script>
-        var show_logout_button = false;
-      </script>
-    {% endif %}
-    {% if ip_state == True %}
+    <script>
+      var show_logout_button = false;
+    </script>
+    {% endif %} {% if ip_state == True %}
     <script>
       var private_public = true;
     </script>
     {% else %}
-      <script>
-        var private_public = false;
-      </script>
+    <script>
+      var private_public = false;
+    </script>
     {% endif %}
     <script src="{{ url_for('static', filename='js/index.js') }}"></script>
   </body>

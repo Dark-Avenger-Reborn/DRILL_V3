@@ -2,7 +2,10 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1"
+    />
     <title>Screen</title>
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js"
@@ -11,9 +14,15 @@
     ></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js"></script>
     {% if style == True %}
-      <link rel="stylesheet" href="{{ url_for('static', filename='css/light/screen.css') }}">
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/light/screen.css') }}"
+    />
     {% else %}
-      <link rel="stylesheet" href="{{ url_for('static', filename='css/dark/screen.css') }}">
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/dark/screen.css') }}"
+    />
     {% endif %}
   </head>
   <body>
@@ -34,7 +43,7 @@
       <div id="popup-message"></div>
       <button id="popup-ok-btn">OK</button>
     </div>
-    
+
     <div class="controls">
       <div class="start-stop">
         <button id="start" class="btn">Start</button>
@@ -42,7 +51,9 @@
       </div>
 
       <div class="button-container">
-        <button id="mouseInput" class="btn">Toggel mouse control from drill</button>
+        <button id="mouseInput" class="btn">
+          Toggel mouse control from drill
+        </button>
         <button id="keyboardInput" class="btn">Get Keyboard Input</button>
         <!-- <button id="lockKeyboard" class="btn">Lock Keyboard</button>
         <button id="lockMouse" class="btn">Lock Mouse</button> -->
@@ -51,7 +62,6 @@
       <select id="screenDropdown">
         <!-- Options will be dynamically populated -->
       </select>
-      
 
       <div class="slider-container">
         <div class="slider-wrapper">
@@ -65,17 +75,22 @@
     </div>
 
     <div class="capture-container">
-      <img id="capturedImage" alt="Press Start" draggable="false" class="screenshot" />
+      <img
+        id="capturedImage"
+        alt="Press Start"
+        draggable="false"
+        class="screenshot"
+      />
     </div>
 
     {% if show_login == True %}
-      <script>
-        var show_logout_button = true;
-      </script>
+    <script>
+      var show_logout_button = true;
+    </script>
     {% else %}
-      <script>
-        var show_logout_button = false;
-      </script>
+    <script>
+      var show_logout_button = false;
+    </script>
     {% endif %}
     <script src="{{ url_for('static', filename='js/screen.js') }}"></script>
   </body>

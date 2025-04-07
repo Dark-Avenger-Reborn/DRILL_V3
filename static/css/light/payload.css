@@ -2,8 +2,10 @@ body {
     font-family: "Arial", sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4; /* Lighter background */
-    color: #333; /* Dark text for readability */
+    background-color: #f4f4f4;
+    /* Lighter background */
+    color: #333;
+    /* Dark text for readability */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -12,9 +14,11 @@ body {
 
 header {
     width: 100%;
-    background-color: #fff; /* Lighter background for header */
+    background-color: #fff;
+    /* Lighter background for header */
     padding: 20px 0;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Light shadow */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Light shadow */
 }
 
 nav {
@@ -34,7 +38,8 @@ nav li {
 }
 
 nav a {
-    color: #333; /* Dark text for links */
+    color: #333;
+    /* Dark text for links */
     text-decoration: none;
     padding: 10px 15px;
     border-radius: 5px;
@@ -42,11 +47,13 @@ nav a {
 }
 
 nav a:hover {
-    background-color: #ddd; /* Light hover background */
+    background-color: #ddd;
+    /* Light hover background */
 }
 
 .active {
-    background-color: #ccc; /* Slightly darker background for active link */
+    background-color: #ccc;
+    /* Slightly darker background for active link */
 }
 
 h1 {
@@ -54,11 +61,13 @@ h1 {
     padding: 20px;
     width: 100%;
     margin: 0;
-    color: #333; /* Dark text for the heading */
+    color: #333;
+    /* Dark text for the heading */
 }
 
 button {
-    background-color: #007bff; /* Blue button background */
+    background-color: #007bff;
+    /* Blue button background */
     color: #fff;
     border: none;
     padding: 10px;
@@ -70,7 +79,8 @@ button {
 }
 
 button:hover {
-    background-color: #0056b3; /* Darker blue on hover */
+    background-color: #0056b3;
+    /* Darker blue on hover */
 }
 
 #container {
@@ -82,10 +92,12 @@ button:hover {
 
 #panel {
     width: 300px;
-    background-color: #fff; /* Lighter panel background */
+    background-color: #fff;
+    /* Lighter panel background */
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Light shadow */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* Light shadow */
 }
 
 .download-container {
@@ -96,16 +108,20 @@ button:hover {
     width: 100%;
     padding: 10px;
     margin-bottom: 10px;
-    background-color: #fff; /* White background for select */
-    color: #333; /* Dark text */
-    border: 1px solid #ccc; /* Light border */
+    background-color: #fff;
+    /* White background for select */
+    color: #333;
+    /* Dark text */
+    border: 1px solid #ccc;
+    /* Light border */
     border-radius: 5px;
 }
 
 .download-container button {
     width: 100%;
     padding: 10px;
-    background-color: #007bff; /* Blue background */
+    background-color: #007bff;
+    /* Blue background */
     color: #fff;
     border: none;
     border-radius: 5px;
@@ -114,7 +130,8 @@ button:hover {
 }
 
 .download-container button:hover {
-    background-color: #0056b3; /* Darker blue on hover */
+    background-color: #0056b3;
+    /* Darker blue on hover */
 }
 
 #download-table-container {
@@ -123,8 +140,10 @@ button:hover {
     overflow-y: auto;
     margin-top: 20px;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Light shadow */
-    background-color: #fff; /* Light background */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* Light shadow */
+    background-color: #fff;
+    /* Light background */
 }
 
 table {
@@ -139,16 +158,19 @@ th,
 td {
     padding: 12px;
     text-align: left;
-    background-color: #f9f9f9; /* Lighter table rows */
+    background-color: #f9f9f9;
+    /* Lighter table rows */
 }
 
 th {
-    background-color: #007bff; /* Blue header */
+    background-color: #007bff;
+    /* Blue header */
     color: #fff;
 }
 
 tr:nth-child(even) {
-    background-color: #f2f2f2; /* Lighter alternating rows */
+    background-color: #f2f2f2;
+    /* Lighter alternating rows */
 }
 
 img {
@@ -165,32 +187,43 @@ td:nth-child(4) {
 
 #popup-alert {
     position: fixed;
-    top: 50px;  /* Adjusted top position */
+    top: 50px;
+    /* Adjusted top position */
     left: 50%;
     transform: translateX(-50%);
-    background-color: #fff;  /* Lighter background */
-    color: #333;  /* Dark text for contrast */
+    background-color: #fff;
+    /* Lighter background */
+    color: #333;
+    /* Dark text for contrast */
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Light shadow */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* Light shadow */
     width: 300px;
     text-align: center;
-    display: none; /* Hidden by default */
-    z-index: 1000; /* Ensure it stays on top */
+    display: none;
+    /* Hidden by default */
+    z-index: 1000;
+    /* Ensure it stays on top */
 }
 
 #popup-alert.success {
-    background-color: #d4edda;  /* Light green background for success */
-    color: #155724;  /* Dark green text */
+    background-color: #d4edda;
+    /* Light green background for success */
+    color: #155724;
+    /* Dark green text */
 }
 
 #popup-alert.error {
-    background-color: #f8d7da;  /* Light red background for error */
-    color: #721c24;  /* Dark red text */
+    background-color: #f8d7da;
+    /* Light red background for error */
+    color: #721c24;
+    /* Dark red text */
 }
 
 #popup-alert button {
-    background-color: #007bff;  /* Blue background to match light theme buttons */
+    background-color: #007bff;
+    /* Blue background to match light theme buttons */
     color: #fff;
     border: none;
     padding: 10px 20px;
@@ -202,5 +235,6 @@ td:nth-child(4) {
 }
 
 #popup-alert button:hover {
-    background-color: #0056b3; /* Darker blue on hover */
+    background-color: #0056b3;
+    /* Darker blue on hover */
 }

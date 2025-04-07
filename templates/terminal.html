@@ -5,9 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Terminal Dashboard</title>
     {% if style == True %}
-      <link rel="stylesheet" href="{{ url_for('static', filename='css/light/terminal.css') }}">
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/light/terminal.css') }}"
+    />
     {% else %}
-      <link rel="stylesheet" href="{{ url_for('static', filename='css/dark/terminal.css') }}">
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/dark/terminal.css') }}"
+    />
     {% endif %}
   </head>
   <body>
@@ -33,7 +39,9 @@
       <iframe id="terminal"></iframe>
       <div id="button-container">
         <button class="button" onclick="fullscreen()">Fullscreen</button>
-        <button class="button" onclick="ctrl()">Recover Shell Connection</button>
+        <button class="button" onclick="ctrl()">
+          Recover Shell Connection
+        </button>
         <button class="button" onclick="disconnect()">Disconnect</button>
       </div>
     </div>
@@ -42,9 +50,9 @@
       var show_logout_button = true;
     </script>
     {% else %}
-      <script>
-        var show_logout_button = false;
-      </script>
+    <script>
+      var show_logout_button = false;
+    </script>
     {% endif %}
     <script src="{{ url_for('static', filename='js/terminal.js') }}"></script>
   </body>

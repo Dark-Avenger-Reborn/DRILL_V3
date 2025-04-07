@@ -9,7 +9,8 @@ screen_or_camera = true;
 josh_allen = false;
 
 if (!show_logout_button) {
-  document.querySelector('li > a[href="/logout"]').parentElement.style.display = 'none';
+  document.querySelector('li > a[href="/logout"]').parentElement.style.display =
+    "none";
 }
 
 const startButton = document.getElementById("start");
@@ -85,7 +86,9 @@ socket.on("screenshot", function (response) {
       );
 
       // Update the image source with the decompressed data
-      document.getElementById("capturedImage").src = `data:image/jpeg;base64,${base64String}`;
+      document.getElementById(
+        "capturedImage"
+      ).src = `data:image/jpeg;base64,${base64String}`;
     } catch (error) {
       console.error("Failed to decompress the image data:", error);
     }
@@ -105,14 +108,14 @@ let previousScreenCount = null; // Initialize a variable to store the previous s
 
 socket.on("screen_count", function (response) {
   if (response["uid"] == pageSID) {
-    const screenCount = response['screen_count'];
+    const screenCount = response["screen_count"];
 
     // Check if the screen count has changed
     if (screenCount !== previousScreenCount) {
       previousScreenCount = screenCount; // Update the previous screen count
 
       // Clear existing options
-      screenDropdown.innerHTML = '';
+      screenDropdown.innerHTML = "";
 
       // Populate the dropdown with options
       for (let i = 1; i <= screenCount; i++) {
@@ -125,26 +128,30 @@ socket.on("screen_count", function (response) {
   }
 });
 
-
 // Event listener for dropdown change
 screenDropdown.addEventListener("change", (event) => {
   const selectedScreen = event.target.value;
-  socket.emit("change_screen_number", { screenNumber: selectedScreen, uid: pageSID });
+  socket.emit("change_screen_number", {
+    screenNumber: selectedScreen,
+    uid: pageSID,
+  });
 });
 
 // Sending mouse input
-document.getElementById("capturedImage").addEventListener("mousemove", function (e) {
-  if (send_mouse_input && screen_or_camera) {
-    var rect = e.target.getBoundingClientRect();
-    var x = e.clientX - rect.left; // x position within the element.
-    var y = e.clientY - rect.top; // y position within the element.
+document
+  .getElementById("capturedImage")
+  .addEventListener("mousemove", function (e) {
+    if (send_mouse_input && screen_or_camera) {
+      var rect = e.target.getBoundingClientRect();
+      var x = e.clientX - rect.left; // x position within the element.
+      var y = e.clientY - rect.top; // y position within the element.
 
-    var percentX = (x / rect.width); // Percentage of width
-    var percentY = (y / rect.height); // Percentage of height
+      var percentX = x / rect.width; // Percentage of width
+      var percentY = y / rect.height; // Percentage of height
 
-    socket.emit("mouse_input", { uid: pageSID, x: percentX, y: percentY });
-  }
-});
+      socket.emit("mouse_input", { uid: pageSID, x: percentX, y: percentY });
+    }
+  });
 
 /* Mouse click events
 document.getElementById("capturedImage").onclick = function (e) {
@@ -158,7 +165,7 @@ function handleMouseEvent(e) {
     if (event.which == 3) {
       socket.emit("mouse_click_right", { uid: pageSID, going: true });
     } else {
-      socket.emit("mouse_click", { uid: pageSID, going: true});
+      socket.emit("mouse_click", { uid: pageSID, going: true });
     }
   }
 }
@@ -182,36 +189,33 @@ capturedImage.addEventListener("mouseup", handleMouseEvent2);
   }
 };*/
 
-document.querySelectorAll('.screenshot').forEach(function(image) {
-  image.addEventListener('contextmenu', function(e) {
+document.querySelectorAll(".screenshot").forEach(function (image) {
+  image.addEventListener("contextmenu", function (e) {
     e.preventDefault();
   });
 });
 
-document.getElementById("capturedImage").addEventListener("wheel", function (e) {
-  if (send_mouse_input && screen_or_camera) {
-    var scrollDelta = e.deltaY || e.detail || e.wheelDelta; // Get the scroll delta (scroll direction)
+document
+  .getElementById("capturedImage")
+  .addEventListener("wheel", function (e) {
+    if (send_mouse_input && screen_or_camera) {
+      var scrollDelta = e.deltaY || e.detail || e.wheelDelta; // Get the scroll delta (scroll direction)
 
-    // You can emit the scroll data to the server if necessary
-    socket.emit("mouse_scroll", { uid: pageSID, delta: scrollDelta });
+      // You can emit the scroll data to the server if necessary
+      socket.emit("mouse_scroll", { uid: pageSID, delta: scrollDelta });
 
-    // Prevent the default scrolling behavior (if needed)
-  }
-  e.preventDefault();
-});
+      // Prevent the default scrolling behavior (if needed)
+    }
+    e.preventDefault();
+  });
 
-
-document.querySelector('img').addEventListener('dragstart', function(event) {
+document.querySelector("img").addEventListener("dragstart", function (event) {
   event.preventDefault(); // Prevents the default dragging behavior
 });
 
+let keyDownTime = {}; // To store the time when each key is pressed
 
-
-
-
-let keyDownTime = {};  // To store the time when each key is pressed
-
-document.addEventListener('keydown', function(event) {
+document.addEventListener("keydown", function (event) {
   if (send_keyboard_input && screen_or_camera) {
     const currentTime = Date.now();
     const key = event.key;
@@ -221,11 +225,11 @@ document.addEventListener('keydown', function(event) {
       keyDownTime[key] = currentTime;
     }
 
-    console.log('Key Down:', event.key);
+    console.log("Key Down:", event.key);
 
     // Emit key_press only after waiting 200ms (if key is still being held down)
     setTimeout(() => {
-      if (keyDownTime[key] && (Date.now() - keyDownTime[key] >= 200)) {
+      if (keyDownTime[key] && Date.now() - keyDownTime[key] >= 200) {
         socket.emit("key_press", { uid: pageSID, key: event.key, going: true });
       }
     }, 200);
@@ -234,19 +238,19 @@ document.addEventListener('keydown', function(event) {
   }
 });
 
-document.addEventListener('keyup', function(event) {
+document.addEventListener("keyup", function (event) {
   if (send_keyboard_input && screen_or_camera) {
     const key = event.key;
     const keyPressedDuration = Date.now() - keyDownTime[key];
 
-    console.log('Key Up:', event.key);
+    console.log("Key Up:", event.key);
 
     // Emit key_press_short if the key was held for less than 200ms
     if (keyPressedDuration < 200) {
       socket.emit("key_press_short", { uid: pageSID, key: event.key });
     } else {
       // Emit key_press with going: false to indicate key release
-    socket.emit("key_press", { uid: pageSID, key: event.key, going: false });
+      socket.emit("key_press", { uid: pageSID, key: event.key, going: false });
     }
 
     // Reset the keyDownTime for the key after it's released
@@ -256,27 +260,26 @@ document.addEventListener('keyup', function(event) {
   }
 });
 
-
 function showPopupAlert(message, type) {
-  const popup = document.getElementById('popup-alert');
-  const popupMessage = document.getElementById('popup-message');
+  const popup = document.getElementById("popup-alert");
+  const popupMessage = document.getElementById("popup-message");
   popupMessage.textContent = message;
-  
+
   // Add the type class (success or error)
-  popup.classList.remove('success', 'error');
+  popup.classList.remove("success", "error");
   popup.classList.add(type);
 
   // Show the popup
-  popup.style.display = 'block';
+  popup.style.display = "block";
 
   // Hide the popup after 3 seconds or when OK is clicked
   setTimeout(() => {
-    popup.style.display = 'none';
+    popup.style.display = "none";
   }, 3000);
 }
 
 // Example usage of showPopupAlert
-document.getElementById('popup-ok-btn').addEventListener('click', function () {
-  const popup = document.getElementById('popup-alert');
-  popup.style.display = 'none';
+document.getElementById("popup-ok-btn").addEventListener("click", function () {
+  const popup = document.getElementById("popup-alert");
+  popup.style.display = "none";
 });

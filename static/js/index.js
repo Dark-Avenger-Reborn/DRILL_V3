@@ -12,7 +12,8 @@ function deepEqual(obj1, obj2) {
 }
 
 if (!show_logout_button) {
-  document.querySelector('li > a[href="/logout"]').parentElement.style.display = 'none';
+  document.querySelector('li > a[href="/logout"]').parentElement.style.display =
+    "none";
 }
 
 function parseAndFormatTime(dateString) {
@@ -43,10 +44,10 @@ async function updateDevices() {
     const response = await fetch("/devices", { method: "POST" });
     const data2 = await response.json();
     if (response.status != 200) {
-      console.log(data2)
-      showPopupAlert("An error occurred : "+data2.result, 'error')
+      console.log(data2);
+      showPopupAlert("An error occurred : " + data2.result, "error");
     }
-    const data = data2.result
+    const data = data2.result;
     if (!deepEqual(data, old_data)) {
       old_data = data;
 
@@ -91,20 +92,29 @@ async function updateDevices() {
 
         // Add a row to the table
         const row = document.createElement("tr");
-        if (private_public) {ip_state = clientData.private_ip} else {ip_state = clientData.public_ip}
-        image_url = 'https://upload.wikimedia.org/wikipedia/commons/1/1b/Microsoft_Fluent_UI_%E2%80%93_ic_fluent_wifi_off_24_regular.svg'
+        if (private_public) {
+          ip_state = clientData.private_ip;
+        } else {
+          ip_state = clientData.public_ip;
+        }
+        image_url =
+          "https://upload.wikimedia.org/wikipedia/commons/1/1b/Microsoft_Fluent_UI_%E2%80%93_ic_fluent_wifi_off_24_regular.svg";
         if (clientData.status == "Online") {
-          image_url = 'https://upload.wikimedia.org/wikipedia/commons/4/4d/Microsoft_Fluent_UI_%E2%80%93_ic_fluent_wifi_1_24_filled.svg'
+          image_url =
+            "https://upload.wikimedia.org/wikipedia/commons/4/4d/Microsoft_Fluent_UI_%E2%80%93_ic_fluent_wifi_1_24_filled.svg";
         }
-        time = "Now"
+        time = "Now";
         if (clientData.last_online != "now") {
-          time = parseAndFormatTime(clientData.last_online)
+          time = parseAndFormatTime(clientData.last_online);
         }
-        row.innerHTML = `
+        row.innerHTML =
+          `
                   <td><input type="checkbox" class="row-select" data-row-id="${clientId}"></td>
                   <td>${clientData.username}</td>
                   <td>${clientData.geolocation.address}</td>
-                  <td>${clientData.status}&nbsp; <img src='`+image_url+`' alt='Online/Offline Logo'</td>
+                  <td>${clientData.status}&nbsp; <img src='` +
+          image_url +
+          `' alt='Online/Offline Logo'</td>
                   <td>${time}</td>
                   <td><img src="${osLogo}" type="os" alt="${osType}">${osType}</td>
                   <td>${ip_state}</td>
@@ -164,9 +174,9 @@ function send_pem() {
     .then(async (response) => {
       const data = await response.json();
       if (response.status != 200) {
-        showPopupAlert("An error occurred : "+data.result, 'error')
+        showPopupAlert("An error occurred : " + data.result, "error");
       } else {
-        showPopupAlert(data.result, "success")
+        showPopupAlert(data.result, "success");
       }
       updateDevices();
     })
@@ -194,14 +204,14 @@ document.addEventListener("click", (event) => {
       .then(async (response) => {
         const data = await response.json();
         if (response.status != 200) {
-          showPopupAlert("An error occurred : "+data.result, 'error')
+          showPopupAlert("An error occurred : " + data.result, "error");
         } else {
-          showPopupAlert(data.result, "success")
+          showPopupAlert(data.result, "success");
         }
       })
       .catch((error) => {
         console.error("Error sending delete request:", error);
-        showPopupAlert("An error occurred : "+error, 'error')
+        showPopupAlert("An error occurred : " + error, "error");
       });
   } else if (event.target.id === "screen") {
     const rowId = event.target.dataset.rowId;
@@ -281,10 +291,12 @@ const pem_osx = document.getElementById("pem-osx");
 function updateOSIcons() {
   // Get the selected payload option
   const selected_option = pem_dropdown.selectedOptions[0];
-  
+
   // Get the OS info from the 'os' attribute of the selected option
   // Parse the string into an array using JSON.parse()
-  const supported_os = JSON.parse(selected_option.getAttribute("os").replace(/'/g, '"'));
+  const supported_os = JSON.parse(
+    selected_option.getAttribute("os").replace(/'/g, '"')
+  );
 
   // Initially hide all OS images
   pem_windows.style.display = "none";
@@ -315,41 +327,50 @@ updateOSIcons();
 // Add event listener to OS dropdown
 pem_dropdown.addEventListener("change", updateOSIcons);
 
-
 function showPopupAlert(message, type) {
-  const popup = document.getElementById('popup-alert');
-  const popupMessage = document.getElementById('popup-message');
+  const popup = document.getElementById("popup-alert");
+  const popupMessage = document.getElementById("popup-message");
   popupMessage.textContent = message;
-  
+
   // Add the type class (success or error)
-  popup.classList.remove('success', 'error');
+  popup.classList.remove("success", "error");
   popup.classList.add(type);
 
   // Show the popup
-  popup.style.display = 'block';
+  popup.style.display = "block";
 
   // Hide the popup after 3 seconds or when OK is clicked
   setTimeout(() => {
-    popup.style.display = 'none';
+    popup.style.display = "none";
   }, 3000);
 }
 
 // Example usage of showPopupAlert
-document.getElementById('popup-ok-btn').addEventListener('click', function () {
-  const popup = document.getElementById('popup-alert');
-  popup.style.display = 'none';
+document.getElementById("popup-ok-btn").addEventListener("click", function () {
+  const popup = document.getElementById("popup-alert");
+  popup.style.display = "none";
 });
 
 // Function to filter rows based on search input
 function filterRows() {
-  const deviceIdFilter = document.getElementById('device-id-search').value.toLowerCase();
-  const locationFilter = document.getElementById('location-search').value.toLowerCase();
-  const statusFilter = document.getElementById('status-search').value.toLowerCase();
-  const lastOnlineFilter = document.getElementById('last-online-search').value.toLowerCase();
-  const osFilter = document.getElementById('os-search').value.toLowerCase();
-  const ipAddressFilter = document.getElementById('ip-address-search').value.toLowerCase();
+  const deviceIdFilter = document
+    .getElementById("device-id-search")
+    .value.toLowerCase();
+  const locationFilter = document
+    .getElementById("location-search")
+    .value.toLowerCase();
+  const statusFilter = document
+    .getElementById("status-search")
+    .value.toLowerCase();
+  const lastOnlineFilter = document
+    .getElementById("last-online-search")
+    .value.toLowerCase();
+  const osFilter = document.getElementById("os-search").value.toLowerCase();
+  const ipAddressFilter = document
+    .getElementById("ip-address-search")
+    .value.toLowerCase();
 
-  const tableRows = document.querySelectorAll('#device-table tr');
+  const tableRows = document.querySelectorAll("#device-table tr");
   tableRows.forEach((row) => {
     const deviceId = row.cells[1].textContent.toLowerCase();
     const location = row.cells[2].textContent.toLowerCase();
@@ -367,17 +388,25 @@ function filterRows() {
       os.includes(osFilter) &&
       ipAddress.includes(ipAddressFilter)
     ) {
-      row.style.display = ''; // Show the row
+      row.style.display = ""; // Show the row
     } else {
-      row.style.display = 'none'; // Hide the row
+      row.style.display = "none"; // Hide the row
     }
   });
 }
 
 // Add event listeners to the search input fields
-document.getElementById('device-id-search').addEventListener('input', filterRows);
-document.getElementById('location-search').addEventListener('input', filterRows);
-document.getElementById('status-search').addEventListener('input', filterRows);
-document.getElementById('last-online-search').addEventListener('input', filterRows);
-document.getElementById('os-search').addEventListener('input', filterRows);
-document.getElementById('ip-address-search').addEventListener('input', filterRows);
+document
+  .getElementById("device-id-search")
+  .addEventListener("input", filterRows);
+document
+  .getElementById("location-search")
+  .addEventListener("input", filterRows);
+document.getElementById("status-search").addEventListener("input", filterRows);
+document
+  .getElementById("last-online-search")
+  .addEventListener("input", filterRows);
+document.getElementById("os-search").addEventListener("input", filterRows);
+document
+  .getElementById("ip-address-search")
+  .addEventListener("input", filterRows);
