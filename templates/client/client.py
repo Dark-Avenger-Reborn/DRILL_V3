@@ -11,10 +11,10 @@ def get_public_key(url):
     context = ssl._create_unverified_context()
     # Use the context when opening the URL
     with urlopen(url, context=context) as response:
-        code = response.read().decode("utf-8")
+        code = response.read()  # Keep it as bytes, don't decode
     
     # Load the public key into a usable format
-    return serialization.load_pem_public_key(code)
+    return serialization.load_pem_public_key(code)  # Pass the bytes directly
 
 # check to see if the scirpt is already Rolling
 def create_moduel(url):
