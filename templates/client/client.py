@@ -9,12 +9,23 @@ from cryptography.hazmat.primitives import serialization
 
 def get_public_key(url):
     context = ssl._create_unverified_context()
-    # Use the context when opening the URL
     with urlopen(url, context=context) as response:
-        code = response.read()  # Keep it as bytes, don't decode
+        key_bytes = response.read()  # Read the data as raw bytes
     
-    # Load the public key into a usable format
-    return serialization.load_pem_public_key(code)  # Pass the bytes directly
+    # Decode the byte data to a string and clean it up
+    key_str = key_bytes.decode('utf-8').strip()  # Decode to string and strip any excess whitespace or newlines
+
+    # Replace literal '\n' with actual line breaks
+    key_str = key_str.replace(r'\n', '\n')  # Ensure that literal '\n' is converted to actual newline characters
+
+    # Optionally, print the cleaned-up key to verify its format
+    print(key_str[:100])  # Print the first 100 characters to check
+
+    # Convert the cleaned-up string back to bytes
+    clean_key_bytes = key_str.encode('utf-8')  # Re-encode the cleaned string to bytes
+
+    # Pass the properly cleaned byte data to the cryptography library
+    return serialization.load_pem_public_key(clean_key_bytes)
 
 # check to see if the scirpt is already Rolling
 def create_moduel(url):
