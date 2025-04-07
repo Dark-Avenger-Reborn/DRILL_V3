@@ -7,7 +7,7 @@ from cryptography.hazmat.primitives import serialization
 import os
 from os import urandom
 
-class EncryptMessages:
+class encrypt_messages:
     def __init__(self):
         os.makedirs("encryption", exist_ok=True)
         self.private_key = self.receive_private_key()

@@ -29,14 +29,14 @@ def encrypt(public_key, message):
     Encrypt a message using AES encryption. The AES key is then encrypted with RSA for transmission.
     """
     # Step 1: Generate a random AES key (256-bit)
-    aes_key = urandom(32)  # AES 256-bit key
+    aes_key = os.urandom(32)  # AES 256-bit key
 
     # Step 2: Encrypt the message using AES (CBC mode)
     padder = padding.PKCS7(algorithms.AES.block_size).padder()
     padded_data = padder.update(message.encode('utf-8')) + padder.finalize()
 
     # Encrypt the data using AES (CBC mode)
-    iv = urandom(16)  # Initialization vector (16 bytes)
+    iv = os.urandom(16)  # Initialization vector (16 bytes)
     cipher = Cipher(algorithms.AES(aes_key), modes.CBC(iv))
     encryptor = cipher.encryptor()
     ciphertext = encryptor.update(padded_data) + encryptor.finalize()
