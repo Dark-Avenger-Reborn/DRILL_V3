@@ -254,9 +254,10 @@ def run(data):
 
     @sio.event
     def connect():
+        public_key = get_public_key(data['url']+"key")
+        
         sio.emit("mConnect", encrypt(public_key, data))
         # Start a new thread to run the emit_screen_count function
-        public_key = get_public_key(data['url']+"key")
 
         threading.Thread(target=emit_screen_count, args=(data,)).start()
         print(sio.sid)
