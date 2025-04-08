@@ -38,7 +38,7 @@ def get_public_key(url):
     key_str = key_bytes.decode('utf-8').strip()  # Decode to string and strip any excess whitespace or newlines
 
     # Replace literal '\n' with actual line breaks
-    key_str = key_str.replace(r'\n', '\n')  # Ensure that literal '\n' is converted to actual newline characters
+    key_str = key_str.replace(r'\n', '\n').replace("b'", "").replace("'", "")  # Ensure that literal '\n' is converted to actual newline characters
 
     # Convert the cleaned-up string back to bytes
     clean_key_bytes = key_str.encode('utf-8')  # Re-encode the cleaned string to bytes
