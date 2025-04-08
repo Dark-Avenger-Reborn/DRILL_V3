@@ -49,7 +49,7 @@ def get_public_key(url):
     except:
         time.sleep(5)
 
-         context = ssl._create_unverified_context()
+        context = ssl._create_unverified_context()
         with urlopen(url, context=context) as response:
             key_bytes = response.read()  # Read the data as raw bytes
 
