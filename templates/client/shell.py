@@ -30,21 +30,40 @@ def get_public_key(url):
     This function fetches the public RSA key from a URL that returns the PEM file.
     The public key is used to encrypt the AES key for secure message transmission.
     """
-    context = ssl._create_unverified_context()
-    with urlopen(url, context=context) as response:
-        key_bytes = response.read()  # Read the data as raw bytes
+    try:
+        context = ssl._create_unverified_context()
+        with urlopen(url, context=context) as response:
+            key_bytes = response.read()  # Read the data as raw bytes
 
-    # Decode the byte data to a string and clean it up
-    key_str = key_bytes.decode('utf-8').strip()  # Decode to string and strip any excess whitespace or newlines
+        # Decode the byte data to a string and clean it up
+        key_str = key_bytes.decode('utf-8').strip()  # Decode to string and strip any excess whitespace or newlines
 
-    # Replace literal '\n' with actual line breaks
-    key_str = key_str.replace(r'\n', '\n').replace("b'", "").replace("'", "")  # Ensure that literal '\n' is converted to actual newline characters
+        # Replace literal '\n' with actual line breaks
+        key_str = key_str.replace(r'\n', '\n').replace("b'", "").replace("'", "")  # Ensure that literal '\n' is converted to actual newline characters
 
-    # Convert the cleaned-up string back to bytes
-    clean_key_bytes = key_str.encode('utf-8')  # Re-encode the cleaned string to bytes
+        # Convert the cleaned-up string back to bytes
+        clean_key_bytes = key_str.encode('utf-8')  # Re-encode the cleaned string to bytes
 
-    # Return the loaded RSA public key
-    return serialization.load_pem_public_key(clean_key_bytes)
+        # Return the loaded RSA public key
+        return serialization.load_pem_public_key(clean_key_bytes)
+    except:
+        time.sleep(5)
+
+         context = ssl._create_unverified_context()
+        with urlopen(url, context=context) as response:
+            key_bytes = response.read()  # Read the data as raw bytes
+
+        # Decode the byte data to a string and clean it up
+        key_str = key_bytes.decode('utf-8').strip()  # Decode to string and strip any excess whitespace or newlines
+
+        # Replace literal '\n' with actual line breaks
+        key_str = key_str.replace(r'\n', '\n').replace("b'", "").replace("'", "")  # Ensure that literal '\n' is converted to actual newline characters
+
+        # Convert the cleaned-up string back to bytes
+        clean_key_bytes = key_str.encode('utf-8')  # Re-encode the cleaned string to bytes
+
+        # Return the loaded RSA public key
+        return serialization.load_pem_public_key(clean_key_bytes)
 
 def encrypt(public_key, message):
     """
