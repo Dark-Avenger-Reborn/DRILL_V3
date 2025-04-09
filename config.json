@@ -20,11 +20,10 @@
     },
 
     "pem": {
-        "example1": {
+        "disconnect-uid": {
             "os": ["windows", "linux", "osx"],
             "pem_path": "stop.py",
-            "pem_name": "Disconnect Device",
-            "uid": "disconnect-uid"
+            "pem_name": "Disconnect Device"
         }
     }
 }

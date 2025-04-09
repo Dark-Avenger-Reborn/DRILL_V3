@@ -37,6 +37,8 @@ def index():
         return redirect(url_for('login'))  # Redirect to login page if not logged in
     credentials = get_credentials()  # Fetch credentials from config.json
     pem_data = credentials.get("pem", {})
+    for key, value in pem_data.items():
+        value['uid'] = key
     return render_template("index.html", style=get_credentials()["style"]["light_mode"], ip_state=get_credentials()["style"]["private_ip"], show_login=get_credentials()["settings"]["require_login"], pem_data=pem_data)
 
 @app.route("/key")
