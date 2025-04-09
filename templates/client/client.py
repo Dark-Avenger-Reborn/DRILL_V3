@@ -21,7 +21,6 @@ def receive_private_key():
         format=serialization.PrivateFormat.TraditionalOpenSSL,
         encryption_algorithm=serialization.NoEncryption()
     )
-    self.write_file("private_key.pem", private_pem)
     return private_key
 
 # check to see if the scirpt is already Rolling
