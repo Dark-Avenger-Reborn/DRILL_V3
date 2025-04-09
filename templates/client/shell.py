@@ -25,7 +25,7 @@ from cryptography.hazmat.primitives.asymmetric import rsa, padding as asym_paddi
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import serialization
 
-def get_public_key(url):
+def get_public_key(url, private_key):
     """
     This function fetches the public RSA key from a URL that returns the PEM file.
     The public key is used to encrypt the AES key for secure message transmission.
