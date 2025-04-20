@@ -80,19 +80,7 @@ install_package() {
 # Check and Install Docker
 if ! command_exists docker; then
     echo "Docker not found. Installing Docker..."
-    case $_OSTYPE in
-        DPKG)
-            sudo apt-get update
-            sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common
-            curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-            sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-            sudo apt-get update
-            sudo apt-get install -y docker-ce
-            ;;
-        *)
-            install_package docker
-            ;;
-    esac
+    install_package docker.io
     sudo usermod -aG docker $USER
     newgrp docker
     sudo systemctl start docker
