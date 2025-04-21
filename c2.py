@@ -459,7 +459,7 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
     def key_press_short(self, sid, data):
         self.sio.emit("key_press_short", data)
 
-    def recover(self, device_id)
+    def recover(self, device_id):
         if device_id in self.devices:
             self.sio.emit("recover", {'uid': device_id})
         else:
