@@ -1,12 +1,10 @@
-/* General body styles */
+/* =================== Base Styles =================== */
 body {
     font-family: "Arial", sans-serif;
     margin: 0;
     padding: 0;
     background-color: #f4f4f4;
-    /* Light background */
     color: #333;
-    /* Dark text for contrast */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -14,11 +12,10 @@ body {
     box-sizing: border-box;
 }
 
-/* Header styles */
+/* =================== Header & Navigation =================== */
 header {
     width: 100%;
     background-color: #fff;
-    /* Lighter background for header */
     padding: 20px 0;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -29,10 +26,10 @@ nav {
 }
 
 nav ul {
-    list-style-type: none;
+    display: flex;
+    list-style: none;
     margin: 0;
     padding: 0;
-    display: flex;
 }
 
 nav li {
@@ -41,7 +38,6 @@ nav li {
 
 nav a {
     color: #333;
-    /* Dark text */
     text-decoration: none;
     padding: 10px 15px;
     border-radius: 5px;
@@ -50,36 +46,24 @@ nav a {
 
 nav a:hover {
     background-color: #ddd;
-    /* Light hover background */
 }
 
-.active {
+nav .active {
     background-color: #ccc;
-    /* Slightly darker active item */
 }
 
-/* Heading styles */
+/* =================== Typography =================== */
 h1 {
     text-align: center;
+    margin: 0;
     padding: 20px;
     width: 100%;
-    margin: 0;
     color: #333;
 }
 
-/* Controls Section */
-.controls {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 20px;
-    width: 100%;
-}
-
-/* Button styles */
+/* =================== Buttons =================== */
 button {
     background-color: #007bff;
-    /* Blue background */
     color: #fff;
     border: none;
     padding: 10px 20px;
@@ -92,11 +76,35 @@ button {
 
 button:hover {
     background-color: #0056b3;
-    /* Darker blue on hover */
 }
 
-/* Captured image container */
+button:disabled {
+    background-color: #ccc;
+    color: #666;
+    cursor: not-allowed;
+    border: 1px solid #bbb;
+}
+
+/* =================== Main Layout =================== */
+.main-layout {
+    display: flex;
+    width: 90%;
+    max-width: 1200px;
+    margin-top: 20px;
+    gap: 20px;
+}
+
+/* Top Control Buttons */
+.top-controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+/* Left: Capture Section */
 .capture-container {
+    flex: 2;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -110,11 +118,27 @@ button:hover {
     margin: 20px 0;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    /* Light shadow */
     user-select: none;
 }
 
-/* Button container styles */
+/* Right: Control Panel */
+.controls-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+}
+
+.controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    width: 100%;
+}
+
+/* Button Container */
 .button-container {
     display: flex;
     justify-content: center;
@@ -122,7 +146,7 @@ button:hover {
     gap: 10px;
 }
 
-/* Slider wrapper styles with surrounding box */
+/* =================== Slider =================== */
 .slider-container {
     display: flex;
     justify-content: center;
@@ -131,7 +155,6 @@ button:hover {
 
 .slider-wrapper {
     border: 2px solid #ccc;
-    /* Light border */
     padding: 5px;
     border-radius: 20px;
 }
@@ -145,8 +168,6 @@ button:hover {
     height: 40px;
     border-radius: 20px;
     background-color: #ddd;
-    /* Light background */
-    margin: 0;
 }
 
 .slider-button {
@@ -154,13 +175,12 @@ button:hover {
     height: 100%;
     border: none;
     border-radius: 20px;
+    background-color: transparent;
+    color: #333;
+    font-weight: bold;
     cursor: pointer;
     position: relative;
     z-index: 2;
-    font-weight: bold;
-    background-color: transparent;
-    color: #333;
-    /* Dark text */
 }
 
 .slider-highlight {
@@ -168,63 +188,67 @@ button:hover {
     top: 0;
     left: 0;
     height: 100%;
+    width: 50%;
     border-radius: 20px;
     background-color: rgba(200, 200, 200, 0.8);
-    width: 50%;
 }
 
-/* Specific buttons */
 #screenButton,
 #cameraButton {
     color: #333;
-    /* Dark text */
 }
 
 #screenButton:hover,
 #cameraButton:hover {
-    color: #007bff;
-    /* Blue color on hover */
+    color: #0056b3;
 }
 
+/* =================== Dropdown =================== */
+#screenDropdown {
+    padding: 10px;
+    background-color: #fff;
+    color: #333;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+#screenDropdown:focus {
+    outline: none;
+    border-color: #888;
+    background-color: #f9f9f9;
+}
+
+/* =================== Popup Alert =================== */
 #popup-alert {
     position: fixed;
     top: 50px;
-    /* Adjusted top position */
     left: 50%;
     transform: translateX(-50%);
     background-color: #fff;
-    /* Lighter background */
     color: #333;
-    /* Dark text for contrast */
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    /* Light shadow */
     width: 300px;
     text-align: center;
     display: none;
-    /* Hidden by default */
     z-index: 1000;
-    /* Ensure it stays on top */
 }
 
 #popup-alert.success {
     background-color: #d4edda;
-    /* Light green background for success */
     color: #155724;
-    /* Dark green text */
 }
 
 #popup-alert.error {
     background-color: #f8d7da;
-    /* Light red background for error */
     color: #721c24;
-    /* Dark red text */
 }
 
 #popup-alert button {
     background-color: #007bff;
-    /* Blue background to match light theme buttons */
     color: #fff;
     border: none;
     padding: 10px 20px;
@@ -237,5 +261,4 @@ button:hover {
 
 #popup-alert button:hover {
     background-color: #0056b3;
-    /* Darker blue on hover */
 }

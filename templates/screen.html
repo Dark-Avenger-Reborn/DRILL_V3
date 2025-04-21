@@ -7,25 +7,20 @@
       content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1"
     />
     <title>Screen</title>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js"
-      integrity="sha512-aMGMvNYu8Ue4G+fHa359jcPb1u+ytAF+P2SCb+PxrjCdO3n3ZTxJ30zuH39rimUggmTwmh2u7wvQsDTHESnmfQ=="
-      crossorigin="anonymous"
-    ></script>
+
+    <!-- External Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js" integrity="sha512-aMGMvNYu8Ue4G+fHa359jcPb1u+ytAF+P2SCb+PxrjCdO3n3ZTxJ30zuH39rimUggmTwmh2u7wvQsDTHESnmfQ==" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js"></script>
+
+    <!-- CSS Styles -->
     {% if style == True %}
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='css/light/screen.css') }}"
-    />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/light/screen.css') }}" />
     {% else %}
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='css/dark/screen.css') }}"
-    />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dark/screen.css') }}" />
     {% endif %}
   </head>
   <body>
+    <!-- Header Nav -->
     <header>
       <nav>
         <ul>
@@ -39,59 +34,61 @@
 
     <h1>Captured Image</h1>
 
+    <!-- Popup alert -->
     <div id="popup-alert">
       <div id="popup-message"></div>
       <button id="popup-ok-btn">OK</button>
     </div>
 
-    <div class="controls">
-      <div class="start-stop">
-        <button id="start" class="btn">Start</button>
-        <button id="stop" class="btn">Stop</button>
+    <!-- Start/Stop buttons -->
+    <div class="top-controls">
+      <button id="start" class="btn">Start</button>
+      <button id="stop" class="btn">Stop</button>
+    </div>
+
+    <!-- Screen + Controls side-by-side -->
+    <div class="main-layout">
+      <!-- Screenshot / Capture -->
+      <div class="capture-container">
+        <img
+          id="capturedImage"
+          alt="Press Start"
+          draggable="false"
+          class="screenshot"
+        />
       </div>
 
-      <div class="button-container">
-        <button id="mouseInput" class="btn">
-          Toggel mouse control from drill
-        </button>
-        <button id="keyboardInput" class="btn">Get Keyboard Input</button>
-        <!-- <button id="lockKeyboard" class="btn">Lock Keyboard</button>
-        <button id="lockMouse" class="btn">Lock Mouse</button> -->
-      </div>
+      <!-- Control Panel -->
+      <div class="controls-panel">
+        <div class="button-container">
+          <button id="mouseInput" class="btn">Enable Mouse Input</button>
+          <button id="keyboardInput" class="btn">Enable Keyboard Input</button>
+        </div>
 
-      <select id="screenDropdown">
-        <!-- Options will be dynamically populated -->
-      </select>
+        <select id="screenDropdown"></select>
+        <small id="screenWarning" style="color: #f66; display: none;">
+          Input only works on Screen 1.
+        </small>
 
-      <div class="slider-container">
-        <div class="slider-wrapper">
-          <div class="slider">
-            <div class="slider-highlight" id="sliderHighlight"></div>
-            <button class="slider-button" id="screenButton">Screen</button>
-            <button class="slider-button" id="cameraButton">Camera</button>
+        <div class="slider-container">
+          <div class="slider-wrapper">
+            <div class="slider">
+              <div class="slider-highlight" id="sliderHighlight"></div>
+              <button class="slider-button" id="screenButton">Screen</button>
+              <button class="slider-button" id="cameraButton">Camera</button>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="capture-container">
-      <img
-        id="capturedImage"
-        alt="Press Start"
-        draggable="false"
-        class="screenshot"
-      />
-    </div>
-
     {% if show_login == True %}
-    <script>
-      var show_logout_button = true;
-    </script>
+    <script> var show_logout_button = true; </script>
     {% else %}
-    <script>
-      var show_logout_button = false;
-    </script>
+    <script> var show_logout_button = false; </script>
     {% endif %}
+
+    <!-- JS -->
     <script src="{{ url_for('static', filename='js/screen.js') }}"></script>
   </body>
 </html>

@@ -1,12 +1,10 @@
-/* General body styles */
+/* =================== Base Styles =================== */
 body {
     font-family: "Arial", sans-serif;
     margin: 0;
     padding: 0;
     background-color: #1e1e1e;
-    /* Dark background */
     color: #e0e0e0;
-    /* Light text for contrast */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -14,7 +12,7 @@ body {
     box-sizing: border-box;
 }
 
-/* Header styles */
+/* =================== Header & Navigation =================== */
 header {
     width: 100%;
     background-color: #333;
@@ -28,10 +26,10 @@ nav {
 }
 
 nav ul {
-    list-style-type: none;
+    display: flex;
+    list-style: none;
     margin: 0;
     padding: 0;
-    display: flex;
 }
 
 nav li {
@@ -50,29 +48,20 @@ nav a:hover {
     background-color: #444;
 }
 
-.active {
+nav .active {
     background-color: #555;
 }
 
-/* Heading styles */
+/* =================== Typography =================== */
 h1 {
     text-align: center;
+    margin: 0;
     padding: 20px;
     width: 100%;
-    margin: 0;
     color: #e0e0e0;
 }
 
-/* Controls Section */
-.controls {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 20px;
-    width: 100%;
-}
-
-/* Button styles */
+/* =================== Buttons =================== */
 button {
     background-color: #444;
     color: #fff;
@@ -89,8 +78,33 @@ button:hover {
     background-color: #555;
 }
 
-/* Captured image container */
+button:disabled {
+    background-color: #333;
+    color: #777;
+    cursor: not-allowed;
+    border: 1px solid #555;
+}
+
+/* =================== Main Layout =================== */
+.main-layout {
+    display: flex;
+    width: 90%;
+    max-width: 1200px;
+    margin-top: 20px;
+    gap: 20px;
+}
+
+/* Top Control Buttons */
+.top-controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+/* Left: Capture Section */
 .capture-container {
+    flex: 2;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -107,7 +121,24 @@ button:hover {
     user-select: none;
 }
 
-/* Button container styles */
+/* Right: Control Panel */
+.controls-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+}
+
+.controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    width: 100%;
+}
+
+/* Button Container */
 .button-container {
     display: flex;
     justify-content: center;
@@ -115,7 +146,7 @@ button:hover {
     gap: 10px;
 }
 
-/* Slider wrapper styles with surrounding box */
+/* =================== Slider =================== */
 .slider-container {
     display: flex;
     justify-content: center;
@@ -137,7 +168,6 @@ button:hover {
     height: 40px;
     border-radius: 20px;
     background-color: #555;
-    margin: 0;
 }
 
 .slider-button {
@@ -145,12 +175,12 @@ button:hover {
     height: 100%;
     border: none;
     border-radius: 20px;
+    background-color: transparent;
+    color: #ccc;
+    font-weight: bold;
     cursor: pointer;
     position: relative;
     z-index: 2;
-    font-weight: bold;
-    background-color: transparent;
-    color: #ccc;
 }
 
 .slider-highlight {
@@ -158,9 +188,9 @@ button:hover {
     top: 0;
     left: 0;
     height: 100%;
+    width: 50%;
     border-radius: 20px;
     background-color: rgba(70, 70, 70, 0.8);
-    width: 50%;
 }
 
 #screenButton,
@@ -173,11 +203,27 @@ button:hover {
     color: #fff;
 }
 
+/* =================== Dropdown =================== */
+#screenDropdown {
+    padding: 10px;
+    background-color: #2a2a2a;
+    color: #e0e0e0;
+    border: 1px solid #444;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: background-color 0.3s, border-color 0.3s;
+}
 
+#screenDropdown:focus {
+    outline: none;
+    border-color: #666;
+    background-color: #333;
+}
+
+/* =================== Popup Alert =================== */
 #popup-alert {
     position: fixed;
     top: 50px;
-    /* Adjusted top position */
     left: 50%;
     transform: translateX(-50%);
     background-color: #333;
@@ -188,9 +234,7 @@ button:hover {
     width: 300px;
     text-align: center;
     display: none;
-    /* Hidden by default */
     z-index: 1000;
-    /* Ensure it stays on top */
 }
 
 #popup-alert.success {
