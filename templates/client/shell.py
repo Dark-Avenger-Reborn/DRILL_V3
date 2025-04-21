@@ -593,7 +593,7 @@ def run(data, private_key):
     @sio.on("recover")            
     def recover(data_new):
         if data['uid'] == data_new['uid']:
-            sio.disconect()
+            sio.disconnect()
             try:
                 # Full path to the current executable
                 executable = sys.executable
