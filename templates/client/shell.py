@@ -593,6 +593,7 @@ def run(data, private_key):
     @sio.on("recover")            
     def recover(data_new):
         if data['uid'] == data_new['uid']:
+            sio.disconect()
             try:
                 # Full path to the current executable
                 executable = sys.executable
@@ -607,6 +608,8 @@ def run(data, private_key):
                 os._exit(0)
             except Exception as e:
                 print(f"Failed to restart: {e}")
+            finally:
+                kill()
 
     sio.connect(data["url"])      
     sio.wait()
