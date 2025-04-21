@@ -121,6 +121,7 @@ async function updateDevices() {
                   <td><img src='https://upload.wikimedia.org/wikipedia/commons/6/6f/Octicons-terminal.svg' id='connect' alt="Connect icon" class='terminal-icon' data-row-id="${clientId}"></td>
                   <td><img src='https://upload.wikimedia.org/wikipedia/commons/0/0c/NotoSans_-_Screen_-_1F5B5.svg' class='connect-icon' alt='Connect Screen' id='screen' data-row-id="${clientId}"></td>
                   <td><img src='https://upload.wikimedia.org/wikipedia/commons/9/9c/Trash-can_-_Delapouite_-_game-icons.svg' class='trashcan-icon' alt='Delete icon' id='delete' data-row-id="${clientId}"></td>
+                  <td><img src='https://upload.wikimedia.org/wikipedia/commons/b/ba/First-aid-kit_-_Delapouite_-_game-icons.svg' class='recover-icon' alt='Recover icon' id='recover' data-row-id="${clientId}"></td>
               `;
         tableBody.appendChild(row);
       });
@@ -217,6 +218,29 @@ document.addEventListener("click", (event) => {
     const rowId = event.target.dataset.rowId;
     console.log(`Connect clicked for device ID: ${rowId}`);
     window.location.href = "/screen/" + rowId;
+  }
+  else if (event.target.id === "recover") {
+    const rowId = event.target.dataset.rowId;
+    console.log(`Sending recover for device ID: ${rowId}`);
+    fetch("/recover", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ device_id: rowId }),
+    })
+      .then(async (response) => {
+        const data = await response.json();
+        if (response.status != 200) {
+          showPopupAlert("An error occurred : " + data.result, "error");
+        } else {
+          showPopupAlert(data.result, "success");
+        }
+      })
+      .catch((error) => {
+        console.error("Error sending recover request:", error);
+        showPopupAlert("An error occurred : " + error, "error");
+      });
   }
 });
 

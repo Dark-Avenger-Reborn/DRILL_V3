@@ -590,5 +590,23 @@ def run(data, private_key):
                 else:
                     sio.emit('screen_count', encrypt(public_key, json.dumps({ 'uid': data['uid'], 'screen_count': len(sct.monitors)-1 })))
 
+    @sio.on("recover")            
+    def recover(data_new):
+        if data['uid'] == data_new['uid']:
+            try:
+                # Full path to the current executable
+                executable = sys.executable
+
+                # Start the new process (without waiting for it to finish)
+                proc = subprocess.Popen([executable] + sys.argv[1:])
+
+                # Wait a little to ensure the new process has time to start
+                time.sleep(0.5)
+
+                # Now kill the current process
+                os._exit(0)
+            except Exception as e:
+                print(f"Failed to restart: {e}")
+
     sio.connect(data["url"])      
     sio.wait()

