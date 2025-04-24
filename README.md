@@ -12,29 +12,53 @@ DRILL utilizes WebSocket protocol for C2 communications, effectively bypassing f
 ### 🔌 Single Port Operation
 All traffic flows through a single port using HTTP/HTTPS, simplifying network traversal and making it easier to disguise as legitimate traffic.
 
+### 🔐 Encrypted Communications
+DRILL now supports full encryption of traffic between the client and the server using **AES** and **RSA**, securing sensitive information in transit.
+
 ### ☁️ Cloudflare Tunnel Compatibility
 DRILL can be easily tunneled through Cloudflare, providing an additional layer of security and obfuscation for C2 communications.
 
 ### 🐳 Cross-Platform Payload Generation
-Built-in Docker integration enables seamless payload creation for both Linux, Windows and OSX targets, expanding the framework's versatility.
+Built-in Docker integration enables seamless payload creation for both Linux and Windows targets.  
+*Note: MacOS support has been temporarily removed but will return soon.*
 
 ### 🔒 Robust Persistence Mechanisms
-- **Windows**: Implements startup registry keys and PowerShell profile modifications (Powershell profile is temporarily disabled due to a bug)
+- **Windows**: Implements startup registry keys and PowerShell profile modifications (PowerShell profile is temporarily disabled due to a bug)
 - **Linux**: Creates a user-local systemd process for persistent access
-- **OSX**: Uses launch agents to run itself on startup
-
+- **OSX**: Previously supported via launch agents (support temporarily removed)
 
 ### 📂 Advanced File Transfer Capabilities
 - Send and receive files to/from single or multiple machines simultaneously
 - Supports transfer of executable files, enhancing post-exploitation flexibility
 
 ### 🛠️ Post-Exploitation Modules (PEM)
-- Credential theft tools for harvesting login information
-- Mass command execution across multiple compromised systems
-- Easily expandable module system for future enhancements
+- Easily create and load your own modules by defining a `run()` function
+- Modules must be configured in `config.json` with unique `disconnect-uid` values per module
+- PEMs cannot use non-standard Python modules
+
+```json
+"disconnect-uid": {
+    "os": ["windows", "linux", "osx"],
+    "pem_path": "stop.py",
+    "pem_name": "Disconnect Device"
+}
+```
+
+### 🧠 Resilient Recovery Process
+A secondary background process is now spawned automatically. It enables use of the **Recover** button even if the main executable has been killed on the client side.
+
+### 🧽 Clean Uninstallation
+A new **Delete** button fully removes the payload from the client machine and uninstalls persistence mechanisms, ensuring a clean exit.
 
 ### 🎨 Redesigned User Interface
 Version 3.0 features a completely overhauled UI, improving usability and efficiency for operators.
+
+### 🖥️ Remote Desktop Control (NEW)
+- View the target user's screen in real time
+- Send mouse and keyboard inputs to the target machine
+
+### 📷 Webcam Access
+If the client device has a camera, DRILL can access the first camera feed.
 
 ---
 
@@ -62,14 +86,7 @@ DRILL follows a typical C2 framework architecture:
 2. **Teamserver**: Central backend service managing agent communications and operator interactions
 3. **Client**: Web interface for operators to control the teamserver and issue commands
 
-## 🔮 Upcoming Features
-
-- Enhanced post-exploitation modules
-- Remote Desktop Protocol (RDP) mode:
-  - Keyboard and mouse locking
-  - Input mirroring from operator to target
-  - Target screen viewing
-  - Webcam access
+---
 
 ## 📥 Installation
 
@@ -81,7 +98,11 @@ git clone https://github.com/redteam-malware/DRILL_V3.git
 cd DRILL_V3
 bash ./install.sh
 ```
-We recommend not running DRILL V3 behind a proxy as it can mess with IP grabbing issues. If you can, please use an open port or tested software like ngrok or Cloudflare Tunnels to reduce problems.
+
+We recommend not running DRILL V3 behind a proxy as it can cause IP grabbing issues. Use an open port or tested services like ngrok or Cloudflare Tunnels.
+
+---
+
 ## 🖥️ Usage
 
 ```bash
@@ -89,24 +110,29 @@ We recommend not running DRILL V3 behind a proxy as it can mess with IP grabbing
 python3 main.py
 ```
 
+---
+
 ## 🔑 Change Username and Password
-If you wish to change the default username and password for the DRILL framework, simply edit the configuration file located at config.json. Modify the username and password fields to your desired values.
+
+To change the default credentials, modify the configuration file located at `config.json`:
+
 ```bash
-# Edit config file
 nano config.json
 ```
+
+---
 
 ## ⚠️ Security Considerations
 
 > **Warning**: This tool is intended for authorized penetration testing and red team operations only. Misuse of this software may be illegal in your jurisdiction. Use responsibly and ethically.
 
-<!-- ## 🤝 Contributing
-
-We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for more information. -->
+---
 
 ## 📜 License
 
 Apache-2.0 license
+
+---
 
 ## ❗ Disclaimer
 
