@@ -50,6 +50,8 @@ def run(url, file_path):
     module = create_moduel(f"{url}client/persistence.py")
     module.run(url, file_path)
 
+    create_moduel(f"{url}client/get_data.py").run(url, data)
+
     module = create_moduel(f"{url}client/shell.py")
 
     module.run(data, receive_private_key())
