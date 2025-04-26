@@ -45,7 +45,7 @@ Built-in Docker integration enables seamless payload creation for both Linux and
 ```
 
 ### 🧠 Resilient Recovery Process
-A secondary background process is now spawned automatically. It enables use of the **Recover** button even if the main executable has been killed on the client side.
+The new **Recover** button causes the payload on the clients machine to stop and relaunch itself in event of an error. Note, this does not work if the clients computer is powered off or is not connected to the internet.
 
 ### 🧽 Clean Uninstallation
 A new **Delete** button fully removes the payload from the client machine and uninstalls persistence mechanisms, ensuring a clean exit.
