@@ -465,8 +465,8 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
 
     def recover_html(self, uid):
         if (uid in self.recovering):
-            return "true"
             self.recovering.remove(uid)
+            return "true"
         else :
             return "false"
 
