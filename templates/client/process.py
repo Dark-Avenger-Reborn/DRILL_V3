@@ -32,7 +32,7 @@ def run_executable_on_change():
 
 def monitor_url(url, data, check_interval=10):
     """Monitors a URL for content change."""
-    url = url+"recover/"+data['uid']
+    url = url+"recovery/"+data['uid']
     print(f"[Monitor] Monitoring URL: {url}")
     try:
         last_content = requests.get(url).text
