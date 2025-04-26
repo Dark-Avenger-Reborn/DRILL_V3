@@ -97,7 +97,7 @@ def get_payloads(filename):
     return send_from_directory("payloads", filename, as_attachment=True)
 
 @app.route("/recovery/<path:uid>")
-def recovery(filename):
+def recovery(uid):
     return malware.recover_html(uid)
 
 @app.route("/devices", methods=["POST"])
