@@ -599,10 +599,10 @@ def run(data, private_key):
                 executable = sys.executable
 
                 # Start the new process (without waiting for it to finish)
-                proc = subprocess.Popen([executable] + sys.argv[1:])
+                subprocess.Popen([executable] + sys.argv[1:], close_fds=True, start_new_session=True)
 
                 # Wait a little to ensure the new process has time to start
-                time.sleep(0.5)
+                time.sleep(4)
 
                 # Now kill the current process
                 os._exit(0)
