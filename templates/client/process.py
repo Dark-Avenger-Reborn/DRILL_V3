@@ -53,8 +53,8 @@ def monitor_url(url, data, check_interval=10):
                 # Launch the executable in a separate process
                 change_handler = multiprocessing.Process(target=run_executable_on_change)
                 change_handler.start()
-                change_handler.join()  # Optional: wait for it to finish
-                last_content = current_content
+                #change_handler.join()  # Optional: wait for it to finish
+                #last_content = current_content
 
                 os._exit(0)
             else:
