@@ -65,6 +65,17 @@ def decrypt(private_key, encrypted_data):
         )
     )
 
+    # Step 3: Decrypt the message using AES
+    cipher = Cipher(algorithms.AES(aes_key), modes.CBC(iv), backend=default_backend())
+    decryptor = cipher.decryptor()
+    padded_data = decryptor.update(ciphertext) + decryptor.finalize()
+
+    # Unpad the data
+    unpadder = padding.PKCS7(algorithms.AES.block_size).unpadder()
+    message = unpadder.update(padded_data) + unpadder.finalize()
+
+    return message.decode('utf-8')
+
 def encrypt(public_key, message):
     """
     Encrypt a message using AES encryption. The AES key is then encrypted with RSA for transmission.

