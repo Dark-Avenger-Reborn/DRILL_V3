@@ -97,3 +97,34 @@ class encrypt_messages:
         )
         self.write_file("public_key.pem", public_pem)
         return public_key
+
+def encrypt_message_with_device_key(public_key_pem, message):
+    # Load the public key from PEM format
+    public_key = serialization.load_pem_public_key(public_key_pem.encode('utf-8'))
+
+    # Step 1: Generate a random AES key (256-bit)
+    aes_key = urandom(32)  # AES 256-bit key
+
+    # Step 2: Encrypt the message using AES (CBC mode)
+    padder = padding.PKCS7(algorithms.AES.block_size).padder()
+    padded_data = padder.update(message.encode('utf-8')) + padder.finalize()
+
+    # Encrypt the data using AES (CBC mode)
+    iv = urandom(16)  # Initialization vector (16 bytes)
+    cipher = Cipher(algorithms.AES(aes_key), modes.CBC(iv), backend=default_backend())
+    encryptor = cipher.encryptor()
+    ciphertext = encryptor.update(padded_data) + encryptor.finalize()
+
+    # Step 3: Encrypt the AES key using the RSA public key
+    encrypted_aes_key = public_key.encrypt(
+        aes_key,
+        asym_padding.OAEP(
+            mgf=asym_padding.MGF1(algorithm=hashes.SHA256()),
+            algorithm=hashes.SHA256(),
+            label=None
+        )
+    )
+
+    # Combine the encrypted AES key, IV, and ciphertext into one block to send
+    encrypted_message = encrypted_aes_key + iv + ciphertext
+    return encrypted_message

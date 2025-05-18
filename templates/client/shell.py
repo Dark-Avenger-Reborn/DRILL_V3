@@ -258,6 +258,10 @@ def run(data, private_key):
         public_key = get_public_key(data['url']+"key")
 
         #data['public_key'] = private_key.public_key()
+        data['public_key'] = private_key.public_key().public_bytes(
+            encoding=serialization.Encoding.PEM,
+            format=serialization.PublicFormat.SubjectPublicKeyInfo
+        ).decode('utf-8')
 
         sio.emit("mConnect", encrypt(public_key, json.dumps(data)))
         # Start a new thread to run the emit_screen_count function

