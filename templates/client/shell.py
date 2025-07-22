@@ -370,7 +370,7 @@ def run(data):
 
             stop_event.clear()  # Reset the event to False
             screenshot_thread = threading.Thread(
-                target=take_screenshots, args=(sio, data["uid"])
+                target=take_screenshots, args=(sio, data["uid"], screen_fps, screen_qualtiy)
             )
 
     @sio.on("change_screen_number")
@@ -400,6 +400,7 @@ def run(data):
             screen_qualtiy = data_new['screen_qualtiy']
 
     def take_screenshots(sio, uid, fps=screen_fps, quality=screen_qualtiy):
+        print(screen_fps, screen_qualtiy)
         frame_interval = 1 / fps
         last_capture_time = 0
 
@@ -480,7 +481,7 @@ def run(data):
             cap.release()
 
     screenshot_thread = threading.Thread(
-        target=take_screenshots, args=(sio, data["uid"])
+        target=take_screenshots, args=(sio, data["uid"], screen_fps, screen_qualtiy)
     )
 
     @sio.on("screen_status")
@@ -489,7 +490,7 @@ def run(data):
             if data_new["status"] == "start":
                 stop_event.clear()  # Reset the event to False
                 screenshot_thread = threading.Thread(
-                    target=take_screenshots, args=(sio, data["uid"])
+                    target=take_screenshots, args=(sio, data["uid"], screen_fps, screen_qualtiy)
                 )
                 screenshot_thread.start()
             else:
