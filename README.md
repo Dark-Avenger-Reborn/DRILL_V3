@@ -12,9 +12,6 @@ DRILL utilizes WebSocket protocol for C2 communications, effectively bypassing f
 ### 🔌 Single Port Operation
 All traffic flows through a single port using HTTP/HTTPS, simplifying network traversal and making it easier to disguise as legitimate traffic.
 
-### 🔐 Encrypted Communications
-DRILL now supports full encryption of traffic between the client and the server using **AES** and **RSA**, securing sensitive information in transit.
-
 ### ☁️ Cloudflare Tunnel Compatibility
 DRILL can be easily tunneled through Cloudflare, providing an additional layer of security and obfuscation for C2 communications.
 

