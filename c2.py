@@ -414,7 +414,7 @@ exec(marshal.loads(zlib.decompress(base64.b64decode({repr(base64.b64encode(zlib.
 
     def screenshot_taken(self, sid, data):
         print(sid)
-        data['image'] = data['image'].encode("latin-1")
+        #data['image'] = data['image']
         self.sio.emit("screenshot", data)
 
     def switch_screen(self, sid, data):

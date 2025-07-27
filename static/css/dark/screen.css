@@ -259,3 +259,13 @@ button:disabled {
 #popup-alert button:hover {
     background-color: #555;
 }
+
+button.toggle-enabled {
+  background-color: #28a745 !important;
+  color: #fff;
+}
+
+button.toggle-disabled {
+  background-color: #6c757d !important;
+  color: #ccc;
+}

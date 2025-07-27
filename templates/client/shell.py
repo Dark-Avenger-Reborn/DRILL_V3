@@ -506,10 +506,7 @@ def run(data):
             if sio.connected:
                 try:
                     with mss.mss() as sct:
-                        if len(sct.monitors)-1 < 1:
-                            print("No monitors found. Skipping screen capture.")
-                        else:
-                            sio.emit('screen_count', json.dumps({ 'uid': data['uid'], 'screen_count': len(sct.monitors)-1 }))
+                        sio.emit('screen_count', json.dumps({ 'uid': data['uid'], 'screen_count': len(sct.monitors)-1 }))
                 except socketio.exceptions.BadNamespaceError:
                     print("Bad namespace error — emit_screen_count thread continuing.")
                 except Exception as e:

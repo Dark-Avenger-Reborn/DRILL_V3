@@ -27,71 +27,119 @@ stopButton.addEventListener("click", () => {
   josh_allen = false;
 });
 
-// New button listeners
-document.getElementById("mouseInput").addEventListener("click", () => {
+// Input toggle buttons
+const mouseBtn = document.getElementById("mouseInput");
+const keyboardBtn = document.getElementById("keyboardInput");
+
+function updateInputButtonVisuals() {
+  if (send_mouse_input) {
+    mouseBtn.classList.add("toggle-enabled");
+    mouseBtn.classList.remove("toggle-disabled");
+    mouseBtn.textContent = "Disable Mouse Input";
+  } else {
+    mouseBtn.classList.remove("toggle-enabled");
+    mouseBtn.classList.add("toggle-disabled");
+    mouseBtn.textContent = "Enable Mouse Input";
+  }
+
+  if (send_keyboard_input) {
+    keyboardBtn.classList.add("toggle-enabled");
+    keyboardBtn.classList.remove("toggle-disabled");
+    keyboardBtn.textContent = "Disable Keyboard Input";
+  } else {
+    keyboardBtn.classList.remove("toggle-enabled");
+    keyboardBtn.classList.add("toggle-disabled");
+    keyboardBtn.textContent = "Enable Keyboard Input";
+  }
+}
+
+function disableInputButtons() {
+  mouseBtn.disabled = true;
+  keyboardBtn.disabled = true;
+  mouseBtn.classList.remove("toggle-enabled", "toggle-disabled");
+  keyboardBtn.classList.remove("toggle-enabled", "toggle-disabled");
+}
+
+function enableInputButtonsIfValid() {
+  if (screen_or_camera && screenDropdown.value === "1") {
+    mouseBtn.disabled = false;
+    keyboardBtn.disabled = false;
+    updateInputButtonVisuals();
+  } else {
+    disableInputButtons();
+  }
+}
+
+// Mouse toggle
+mouseBtn.addEventListener("click", () => {
+  if (mouseBtn.disabled || screenDropdown.value !== "1" || !screen_or_camera) return;
   send_mouse_input = !send_mouse_input;
+  updateInputButtonVisuals();
 });
 
-document.getElementById("keyboardInput").addEventListener("click", () => {
+// Keyboard toggle
+keyboardBtn.addEventListener("click", () => {
+  if (keyboardBtn.disabled || screenDropdown.value !== "1" || !screen_or_camera) return;
   send_keyboard_input = !send_keyboard_input;
+  updateInputButtonVisuals();
 });
 
-/*
-document.getElementById("lockKeyboard").addEventListener("click", () => {
-  socket.emit("lock_keyboard", { uid: pageSID });
-});
-
-document.getElementById("lockMouse").addEventListener("click", () => {
-  socket.emit("lock_mouse", { uid: pageSID });
-});
-*/
-
-// Slider button event listeners
+// Slider button logic
 const sliderHighlight = document.getElementById("sliderHighlight");
 const screenButton = document.getElementById("screenButton");
 const cameraButton = document.getElementById("cameraButton");
 
 screenButton.addEventListener("click", () => {
   socket.emit("switch_screen", { screen: "screen", uid: pageSID });
-  sliderHighlight.style.left = "0"; // Move highlight to Screen
-  screenButton.style.color = "#fff"; // Change text color to white
-  cameraButton.style.color = "#1e1e1e"; // Reset Camera button text color
+  sliderHighlight.style.left = "0";
+  screenButton.style.color = "#fff";
+  cameraButton.style.color = "#1e1e1e";
   screen_or_camera = true;
+
+  enableInputButtonsIfValid();
 });
 
 cameraButton.addEventListener("click", () => {
   socket.emit("switch_screen", { screen: "camera", uid: pageSID });
-  sliderHighlight.style.left = "50%"; // Move highlight to Camera
-  cameraButton.style.color = "#fff"; // Change text color to white
-  screenButton.style.color = "#1e1e1e"; // Reset Screen button text color
+  sliderHighlight.style.left = "50%";
+  cameraButton.style.color = "#fff";
+  screenButton.style.color = "#1e1e1e";
   screen_or_camera = false;
+
+  disableInputButtons();
 });
 
-// Handle screenshot event with zlib decompression
+// Screenshot event
 socket.on("screenshot", function (response) {
-  if (response["uid"] == pageSID && response["image"] && josh_allen) {
-    const compressedData = response["image"].data || response["image"];
-    const byteArray = new Uint8Array(compressedData);
-
-    try {
-      // Decompress the data using pako
-      const decompressedData = pako.inflate(byteArray);
-
-      // Convert the decompressed data to a Base64 string
-      const base64String = btoa(
-        decompressedData.reduce(
-          (data, byte) => data + String.fromCharCode(byte),
-          ""
-        )
-      );
-
-      // Update the image source with the decompressed data
-      document.getElementById(
-        "capturedImage"
-      ).src = `data:image/jpeg;base64,${base64String}`;
-    } catch (error) {
-      console.error("Failed to decompress the image data:", error);
+  response = JSON.parse(response);
+  if (String(response["uid"]).trim() == String(pageSID).trim() && response["image"] && josh_allen) {
+    function latin1ToByteArray(str) {
+      const arr = new Uint8Array(str.length);
+      for (let i = 0; i < str.length; ++i) {
+        arr[i] = str.charCodeAt(i) & 0xff;
+      }
+      return arr;
     }
+
+    const compressedData = response["image"].data || response["image"];
+    const byteArray = latin1ToByteArray(compressedData);
+
+    let decompressedData;
+    try {
+      decompressedData = pako.inflate(byteArray);
+    } catch (e) {
+      console.error("Failed to decompress the image data:", e);
+      return;
+    }
+
+    const base64String = btoa(
+      decompressedData.reduce(
+        (data, byte) => data + String.fromCharCode(byte),
+        ""
+      )
+    );
+
+    document.getElementById("capturedImage").src = `data:image/jpeg;base64,${base64String}`;
   }
 });
 
@@ -101,23 +149,17 @@ document.onvisibilitychange = function () {
   }
 };
 
-// Dropdown functionality for screen selection
+// Screen dropdown logic
 const screenDropdown = document.getElementById("screenDropdown");
-
-let previousScreenCount = null; // Initialize a variable to store the previous screen count
+let previousScreenCount = null;
 
 socket.on("screen_count", function (response) {
-  if (response["uid"] == pageSID) {
+  response = JSON.parse(response);
+  if (String(response["uid"]).trim() == String(pageSID).trim()) {
     const screenCount = response["screen_count"];
-
-    // Check if the screen count has changed
     if (screenCount !== previousScreenCount) {
-      previousScreenCount = screenCount; // Update the previous screen count
-
-      // Clear existing options
+      previousScreenCount = screenCount;
       screenDropdown.innerHTML = "";
-
-      // Populate the dropdown with options
       for (let i = 1; i <= screenCount; i++) {
         const option = document.createElement("option");
         option.value = i;
@@ -128,37 +170,26 @@ socket.on("screen_count", function (response) {
   }
 });
 
-// Event listener for dropdown change
 screenDropdown.addEventListener("change", (event) => {
   const selectedScreen = event.target.value;
   socket.emit("change_screen_number", {
     screenNumber: selectedScreen,
     uid: pageSID,
   });
+  enableInputButtonsIfValid();
 });
 
-// Sending mouse input
-document
-  .getElementById("capturedImage")
-  .addEventListener("mousemove", function (e) {
-    if (send_mouse_input && screen_or_camera) {
-      var rect = e.target.getBoundingClientRect();
-      var x = e.clientX - rect.left; // x position within the element.
-      var y = e.clientY - rect.top; // y position within the element.
-
-      var percentX = x / rect.width; // Percentage of width
-      var percentY = y / rect.height; // Percentage of height
-
-      socket.emit("mouse_input", { uid: pageSID, x: percentX, y: percentY });
-    }
-  });
-
-/* Mouse click events
-document.getElementById("capturedImage").onclick = function (e) {
+// Mouse movement input
+document.getElementById("capturedImage").addEventListener("mousemove", function (e) {
   if (send_mouse_input && screen_or_camera) {
-    socket.emit("mouse_click", { uid: pageSID });
+    var rect = e.target.getBoundingClientRect();
+    var x = e.clientX - rect.left;
+    var y = e.clientY - rect.top;
+    var percentX = x / rect.width;
+    var percentY = y / rect.height;
+    socket.emit("mouse_input", { uid: pageSID, x: percentX, y: percentY });
   }
-}; */
+});
 
 function handleMouseEvent(e) {
   if (send_mouse_input && screen_or_camera) {
@@ -180,14 +211,8 @@ function handleMouseEvent2(e) {
   }
 }
 
-capturedImage.addEventListener("mousedown", handleMouseEvent);
-capturedImage.addEventListener("mouseup", handleMouseEvent2);
-
-/*document.getElementById("capturedImage").oncontextmenu = function (e) {
-  if (send_mouse_input && screen_or_camera) {
-    socket.emit("mouse_click_right", { uid: pageSID });
-  }
-};*/
+document.getElementById("capturedImage").addEventListener("mousedown", handleMouseEvent);
+document.getElementById("capturedImage").addEventListener("mouseup", handleMouseEvent2);
 
 document.querySelectorAll(".screenshot").forEach(function (image) {
   image.addEventListener("contextmenu", function (e) {
@@ -195,39 +220,29 @@ document.querySelectorAll(".screenshot").forEach(function (image) {
   });
 });
 
-document
-  .getElementById("capturedImage")
-  .addEventListener("wheel", function (e) {
-    if (send_mouse_input && screen_or_camera) {
-      var scrollDelta = e.deltaY || e.detail || e.wheelDelta; // Get the scroll delta (scroll direction)
-
-      // You can emit the scroll data to the server if necessary
-      socket.emit("mouse_scroll", { uid: pageSID, delta: scrollDelta });
-
-      // Prevent the default scrolling behavior (if needed)
-    }
-    e.preventDefault();
-  });
-
-document.querySelector("img").addEventListener("dragstart", function (event) {
-  event.preventDefault(); // Prevents the default dragging behavior
+document.getElementById("capturedImage").addEventListener("wheel", function (e) {
+  if (send_mouse_input && screen_or_camera) {
+    var scrollDelta = e.deltaY || e.detail || e.wheelDelta;
+    socket.emit("mouse_scroll", { uid: pageSID, delta: scrollDelta });
+  }
+  e.preventDefault();
 });
 
-let keyDownTime = {}; // To store the time when each key is pressed
+document.querySelector("img").addEventListener("dragstart", function (event) {
+  event.preventDefault();
+});
+
+let keyDownTime = {};
 
 document.addEventListener("keydown", function (event) {
   if (send_keyboard_input && screen_or_camera) {
     const currentTime = Date.now();
     const key = event.key;
 
-    // Record the time when the key is pressed down
     if (!keyDownTime[key]) {
       keyDownTime[key] = currentTime;
     }
 
-    console.log("Key Down:", event.key);
-
-    // Emit key_press only after waiting 200ms (if key is still being held down)
     setTimeout(() => {
       if (keyDownTime[key] && Date.now() - keyDownTime[key] >= 200) {
         socket.emit("key_press", { uid: pageSID, key: event.key, going: true });
@@ -243,19 +258,13 @@ document.addEventListener("keyup", function (event) {
     const key = event.key;
     const keyPressedDuration = Date.now() - keyDownTime[key];
 
-    console.log("Key Up:", event.key);
-
-    // Emit key_press_short if the key was held for less than 200ms
     if (keyPressedDuration < 200) {
       socket.emit("key_press_short", { uid: pageSID, key: event.key });
     } else {
-      // Emit key_press with going: false to indicate key release
       socket.emit("key_press", { uid: pageSID, key: event.key, going: false });
     }
 
-    // Reset the keyDownTime for the key after it's released
     delete keyDownTime[key];
-
     event.preventDefault();
   }
 });
@@ -265,20 +274,16 @@ function showPopupAlert(message, type) {
   const popupMessage = document.getElementById("popup-message");
   popupMessage.textContent = message;
 
-  // Add the type class (success or error)
   popup.classList.remove("success", "error");
   popup.classList.add(type);
 
-  // Show the popup
   popup.style.display = "block";
 
-  // Hide the popup after 3 seconds or when OK is clicked
   setTimeout(() => {
     popup.style.display = "none";
   }, 3000);
 }
 
-// Example usage of showPopupAlert
 document.getElementById("popup-ok-btn").addEventListener("click", function () {
   const popup = document.getElementById("popup-alert");
   popup.style.display = "none";
