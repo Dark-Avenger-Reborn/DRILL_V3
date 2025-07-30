@@ -73,6 +73,12 @@ If the client device has a camera, DRILL can access the first camera feed.
 ### Console of Connected Device
 ![Console of Connected Device](images/device_console.png)
 
+### Screen/Camera Viewing
+![Screen and Camera Dashboard](images/screen_viewer.png)
+
+### Login Page
+![Login Page](images/login_screen.png)
+
 ---
 
 ## 🏗️ Architecture
