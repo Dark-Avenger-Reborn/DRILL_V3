@@ -21,7 +21,7 @@
 
     "pem": {
         "disconnect-uid": {
-            "os": ["windows", "linux", "osx"],
+            "os": ["windows", "linux"],
             "pem_path": "stop.py",
             "pem_name": "Disconnect Device"
         }

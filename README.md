@@ -35,7 +35,7 @@ Built-in Docker integration enables seamless payload creation for both Linux and
 
 ```json
 "disconnect-uid": {
-    "os": ["windows", "linux", "osx"],
+    "os": ["windows", "linux"],
     "pem_path": "stop.py",
     "pem_name": "Disconnect Device"
 }
