@@ -15,6 +15,8 @@ ENV PYTHONUNBUFFERED=1
 
 # Install dependencies required for cross-building
 # (Install both build-essential tools and libraries for multiple architectures)
+ARG DEBIAN_FRONTEND=noninteractive
+ENV TZ=Europe/London
 RUN dpkg --add-architecture amd64 && apt-get update && apt-get install -y \
     build-essential \
     gcc \
@@ -26,6 +28,17 @@ RUN dpkg --add-architecture amd64 && apt-get update && apt-get install -y \
     lib32z1:amd64 \
     lib32ncurses6:amd64 \
     lib32stdc++6:amd64 \
+    python3-tk \
+    python-tk \
+    python3-pip \
+    libgl1-mesa-glx \
+    libglib2.0-0 \
+    libsm6 \
+    libice6 \
+    libqt5core5a \
+    libqt5gui5 \
+    libqt5widgets5 \
+    qemu-user-static \
     && rm -rf /var/lib/apt/lists/*
 
 # Install PyInstaller
@@ -34,11 +47,6 @@ RUN pip install --no-cache-dir pyinstaller==$PYINSTALLER_VERSION
 # Install the necessary dynamic linker for x86_64 (adjust as needed)
 RUN apt-get update && apt-get install -y \
     libc6:amd64 \
-    && rm -rf /var/lib/apt/lists/*
-
-# Install cross-compilation tools (optional but helpful for building for multiple archs)
-RUN apt-get update && apt-get install -y \
-    qemu-user-static \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy the entrypoint script
